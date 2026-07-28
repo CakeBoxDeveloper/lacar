@@ -3,18 +3,8 @@
 /* ===== PRELOADER ===== */
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
-  if (preloader) {
-    setTimeout(() => preloader.classList.add('is-hidden'), 400);
-  }
+  if (preloader) setTimeout(() => preloader.classList.add('is-hidden'), 400);
 });
-
-/* ===== HEADER SCROLL ===== */
-const header = document.getElementById('header');
-
-function onScroll() {
-  // header is static — nothing to do
-}
-window.addEventListener('scroll', onScroll, { passive: true });
 
 /* ===== BURGER / MOBILE NAV ===== */
 const burger = document.getElementById('burger');
@@ -36,26 +26,6 @@ nav?.querySelectorAll('.nav__link').forEach(link => {
   });
 });
 
-/* ===== ACTIVE NAV LINK ===== */
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav__link');
-
-const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.getAttribute('id');
-      navLinks.forEach(link => {
-        link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
-      });
-    }
-  });
-}, { rootMargin: '-40% 0px -55% 0px' });
-
-sections.forEach(s => sectionObserver.observe(s));
-
-/* ===== BACK TO TOP ===== */
-toTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
 /* ===== TOAST ===== */
 function showToast(msg) {
   const toast = document.getElementById('toast');
@@ -67,7 +37,8 @@ function showToast(msg) {
 
 /* ===== BOOKING FORM ===== */
 const form = document.getElementById('bookingForm');
-form?.addEventListener('submit', async (e) => {
+
+form?.addEventListener('submit', (e) => {
   e.preventDefault();
   let valid = true;
 
@@ -83,28 +54,23 @@ form?.addEventListener('submit', async (e) => {
 
   if (!valid) return;
 
-  // Collect form data and build Telegram message
   const data = Object.fromEntries(new FormData(form));
   const tgMessage = encodeURIComponent(
-    `🚗 Нова заявка LC Transfer\n` +
-    `👤 Ім'я: ${data.name}\n` +
-    `📞 Телефон: ${data.phone}\n` +
-    `📍 Звідки: ${data.from}\n` +
-    `🏁 Куди: ${data.to}\n` +
-    `📅 Дата: ${data.date}\n` +
-    `👥 Пасажирів: ${data.passengers}\n` +
-    `💬 Коментар: ${data.comment || '—'}`
+    `Нова заявка LC Transfer\n` +
+    `Ім'я: ${data.name}\n` +
+    `Телефон: ${data.phone}\n` +
+    `Звідки: ${data.from}\n` +
+    `Куди: ${data.to}\n` +
+    `Дата: ${data.date}\n` +
+    `Пасажирів: ${data.passengers}\n` +
+    `Коментар: ${data.comment || '—'}`
   );
 
-  // Open Telegram with pre-filled message (fallback for static site)
-  const tgUrl = `https://t.me/lctransfer?text=${tgMessage}`;
-  window.open(tgUrl, '_blank', 'noopener,noreferrer');
-
-  showToast('✓ Повідомлення готове! Відкриваємо Telegram...');
+  window.open(`https://t.me/lctransfer?text=${tgMessage}`, '_blank', 'noopener,noreferrer');
+  showToast('Відкриваємо Telegram...');
   form.reset();
 });
 
-// Clear error on input
 form?.querySelectorAll('input').forEach(input => {
   input.addEventListener('input', () => {
     input.closest('.field')?.classList.remove('has-error');
@@ -112,19 +78,24 @@ form?.querySelectorAll('input').forEach(input => {
 });
 
 /* ===== FADE-IN ON SCROLL ===== */
-const fadeEls = document.querySelectorAll('.service-card, .route-chip, .stat-card, .faq__item');
-fadeEls.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; });
+const fadeEls = document.querySelectorAll('.service-card, .route-chip, .faq__item');
+fadeEls.forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+});
 
 const fadeObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
+      const idx = Array.from(entry.target.parentElement?.children || []).indexOf(entry.target);
       setTimeout(() => {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
-      }, 60 * (Array.from(entry.target.parentElement?.children || []).indexOf(entry.target)));
+      }, idx * 60);
       fadeObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 
 fadeEls.forEach(el => fadeObserver.observe(el));
