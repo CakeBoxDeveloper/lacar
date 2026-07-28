@@ -35,48 +35,6 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('is-visible'), 4000);
 }
 
-/* ===== BOOKING FORM ===== */
-const form = document.getElementById('bookingForm');
-
-form?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  let valid = true;
-
-  form.querySelectorAll('[required]').forEach(input => {
-    const field = input.closest('.field');
-    if (!input.value.trim()) {
-      field?.classList.add('has-error');
-      valid = false;
-    } else {
-      field?.classList.remove('has-error');
-    }
-  });
-
-  if (!valid) return;
-
-  const data = Object.fromEntries(new FormData(form));
-  const tgMessage = encodeURIComponent(
-    `Нова заявка LC Transfer\n` +
-    `Ім'я: ${data.name}\n` +
-    `Телефон: ${data.phone}\n` +
-    `Звідки: ${data.from}\n` +
-    `Куди: ${data.to}\n` +
-    `Дата: ${data.date}\n` +
-    `Пасажирів: ${data.passengers}\n` +
-    `Коментар: ${data.comment || '—'}`
-  );
-
-  window.open(`https://t.me/lctransfer?text=${tgMessage}`, '_blank', 'noopener,noreferrer');
-  showToast('Відкриваємо Telegram...');
-  form.reset();
-});
-
-form?.querySelectorAll('input').forEach(input => {
-  input.addEventListener('input', () => {
-    input.closest('.field')?.classList.remove('has-error');
-  });
-});
-
 /* ===== FADE-IN ON SCROLL ===== */
 const fadeEls = document.querySelectorAll('.service-card, .route-chip, .faq__item');
 fadeEls.forEach(el => {
@@ -99,3 +57,61 @@ const fadeObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 
 fadeEls.forEach(el => fadeObserver.observe(el));
+
+/* ===== FLOATING NAV SCROLL ===== */
+document.querySelector('.float-nav__btn--outline')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('calc')?.scrollIntoView({ behavior: 'smooth' });
+});
+
+document.querySelector('.float-nav__btn--gold')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' });
+});
+
+/* ===== CALCULATOR ===== */
+const calcForm = document.getElementById('calcForm');
+const calcResult = document.getElementById('calcResult');
+
+calcForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const fromEl = document.getElementById('calcFrom');
+  const toEl = document.getElementById('calcTo');
+  const dateEl = document.getElementById('calcDate');
+  const passEl = document.getElementById('calcPassengers');
+
+  let valid = true;
+  [fromEl, toEl, dateEl, passEl].forEach(el => {
+    const field = el.closest('.field');
+    if (!el.value.trim()) {
+      field?.classList.add('has-error');
+      valid = false;
+    } else {
+      field?.classList.remove('has-error');
+    }
+  });
+  if (!valid) return;
+
+  const selected = toEl.options[toEl.selectedIndex];
+  const km = parseInt(selected.dataset.km || '0');
+  const hours = parseInt(selected.dataset.h || '0');
+  const passengers = parseInt(passEl.value) || 1;
+
+  // ~1 EUR per km, split by passengers for shared, flat for individual
+  const pricePerPax = Math.round(km * 1.0);
+  const priceTotal = Math.round(km * 1.2); // individual
+
+  document.getElementById('calcDist').textContent = km ? `~${km} км` : '—';
+  document.getElementById('calcTime').textContent = hours ? `~${hours} год` : '—';
+  document.getElementById('calcPrice').textContent =
+    km ? `від ${pricePerPax} € / ос · від ${priceTotal} € авто` : '—';
+
+  calcResult.hidden = false;
+  calcResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+calcForm?.querySelectorAll('select, input').forEach(el => {
+  el.addEventListener('change', () => el.closest('.field')?.classList.remove('has-error'));
+  el.addEventListener('input', () => el.closest('.field')?.classList.remove('has-error'));
+});
