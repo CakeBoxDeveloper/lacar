@@ -1,0 +1,11 @@
+# GitHub Pages config
+title: LC Transfer
+description: Міжнародні пасажирські перевезення
+baseurl: ""
+url: "https://lc-transfer.com"
+
+# Exclude non-site files
+exclude:
+  - SeoTZ.docx
+  - "*.py"
+  - README.md

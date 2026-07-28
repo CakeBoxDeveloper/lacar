@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Автоперевезення Україна–Європа | LC Transfer — міжнародні пасажирські перевезення</title>
+<meta name="description" content="Комфортні пасажирські перевезення Україна ↔ Польща, Румунія, Молдова, Болгарія. Індивідуальні трансфери та попутні рейси. Бронюйте онлайн або пишіть у Telegram/Viber/WhatsApp.">
+<meta name="keywords" content="автоперевезення, трансфер, Київ Варшава, Україна Польща, міжнародні перевезення, пасажирські перевезення">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://lc-transfer.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lc-transfer.com/">
+<meta property="og:title" content="LC Transfer — Міжнародні пасажирські перевезення">
+<meta property="og:description" content="Комфортні перевезення Україна ↔ Польща, Румунія, Молдова, Болгарія. Бронюйте у Telegram, Viber або WhatsApp.">
+<meta property="og:image" content="https://lc-transfer.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "LC Transfer",
+  "description": "Міжнародні пасажирські перевезення. Трансфери по Україні та Європі.",
+  "url": "https://lc-transfer.com",
+  "telephone": "+380XXXXXXXXX",
+  "address": {"@type": "PostalAddress", "addressCountry": "UA"},
+  "sameAs": ["https://t.me/lctransfer"],
+  "serviceArea": {"@type": "GeoCircle", "geoMidpoint": {"@type": "GeoCoordinates", "latitude": 50.45, "longitude": 30.52}, "geoRadius": "2000000"},
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Напрямки перевезень",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Київ — Варшава"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Київ — Бухарест"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Одеса — Кишинів"}}
+    ]
+  }
+}
+</script>
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Preloader -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader__logo">LC<span>TRANSFER</span></div>
+</div>
+
+<!-- Noise overlay -->
+<div class="noise" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo" aria-label="LC Transfer — головна">
+      <span><span class="gold">LC</span> Transfer</span>
+      <span class="logo__sub">Міжнародні перевезення</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Головне меню">
+      <ul class="nav__list" role="list">
+        <li><a href="index.html#services" class="nav__link">Послуги</a></li>
+        <li><a href="index.html#routes" class="nav__link">Напрямки</a></li>
+        <li><a href="index.html#advantages" class="nav__link">Про нас</a></li>
+        <li><a href="index.html#faq" class="nav__link">FAQ</a></li>
+        <li><a href="index.html#booking" class="nav__link">Замовити</a></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a href="tel:+380XXXXXXXXX" class="btn btn--outline header__cta" aria-label="Зателефонувати">
+        Зателефонувати
+      </a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__bokeh"></div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <h1 class="hero__title"><span class="gold">LC</span> Transfer</h1>
+      <p class="hero__subtitle">Міжнародні пасажирські перевезення по Україні та Європі</p>
+      <p class="hero__desc">Комфортні поїздки щодня.<br>Індивідуальні трансфери та попутні рейси.</p>
+
+      <ul class="hero__countries" aria-label="Доступні напрямки">
+        <li><span class="check check--green" aria-hidden="true"></span>Україна ↔ Польща</li>
+        <li><span class="check check--green" aria-hidden="true"></span>Україна ↔ Румунія</li>
+        <li><span class="check check--green" aria-hidden="true"></span>Україна ↔ Молдова</li>
+        <li><span class="check check--green" aria-hidden="true"></span>Україна ↔ Болгарія</li>
+        <li><span class="check check--green" aria-hidden="true"></span>Україна ↔ ЄС</li>
+      </ul>
+
+      <div class="hero__cta-group">
+        <a href="index.html#booking" class="btn btn--gold">Забронювати поїздку</a>
+        <a href="tel:+380XXXXXXXXX" class="btn btn--outline">Зателефонувати</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section services" id="services">
+  <div class="container">
+    <h2 class="section__title">Наші <span class="gold">послуги</span></h2>
+    <div class="services__grid">
+      <article class="service-card">
+        <h3>Індивідуальний трансфер</h3>
+        <p>Особистий комфортний автомобіль з водієм — тільки ваша група</p>
+      </article>
+      <article class="service-card">
+        <h3>Попутні рейси</h3>
+        <p>Зручні попутні поїздки за доступними цінами по популярних маршрутах</p>
+      </article>
+      <article class="service-card">
+        <h3>Трансфер в аеропорт</h3>
+        <p>Зустріч і проводи в аеропорту. Підбір по терміналах з табличкою</p>
+      </article>
+      <article class="service-card">
+        <h3>Бізнес-трансфер</h3>
+        <p>Авто бізнес-класу з Wi-Fi та водою для ділових поїздок</p>
+      </article>
+      <article class="service-card">
+        <h3>Курортні напрямки</h3>
+        <p>Перевезення до морських курортів, гірських та бальнеологічних курортів</p>
+      </article>
+      <article class="service-card">
+        <h3>Термінові перевезення</h3>
+        <p>Термінові рейси 24/7 для тих, хто цінує час і надійність</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ROUTES ===== -->
+<section class="section routes" id="routes">
+  <div class="container">
+    <h2 class="section__title">Популярні <span class="gold">маршрути</span></h2>
+    <div class="routes__grid">
+      <a href="routes/kyiv-warsaw.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Київ — Варшава
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-krakow.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Київ — Краків
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-bucharest.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--ro" aria-hidden="true"></span>
+        Київ — Бухарест
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-chisinau.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--md" aria-hidden="true"></span>
+        Київ — Кишинів
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/odesa-warsaw.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Одеса — Варшава
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-sofia.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--bg" aria-hidden="true"></span>
+        Київ — Софія
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/lviv-warsaw.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Львів — Варшава
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-wroclaw.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Київ — Вроцлав
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-gdansk.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--pl" aria-hidden="true"></span>
+        Київ — Гданськ
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/kyiv-berlin.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--de" aria-hidden="true"></span>
+        Київ — Берлін
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="routes/odesa-chisinau.html" class="route-chip">
+        <span class="flag flag--ua" aria-hidden="true"></span>
+        <span class="flag flag--md" aria-hidden="true"></span>
+        Одеса — Кишинів
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="index.html#booking" class="route-chip route-chip--more">
+        Інші напрямки — написати
+        <span class="route-chip__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ADVANTAGES ===== -->
+<section class="section advantages" id="advantages">
+  <div class="container">
+    <div class="advantages__card">
+      <span class="advantages__shimmer" aria-hidden="true"></span>
+      <div class="advantages__content">
+        <h2 class="advantages__title">Чому обирають нас</h2>
+        <ul class="advantages__list">
+          <li><span class="check check--gold" aria-hidden="true"></span>Досвід міжнародних перевезень понад 5 років</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Комфортні автомобілі бізнес і преміум класу</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Зустріч і посадка безпосередньо від дверей</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Досвідчені водії зі знанням маршрутів та кордонів</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Прозорі ціни — без прихованих доплат</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Онлайн-бронювання та підтвердження в месенджері</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Допомога з оформленням документів на кордоні</li>
+          <li><span class="check check--gold" aria-hidden="true"></span>Робота 24/7 — завжди на зв'язку</li>
+        </ul>
+      </div>
+      <div class="advantages__media">
+        <div class="advantages__placeholder" aria-hidden="true">
+          <p>Комфортний салон бізнес-класу</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section faq" id="faq">
+  <div class="container">
+    <h2 class="section__title">Часті <span class="gold">запитання</span></h2>
+    <div class="faq__list">
+      <details class="faq__item">
+        <summary class="faq__q">Як замовити трансфер?</summary>
+        <div class="faq__a"><p>Напишіть нам у Telegram, Viber або WhatsApp, або заповніть форму бронювання на сайті. Ми підтвердимо замовлення протягом 15 хвилин.</p></div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Скільки коштує поїздка Київ — Варшава?</summary>
+        <div class="faq__a"><p>Вартість залежить від класу автомобіля та кількості пасажирів. Для індивідуального трансферу — уточнюйте у менеджера. Попутні рейси — від фіксованої ціни на місце.</p></div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Чи допомагаєте з оформленням документів на кордоні?</summary>
+        <div class="faq__a"><p>Так, наші водії добре знають процедуру проходження кордону та допоможуть з оформленням необхідних документів.</p></div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Чи можна везти багаж?</summary>
+        <div class="faq__a"><p>Так, можна. Обсяг багажу залежить від типу автомобіля. При великому обсязі — попередьте нас заздалегідь.</p></div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Чи є дитячі крісла?</summary>
+        <div class="faq__a"><p>Так, за попереднім замовленням надаємо дитячі крісла безкоштовно.</p></div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Яка оплата — готівка чи картка?</summary>
+        <div class="faq__a"><p>Приймаємо готівку (гривня, євро, злотий) та банківський переказ. Деталі — при підтвердженні замовлення.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOOKING ===== -->
+<section class="section booking-section" id="booking">
+  <div class="container">
+    <div class="booking__wrap">
+      <div class="booking__info">
+        <h2 class="booking__heading">Забронювати <span class="gold">поїздку</span></h2>
+        <p class="booking__sub">Заповніть форму або напишіть нам напряму — відповімо протягом 15 хвилин.</p>
+        <div class="booking__messengers">
+          <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="messenger-btn messenger-btn--tg">Telegram</a>
+          <a href="viber://chat?number=%2B380XXXXXXXXX" class="messenger-btn messenger-btn--vb">Viber</a>
+          <a href="https://wa.me/380XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="messenger-btn messenger-btn--wa">WhatsApp</a>
+        </div>
+        <a href="tel:+380XXXXXXXXX" class="booking__phone">+38 0XX XXX XX XX</a>
+      </div>
+      <form class="booking__form" id="bookingForm" novalidate>
+        <h3 class="booking__form-title">Форма бронювання</h3>
+        <div class="booking__grid">
+          <div class="field">
+            <label for="fieldName" class="field__label">Ваше ім'я</label>
+            <input type="text" id="fieldName" name="name" placeholder="Іван Іваненко" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="fieldPhone" class="field__label">Телефон / месенджер</label>
+            <input type="tel" id="fieldPhone" name="phone" placeholder="+38 0XX XXX XX XX" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label for="fieldFrom" class="field__label">Звідки</label>
+            <input type="text" id="fieldFrom" name="from" placeholder="Місто, адреса" required>
+          </div>
+          <div class="field">
+            <label for="fieldTo" class="field__label">Куди</label>
+            <input type="text" id="fieldTo" name="to" placeholder="Місто, адреса" required>
+          </div>
+          <div class="field">
+            <label for="fieldDate" class="field__label">Дата поїздки</label>
+            <input type="date" id="fieldDate" name="date" required>
+          </div>
+          <div class="field">
+            <label for="fieldPassengers" class="field__label">Кількість пасажирів</label>
+            <input type="number" id="fieldPassengers" name="passengers" min="1" max="8" placeholder="1" value="1">
+          </div>
+        </div>
+        <div class="field field--full">
+          <label for="fieldComment" class="field__label">Коментар</label>
+          <input type="text" id="fieldComment" name="comment" placeholder="Побажання, дитяче крісло, багаж...">
+        </div>
+        <button type="submit" class="btn btn--gold booking__submit">
+          Надіслати заявку
+        </button>
+        <p class="booking__note">Після відправки ми зв'яжемось з вами протягом 15 хвилин</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="contacts">
+  <div class="container footer__inner">
+    <div class="footer__left">
+      <div class="footer__logo"><span class="gold">LC</span> Transfer</div>
+      <p class="footer__tagline">Міжнародні пасажирські перевезення</p>
+      <a href="tel:+380XXXXXXXXX" class="footer__phone">+38 0XX XXX XX XX</a>
+      <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__tg">@lctransfer в Telegram</a>
+      <div class="footer__socials" aria-label="Соціальні мережі">
+        <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="social" aria-label="Telegram">TG</a>
+        <a href="viber://chat?number=%2B380XXXXXXXXX" class="social" aria-label="Viber">VB</a>
+        <a href="https://wa.me/380XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="social" aria-label="WhatsApp">WA</a>
+      </div>
+    </div>
+
+    <nav class="footer__nav" aria-label="Навігація по сайту">
+      <div class="footer__col">
+        <h4 class="footer__col-title">Маршрути</h4>
+        <ul>
+          <li><a href="routes/kyiv-warsaw.html">Київ — Варшава</a></li>
+          <li><a href="routes/kyiv-bucharest.html">Київ — Бухарест</a></li>
+          <li><a href="routes/kyiv-chisinau.html">Київ — Кишинів</a></li>
+          <li><a href="routes/lviv-warsaw.html">Львів — Варшава</a></li>
+          <li><a href="routes/kyiv-berlin.html">Київ — Берлін</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Інформація</h4>
+        <ul>
+          <li><a href="index.html#services">Послуги</a></li>
+          <li><a href="index.html#advantages">Про компанію</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="index.html#booking">Контакти</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container">
+      <p>© 2024 LC Transfer. Всі права захищені. | <a href="privacy.html">Політика конфіденційності</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
