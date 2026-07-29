@@ -200,7 +200,7 @@ function handleMotion(e) {
 
   const shake = dx + dy + dz;
   const now = Date.now();
-  if (shake > 40 && now - lastShake > 1200) {
+  if (shake > 80 && now - lastShake > 1200) {
     lastShake = now;
     toggleTheme();
     navigator.vibrate?.(80);
