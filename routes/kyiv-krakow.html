@@ -3,24 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Трансфер Київ — Краків | Пасажирські перевезення LC Transfer</title>
-<meta name="description" content="Зручні пасажирські перевезення Київ — Краків. Індивідуальні та попутні рейси, пряме сполучення без пересадок. Бронюйте у Telegram, Viber або WhatsApp.">
+<title>Трансфер Київ — Краків | LC Transfer</title>
+<meta name="description" content="Пасажирські перевезення Київ — Краків. Комфортний трансфер без пересадок. Від 814€.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://lc-transfer.com/routes/kyiv-krakow.html">
 <meta property="og:title" content="Трансфер Київ — Краків | LC Transfer">
-<meta property="og:description" content="Зручні пасажирські перевезення Київ — Краків. Індивідуальні та попутні рейси, пряме сполучення без пересадок.">
+<meta property="og:description" content="Пасажирські перевезення Київ — Краків. Від 814€.">
 <meta property="og:url" content="https://lc-transfer.com/routes/kyiv-krakow.html">
 <meta property="og:type" content="website">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Трансфер Київ — Краків",
-  "provider": {"@type": "LocalBusiness", "name": "LC Transfer", "url": "https://lc-transfer.com"},
-  "description": "Зручні пасажирські перевезення Київ — Краків. Індивідуальні та попутні рейси, пряме сполучення без пересадок.",
-  "areaServed": ["Київ", "Краків"],
-  "serviceType": "Пасажирський трансфер"
-}
+{"@context":"https://schema.org","@type":"Service","name":"Трансфер Київ — Краків","provider":{"@type":"LocalBusiness","name":"LC Transfer","url":"https://lc-transfer.com"},"areaServed":["Київ","Краків"],"serviceType":"Пасажирський трансфер"}
 </script>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,140 +20,123 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../route.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLI=" crossorigin=""></script>
 </head>
 <body>
+
+<!-- 3D floating cars -->
+<div class="route-3d-scene" aria-hidden="true">
+  <div class="route-3d-car route-3d-car--left">
+    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WLBPKrakiv.webp" alt="">
+  </div>
+  <div class="route-3d-car route-3d-car--right">
+    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WLBPKrakiv.webp" alt="" style="transform: scaleX(-1)">
+  </div>
+</div>
 <div class="noise" aria-hidden="true"></div>
-<header class="header" id="header">
-  <div class="container header__inner">
-    <a href="../index.html" class="logo"><span><span class="gold">LC</span> Transfer</span><span class="logo__sub">Міжнародні перевезення</span></a>
-    <nav class="nav" id="nav" aria-label="Головне меню">
-      <ul class="nav__list">
-        <li><a href="../index.html#services" class="nav__link">Послуги</a></li>
-        <li><a href="../index.html#routes" class="nav__link">Напрямки</a></li>
-        <li><a href="../index.html#advantages" class="nav__link">Про нас</a></li>
-        <li><a href="../index.html#faq" class="nav__link">FAQ</a></li>
-        <li><a href="../index.html#booking" class="nav__link">Замовити</a></li>
-      </ul>
-    </nav>
-    <div class="header__actions">
-      <a href="tel:+380XXXXXXXXX" class="btn btn--outline header__cta">
-        <span class="btn__icon btn__icon--pulse"><svg viewBox="0 0 20 20" fill="none"><path d="M3.4 2C3 2 2.5 2.3 2 3c-.7 1-.8 3.4 1.4 6.3C5.6 12.3 8 14.6 11 15.9c3.4 1.4 5.1.6 5.8-.2.5-.6.6-1.3.4-1.7l-1.8-2.8c-.3-.4-.8-.5-1.2-.3l-1.6.8c-.3.2-.7.1-1-.1-1-.8-2-1.9-2.7-2.9-.2-.4-.3-.8 0-1.1l.9-1.5c.2-.4.1-.9-.2-1.2L4.5 2.3C4.2 2.1 3.8 2 3.4 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
-        Зателефонувати
-      </a>
-      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</header>
+
+<!-- Floating nav -->
+<div class="float-nav">
+  <a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="float-nav__btn float-nav__btn--gold">Забронювати</a>
+  <a href="../index.html#calc" class="float-nav__btn float-nav__btn--outline">Калькулятор</a>
+</div>
+
 <main>
-<section class="route-hero">
+
+<section class="route-hero section">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Хлібні крихти"><ol>
-      <li><a href="../index.html">Головна</a></li><li aria-hidden="true">›</li>
-      <li><a href="../index.html#routes">Напрямки</a></li><li aria-hidden="true">›</li>
-      <li aria-current="page">Київ — Краків</li>
-    </ol></nav>
-    <div class="route-hero__inner">
-      <div class="route-hero__content">
-        <div class="route-hero__flags">
-          <span class="flag flag--ua" aria-label="Київ"></span>
-          <span class="route-hero__arrow">→</span>
-          <span class="flag flag--pl" aria-label="Краків"></span>
-        </div>
-        <h1 class="route-hero__title"><span class="gold">Київ — Краків</span></h1>
-        <p class="route-hero__desc">Зручні пасажирські перевезення Київ — Краків. Індивідуальні та попутні рейси, пряме сполучення без пересадок.</p>
-        <div class="route-hero__meta">
-          <div class="route-meta-item"><span class="route-meta-item__icon">🕐</span><div><strong>~13 годин</strong><span>Час у дорозі</span></div></div>
-          <div class="route-meta-item"><span class="route-meta-item__icon">📍</span><div><strong>~750 км</strong><span>Відстань</span></div></div>
-          <div class="route-meta-item"><span class="route-meta-item__icon">🚗</span><div><strong>Sedan / Minivan</strong><span>Клас авто</span></div></div>
-        </div>
-        <div class="route-hero__cta">
-          <a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="btn btn--gold">Забронювати в Telegram</a>
-          <a href="tel:+380XXXXXXXXX" class="btn btn--outline">Зателефонувати</a>
-        </div>
-      </div>
-      <div class="route-hero__map" aria-hidden="true">
-        <div class="route-map-visual">
-          <div class="route-map-dot route-map-dot--from"><span>Київ</span><div class="dot"></div></div>
-          <div class="route-map-line"><svg viewBox="0 0 200 60" fill="none"><path d="M10 50 Q100 5 190 50" stroke="url(#rg_kyiv_krakow)" stroke-width="2" stroke-dasharray="6 4"/><defs><linearGradient id="rg_kyiv_krakow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f5d67b"/><stop offset="1" stop-color="#c9a24b"/></linearGradient></defs></svg><div class="route-map-car"><svg viewBox="0 0 18 18" fill="none" width="16" height="16"><path d="M3 12V9.5c0-1 .5-2 1.3-2.5l2-3c.4-.6 1-.9 1.7-.9h4c1.5 0 3.5 1 4.5 2.2l1.3 1.3c.5.2.9.7 1 1.4l.2 1.7c0 .7-.4 1.4-1.1 1.5l-1.2.3H4L3 12Z" stroke="#e8c56c" stroke-width="1.3" stroke-linejoin="round"/><circle cx="6" cy="13" r="1.5" stroke="#e8c56c" stroke-width="1.3"/><circle cx="13" cy="13" r="1.5" stroke="#e8c56c" stroke-width="1.3"/></svg></div></div>
-          <div class="route-map-dot route-map-dot--to"><div class="dot"></div><span>Краків</span></div>
-        </div>
-      </div>
+    <nav class="breadcrumb" aria-label="Хлібні крихти">
+      <ol>
+        <li><a href="../index.html">Головна</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a href="../index.html#routes">Напрямки</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page">Київ — Краків</li>
+      </ol>
+    </nav>
+
+    <h1 class="route-hero__title">КИЇВ — КРАКІВ</h1>
+
+    <!-- Строка маршрута как на главной -->
+    <div class="route-chip route-chip--hero">
+      <span class="route-chip__from"><span class="flag flag--ua"></span>Київ</span>
+      <span class="route-chip__mid">~13 год · від 814€</span>
+      <span class="route-chip__to">Краків<span class="flag flag--pl"></span></span>
+    </div>
+</div>
+</section>
+
+<section class="route-map">
+  <div class="container">
+    <div id="routeMap" class="route-map__leaflet"></div>
+  </div>
+</section>
+<script>
+(function(){
+  if(typeof L==='undefined') return;
+  var map = L.map('routeMap',{zoomControl:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:18
+  }).addTo(map);
+  var from=[50.4501,30.5234],to=[50.0647,19.945];
+  // Fetch route from OSRM
+  fetch('https://router.project-osrm.org/route/v1/driving/30.5234,50.4501;19.945,50.0647?overview=full&geometries=geojson')
+    .then(r=>r.json()).then(data=>{
+      if(!data.routes||!data.routes[0]) return;
+      var coords=data.routes[0].geometry.coordinates.map(function(c){return[c[1],c[0]];});
+      L.polyline(coords,{color:'#e8c56c',weight:4,opacity:0.9}).addTo(map);
+      var bounds=L.latLngBounds(coords);
+      map.fitBounds(bounds,{padding:[20,20]});
+      L.circleMarker(from,{radius:8,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('Київ').openPopup();
+      L.circleMarker(to,{radius:8,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('Краків');
+    }).catch(function(){
+      map.setView([(from[0]+to[0])/2,(from[1]+to[1])/2],5);
+    });
+})();
+</script>
+
+<section class="section faq" id="faq">
+  <div class="container">
+    <h2 class="section__title section__title--center">Часті <span class="gold">запитання</span></h2>
+    <div class="faq__list">
+      <details class="faq__item"><summary class="faq__q">Скільки часу займає поїздка?</summary><div class="faq__a"><p>Приблизно 11–15 годин.</p></div></details>
+      <details class="faq__item"><summary class="faq__q">Де висаджуєте у Кракові?</summary><div class="faq__a"><p>Безпосередньо за вашою адресою.</p></div></details>
     </div>
   </div>
 </section>
-<section class="section route-info">
-  <div class="container">
-    <div class="route-info__grid">
-      <div class="route-details">
-        <h2 class="section__title">Деталі маршруту</h2>
-        <div class="route-steps">
-          <div class="route-step"><div class="route-step__dot route-step__dot--gold"></div><div><strong>Київ</strong> — посадка біля вашого будинку або в зручному місці</div></div>
-          <div class="route-step route-step--pass"><div class="route-step__line"></div><div class="route-step__mid"><span>Кордон: Краківець—Корчова або Шегині—Медика</span><span class="route-step__time">~2–4 год на кордоні</span></div></div>
-          <div class="route-step"><div class="route-step__dot route-step__dot--gold"></div><div><strong>Краків</strong> — висадка за адресою або центр міста</div></div>
-        </div>
-        <h3 class="route-sub-title">Що входить у вартість</h3>
-        <ul class="route-includes">
-          <li><span class="check check--gold"></span>Подача авто до вашої адреси</li>
-          <li><span class="check check--gold"></span>Допомога з оформленням на кордоні</li>
-          <li><span class="check check--gold"></span>Вода та комфортний салон</li>
-          <li><span class="check check--gold"></span>Висадка за адресою в Краків</li>
-          <li><span class="check check--gold"></span>Зв'язок з водієм 24/7</li>
-        </ul>
-        <h3 class="route-sub-title">Варіанти поїздки</h3>
-        <div class="route-options">
-          <div class="route-option"><h4>Індивідуальний трансфер</h4><p>Тільки ваша група, відправлення у зручний час</p><a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--sm">Дізнатись ціну</a></div>
-          <div class="route-option"><h4>Попутний рейс</h4><p>Відправлення за розкладом, ціна за місце</p><a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--sm">Дізнатись розклад</a></div>
-        </div>
-      </div>
-      <aside class="route-sidebar">
-        <div class="route-book-card">
-          <h3>Забронювати місце</h3>
-          <p>Напишіть нам — підтвердимо протягом 15 хвилин</p>
-          <div class="route-book-btns">
-            <a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="btn btn--gold"><svg viewBox="0 0 20 20" fill="none"><path d="M17.4 3.2 2.5 9c-1 .4-1 1-.2 1.3l3.7 1.2 1.4 4.2c.2.5.5.7.8.7.3 0 .5-.1.7-.3l2.1-2 4.2 3c.8.4 1.3.2 1.5-.8l2.7-12.7c.3-1.2-.5-1.8-1.5-1.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Telegram</a>
-            <a href="viber://chat?number=%2B380XXXXXXXXX" class="btn btn--outline"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2C6.7 2 4 4.4 4 7.6c0 1.8.8 3.4 2.2 4.5v2.4l2.1-1.1c.5.1 1.1.2 1.7.2 3.3 0 6-2.4 6-5.4S13.3 2 10 2Z" stroke="currentColor" stroke-width="1.5"/></svg>Viber</a>
-            <a href="https://wa.me/380XXXXXXXXX?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Краків" target="_blank" rel="noopener noreferrer" class="btn btn--outline"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 0 1 6.9 12l1.1 3.9-4-1A8 8 0 1 1 10 2Z" stroke="currentColor" stroke-width="1.5"/></svg>WhatsApp</a>
-            <a href="tel:+380XXXXXXXXX" class="btn btn--outline"><svg viewBox="0 0 20 20" fill="none"><path d="M3.4 2C3 2 2.5 2.3 2 3c-.7 1-.8 3.4 1.4 6.3C5.6 12.3 8 14.6 11 15.9c3.4 1.4 5.1.6 5.8-.2.5-.6.6-1.3.4-1.7l-1.8-2.8c-.3-.4-.8-.5-1.2-.3l-1.6.8c-.3.2-.7.1-1-.1-1-.8-2-1.9-2.7-2.9-.2-.4-.3-.8 0-1.1l.9-1.5c.2-.4.1-.9-.2-1.2L4.5 2.3C4.2 2.1 3.8 2 3.4 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Зателефонувати</a>
-          </div>
-        </div>
-        <div class="route-other">
-          <h4>Інші напрямки</h4>
-          <ul><li><a href="kyiv-warsaw.html">Київ — Варшава →</a></li><li><a href="kyiv-wroclaw.html">Київ — Вроцлав →</a></li><li><a href="lviv-warsaw.html">Львів — Варшава →</a></li></ul>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
-<section class="section faq">
-  <div class="container">
-    <h2 class="section__title">Питання про маршрут <span class="gold">Київ — Краків</span></h2>
-    <div class="faq__list"><details class="faq__item"><summary class="faq__q">Скільки часу займає поїздка Київ — Краків?</summary><div class="faq__a"><p>Приблизно 11–15 годин з урахуванням кордону.</p></div></details><details class="faq__item"><summary class="faq__q">Де висаджуєте у Кракові?</summary><div class="faq__a"><p>Безпосередньо за вашою адресою або в центрі міста.</p></div></details></div>
-  </div>
-</section>
+
 </main>
-<footer class="footer">
-  <div class="container footer__inner">
-    <div class="footer__left">
-      <div class="footer__logo"><span class="gold">LC</span> Transfer</div>
-      <p class="footer__tagline">Міжнародні пасажирські перевезення</p>
-      <a href="tel:+380XXXXXXXXX" class="footer__phone"><span class="footer__phone-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M3.4 2C3 2 2.5 2.3 2 3c-.7 1-.8 3.4 1.4 6.3C5.6 12.3 8 14.6 11 15.9c3.4 1.4 5.1.6 5.8-.2.5-.6.6-1.3.4-1.7l-1.8-2.8c-.3-.4-.8-.5-1.2-.3l-1.6.8c-.3.2-.7.1-1-.1-1-.8-2-1.9-2.7-2.9-.2-.4-.3-.8 0-1.1l.9-1.5c.2-.4.1-.9-.2-1.2L4.5 2.3C4.2 2.1 3.8 2 3.4 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>+38 0XX XXX XX XX</a>
-      <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__tg">@lctransfer в Telegram</a>
-    </div>
-    <nav class="footer__nav"><div class="footer__col"><h4 class="footer__col-title">Маршрути</h4><ul>
-      <li><a href="kyiv-warsaw.html">Київ — Варшава</a></li>
-      <li><a href="kyiv-bucharest.html">Київ — Бухарест</a></li>
-      <li><a href="kyiv-chisinau.html">Київ — Кишинів</a></li>
-      <li><a href="lviv-warsaw.html">Львів — Варшава</a></li>
-      <li><a href="kyiv-berlin.html">Київ — Берлін</a></li>
-    </ul></div>
-    <div class="footer__col"><h4 class="footer__col-title">Інформація</h4><ul>
-      <li><a href="../index.html#services">Послуги</a></li>
-      <li><a href="../index.html#advantages">Про компанію</a></li>
-      <li><a href="../index.html#faq">FAQ</a></li>
-      <li><a href="../index.html#booking">Контакти</a></li>
-    </ul></div></nav>
+
+<footer class="footer" id="contacts">
+  <div class="container">
+    <nav class="footer__nav">
+      <div class="footer__col">
+        <h4 class="footer__col-title">Маршрути</h4>
+        <ul>
+          <li><a href="kyiv-warsaw.html">Київ — Варшава</a></li>
+          <li><a href="kyiv-bucharest.html">Київ — Бухарест</a></li>
+          <li><a href="kyiv-chisinau.html">Київ — Кишинів</a></li>
+          <li><a href="lviv-warsaw.html">Львів — Варшава</a></li>
+          <li><a href="kyiv-berlin.html">Київ — Берлін</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__col-title">Інформація</h4>
+        <ul>
+          <li><a href="../index.html#services">Послуги</a></li>
+          <li><a href="../index.html#faq">FAQ</a></li>
+          <li><a href="../index.html#calc">Калькулятор</a></li>
+          <li><a href="../privacy.html">Конфіденційність</a></li>
+        </ul>
+      </div>
+    </nav>
   </div>
-  <div class="footer__bottom"><div class="container"><p>© 2024 LC Transfer. Всі права захищені.</p></div></div>
+  <div class="footer__bottom">
+    <div class="container"><p>© 2024 LC Transfer. Всі права захищені.</p></div>
+  </div>
 </footer>
+
 <script src="../main.js"></script>
-</body></html>
+</body>
+</html>

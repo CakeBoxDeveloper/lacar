@@ -78,39 +78,6 @@
   </div>
 </section>
 
-<!-- ===== SERVICES ===== -->
-<section class="section services" id="services">
-  <div class="container">
-    <h2 class="section__title section__title--center">Наші <span class="gold">послуги</span></h2>
-    <div class="services__grid">
-      <article class="service-card">
-        <h3>Індивідуальний трансфер</h3>
-        <p>Особистий комфортний автомобіль з водієм — тільки ваша група</p>
-      </article>
-      <article class="service-card">
-        <h3>Попутні рейси</h3>
-        <p>Зручні попутні поїздки за доступними цінами по популярних маршрутах</p>
-      </article>
-      <article class="service-card">
-        <h3>Трансфер в аеропорт</h3>
-        <p>Зустріч і проводи в аеропорту. Підбір по терміналах з табличкою</p>
-      </article>
-      <article class="service-card">
-        <h3>Бізнес-трансфер</h3>
-        <p>Авто бізнес-класу з Wi-Fi та водою для ділових поїздок</p>
-      </article>
-      <article class="service-card">
-        <h3>Курортні напрямки</h3>
-        <p>Перевезення до морських курортів, гірських та бальнеологічних курортів</p>
-      </article>
-      <article class="service-card">
-        <h3>Термінові перевезення</h3>
-        <p>Термінові рейси 24/7 для тих, хто цінує час і надійність</p>
-      </article>
-    </div>
-  </div>
-</section>
-
 <!-- ===== ROUTES ===== -->
 <section class="section routes" id="routes">
   <div class="container">
@@ -208,10 +175,82 @@
   </div>
 </section>
 
+<!-- ===== CARS ===== -->
+<section class="section cars-section" id="cars">
+  <div class="container">
+    <h2 class="section__title section__title--center">Наші <span class="gold">авто</span></h2>
+    <div class="cars-carousel" id="carsCarousel">
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPnissan.webp" alt="Nissan X-Trail 2025" loading="lazy">
+        </div>
+        <div class="car-card__info">
+          <h3 class="car-card__name">Nissan X-Trail</h3>
+          <p class="car-card__year gold">2025</p>
+          <ul class="car-card__specs">
+            <li>до 4 пасажирів</li>
+            <li>кондиціонер</li>
+            <li>великий багажник</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WLBPkia.webp" alt="KIA K5" loading="lazy">
+        </div>
+        <div class="car-card__info">
+          <h3 class="car-card__name">KIA K5</h3>
+          <p class="car-card__year gold">Бізнес-клас</p>
+          <ul class="car-card__specs">
+            <li>до 4 пасажирів</li>
+            <li>шкіряний салон</li>
+            <li>комфорт преміум</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WFBPmers.webp" alt="Mercedes Vito" loading="lazy">
+        </div>
+        <div class="car-card__info">
+          <h3 class="car-card__name">Mercedes Vito</h3>
+          <p class="car-card__year gold">Мінівен</p>
+          <ul class="car-card__specs">
+            <li>до 7 пасажирів</li>
+            <li>просторий салон</li>
+            <li>ідеально для груп</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPbyd.webp" alt="BYD Seal L" loading="lazy">
+        </div>
+        <div class="car-card__info">
+          <h3 class="car-card__name">BYD Seal L</h3>
+          <p class="car-card__year gold">Електро</p>
+          <ul class="car-card__specs">
+            <li>до 4 пасажирів</li>
+            <li>електромобіль</li>
+            <li>тихий та швидкий</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Dots -->
+    <div class="cars-dots" id="carsDots">
+      <button class="cars-dot is-active" data-idx="0" aria-label="Авто 1"></button>
+      <button class="cars-dot" data-idx="1" aria-label="Авто 2"></button>
+      <button class="cars-dot" data-idx="2" aria-label="Авто 3"></button>
+      <button class="cars-dot" data-idx="3" aria-label="Авто 4"></button>
+    </div>
+  </div>
+</section>
+
 <!-- ===== FLOATING NAV ===== -->
 <div class="float-nav" id="floatNav">
-  <a href="index.html#calc" class="float-nav__btn float-nav__btn--outline">Калькулятор</a>
   <a href="index.html#contacts" class="float-nav__btn float-nav__btn--gold">Забронювати</a>
+  <a href="index.html#calc" class="float-nav__btn float-nav__btn--outline">Калькулятор</a>
 </div>
 
 <!-- ===== CALCULATOR ===== -->
@@ -278,7 +317,7 @@
             <span>Час у дорозі</span><strong id="resTime">—</strong>
           </div>
           <div class="ticket__result-row ticket__result-row--price">
-            <span>Вартість від</span><strong id="resPrice">—</strong>
+            <span class="ticket__result-price-label">Ціна</span><strong id="resPrice">—</strong>
           </div>
           <button type="button" class="ticket__order-btn" id="ticketOrderBtn">Замовити поїздку</button>
         </div>

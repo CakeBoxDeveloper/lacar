@@ -78,13 +78,20 @@ fadeEls.forEach(el => fadeObserver.observe(el));
 
 /* ===== FLOATING NAV SCROLL ===== */
 document.querySelector('.float-nav__btn--outline')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  document.getElementById('calc')?.scrollIntoView({ behavior: 'smooth' });
+  const target = document.getElementById('calc') || document.getElementById('faq');
+  if (target) {
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+  // If no local target (route pages) — let href navigate normally
 });
 
 document.querySelector('.float-nav__btn--gold')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' });
+  const target = document.getElementById('contacts');
+  if (target) {
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
 });
 
 /* ===== DATE MASK — дд.мм.рррр ===== */
@@ -222,3 +229,40 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     window.addEventListener('devicemotion', handleMotion, { passive: true });
   }
 }
+
+/* ===== CARS CAROUSEL ===== */
+(function() {
+  const carousel = document.getElementById('carsCarousel');
+  const dots = document.querySelectorAll('.cars-dot');
+  if (!carousel) return;
+
+  const cards = carousel.querySelectorAll('.car-card');
+  let current = 0;
+
+  function goTo(idx) {
+    current = idx;
+    cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => goTo(parseInt(dot.dataset.idx)));
+  });
+
+  // Update dots on scroll
+  carousel.addEventListener('scroll', () => {
+    const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+    if (idx !== current) {
+      current = idx;
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+    }
+  }, { passive: true });
+
+  // Touch swipe
+  let startX = 0;
+  carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  carousel.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) goTo(Math.max(0, Math.min(cards.length - 1, current + (dx < 0 ? 1 : -1))));
+  }, { passive: true });
+})();
