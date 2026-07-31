@@ -496,7 +496,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     const size  = rndInt(200, 280);
     const tilt0 = rndInt(-20, 20);
     const tilt1 = rndInt(-20, 20);
-    const dur   = rnd(4, 9);
+    const dur   = rnd(8, 14);
     const delay = rnd(0, 5);
 
     // Use document.body as parent, position relative to section using absolute offset
@@ -544,9 +544,9 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   // Cols 2,3: closer to content boundary (visible in the gap between fade end and content)
   const COL_DEFS = [
     { posStr: '6px',               zIdx: 0 },
-    { posStr: '160px',             zIdx: 0 },
+    { posStr: '220px',             zIdx: 0 },
+    { posStr: 'calc(50% - 400px)', zIdx: 0 },
     { posStr: 'calc(50% - 320px)', zIdx: 0 },
-    { posStr: 'calc(50% - 265px)', zIdx: 0 },
   ];
 
   // Collision check — vertical only, within same column+side
@@ -560,6 +560,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   }
 
   const targets = [
+    { sel: '.hero',   count: 3 },
     { sel: '#routes', count: 8 },
     { sel: '#faq',    count: 8 },
     { sel: '#cars',   count: 6 },

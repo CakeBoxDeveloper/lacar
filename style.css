@@ -160,8 +160,8 @@ button,input { font:inherit; color:inherit; }
 /* ===== ROUTES ===== */
 .routes { background:var(--bg-section-alt); }
 .routes__grid { display:grid; grid-template-columns:1fr; gap:8px; }
-.route-chip { display:flex; align-items:center; padding:13px 16px; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-size:14px; font-weight:500; text-decoration:none; color:var(--text); transition:border-color var(--transition),background var(--transition); gap:0; }
-.route-chip:hover { border-color:var(--border-gold); background:#222; }
+.route-chip { display:flex; align-items:center; padding:13px 16px; background:rgba(20,20,20,0.82); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-size:14px; font-weight:500; text-decoration:none; color:var(--text); transition:border-color var(--transition),background var(--transition); gap:0; }
+.route-chip:hover { border-color:var(--border-gold); background:rgba(26,26,26,0.88); }
 .route-chip__from { display:flex; align-items:center; gap:8px; font-weight:600; min-width:0; flex:1; }
 .route-chip__mid { flex:1; text-align:center; font-size:12px; color:var(--text-muted); white-space:nowrap; }
 .route-chip__to { display:flex; align-items:center; gap:8px; font-weight:600; flex-direction:row-reverse; min-width:0; flex:1; justify-content:flex-start; flex-direction:row; justify-content:flex-end; }
@@ -187,7 +187,7 @@ button,input { font:inherit; color:inherit; }
 /* ===== FAQ ===== */
 .faq { background:var(--bg-section); }
 .faq__list { display:flex; flex-direction:column; gap:6px; width: 100%; }
-.faq__item { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); overflow:hidden; transition:border-color var(--transition); }
+.faq__item { background:rgba(20,20,20,0.82); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); overflow:hidden; transition:border-color var(--transition); }
 .faq__item[open] { border-color:var(--border-gold); }
 .faq__q { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 18px; font-size:14px; font-weight:600; cursor:pointer; list-style:none; transition:color var(--transition); }
 .faq__q::-webkit-details-marker { display:none; }
@@ -360,7 +360,9 @@ button,input { font:inherit; color:inherit; }
 /* Вырезы билета — через radial-gradient маску */
 .ticket {
   display: flex;
-  background: var(--bg-card);
+  background: rgba(20,20,20,0.82);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0,0,0,0.5);
   overflow: hidden;
@@ -386,7 +388,7 @@ button,input { font:inherit; color:inherit; }
   flex-direction: column;
   gap: 16px;
   padding: 22px 20px;
-  background: var(--bg-card);
+  background: transparent;
 }
 
 /* Корешок — hidden */
@@ -906,9 +908,9 @@ body, .header, .hero, .services, .routes, .faq,
   position: fixed;
   top: 0;
   bottom: 0;
-  width: calc(50% - 240px);
+  width: calc(50% - 200px);
   pointer-events: none;
-  z-index: 2; /* above stamps(0), below content(.container z-index:3) */
+  z-index: 2;
 }
 .stamp-fade-left {
   left: 0;
