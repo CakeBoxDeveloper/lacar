@@ -333,29 +333,29 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
 
-  // Swing
+  // Swing — more pronounced
   function swingTick() {
     if (!isDragging) {
-      swingT += 0.01;
-      const theta = Math.sin(swingT) * 6;
-      const phi   = 90 + Math.sin(swingT * 0.4) * 3;
+      swingT += 0.012;
+      const theta = Math.sin(swingT) * 18;          // was 6 → now 18deg
+      const phi   = 90 + Math.sin(swingT * 0.5) * 8; // was 3 → now 8deg
       mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
 
-      // Idle particles — spawn from logo area (150% of logo rect)
-      if (Math.random() < 0.35) {
+      // Idle particles — less frequent
+      if (Math.random() < 0.12) {  // was 0.35
         const rect = mv.getBoundingClientRect();
-        const spread = 0.75; // 150% / 2 — half-width
+        const spread = 0.75;
         const cx = rect.left + rect.width  * 0.5 + (Math.random() - 0.5) * rect.width  * spread;
         const cy = rect.top  + rect.height * 0.5 + (Math.random() - 0.5) * rect.height * spread;
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 1.2 + 0.3; // slow
+        const speed = Math.random() * 1.2 + 0.3;
         const minR = 0.4;
         particles.push({
           x: cx, y: cy,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: Math.random() * 1.2 + 0.6,
-          r: minR + Math.random() * minR * 2, // min to min*3
+          r: minR + Math.random() * minR * 2,
           color: '#ffffff'
         });
       }
@@ -405,7 +405,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       p.vx *= 0.99;
       p.life -= 0.012; // slow fade
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life * 0.7);
+      ctx.globalAlpha = Math.max(0, p.life * 0.25); // was 0.7 — much more subtle
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
@@ -463,11 +463,24 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
   const st = document.createElement('style');
   st.textContent = `
-    .stamp-host { position: relative; }
+    body { position: relative; }
+    .stamp-dummy {
+      position: absolute;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 6px;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 11px;
+      font-family: sans-serif;
+    }
     @keyframes stampSway {
-      0%   { transform: translateY(-50%) rotateY(var(--ry0)) rotateZ(var(--rz0)); }
-      50%  { transform: translateY(-50%) rotateY(var(--ry1)) rotateZ(var(--rz1)); }
-      100% { transform: translateY(-50%) rotateY(var(--ry0)) rotateZ(var(--rz0)); }
+      0%   { transform: translateY(-50%) rotateZ(var(--rz0)); }
+      50%  { transform: translateY(-50%) rotateZ(var(--rz1)); }
+      100% { transform: translateY(-50%) rotateZ(var(--rz0)); }
     }
   `;
   document.head.appendChild(st);
@@ -479,85 +492,108 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const rnd    = (a, b) => a + Math.random() * (b - a);
   const rndInt = (a, b) => Math.round(rnd(a, b));
 
-  function addStamp(section, side, xPx, topPct, zIdx) {
-    const size = rndInt(169, 254);
-    const glb  = BASE + nextCard();
-
-    // Native tilt: left -10..-15, right +10..+15
-    const nativeTilt = side === 'left' ? rndInt(-15, -10) : rndInt(10, 15);
-    const ryAmp = rndInt(6, 10);
-    const rzAmp = rndInt(2, 4);
+  function addStamp(section, side, posStr, topPct, zIdx) {
+    const size  = rndInt(200, 280);
+    const tilt0 = rndInt(-20, 20);
+    const tilt1 = rndInt(-20, 20);
     const dur   = rnd(4, 9);
     const delay = rnd(0, 5);
 
-    section.classList.add('stamp-host');
+    // Use document.body as parent, position relative to section using absolute offset
+    const el = document.createElement('model-viewer');
+    el.setAttribute('src', BASE + CARDS[cardIdx % CARDS.length]);
+    el.setAttribute('alt', '');
+    el.setAttribute('camera-orbit', '0deg 0deg 120%');
+    el.setAttribute('field-of-view', '8deg');
+    el.setAttribute('orientation', '0deg 0deg -90deg');
+    el.setAttribute('disable-zoom', '');
+    el.setAttribute('interaction-prompt', 'none');
+    el.setAttribute('environment-image', 'neutral');
+    el.setAttribute('exposure', '1.3');
+    el.setAttribute('shadow-intensity', '0');
+    cardIdx++;
 
-    const mv = document.createElement('model-viewer');
-    mv.setAttribute('src', glb);
-    mv.setAttribute('alt', '');
-    mv.setAttribute('camera-orbit', '0deg 0deg 120%');
-    mv.setAttribute('field-of-view', '8deg');
-    mv.setAttribute('orientation', '0deg 0deg -90deg');
-    mv.setAttribute('disable-zoom', '');
-    mv.setAttribute('interaction-prompt', 'none');
-    mv.setAttribute('environment-image', 'neutral');
-    mv.setAttribute('exposure', '1.3');
-    mv.setAttribute('shadow-intensity', '0');
+    // Position absolutely within body — calculate top from section's offset
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    const sectionH   = section.offsetHeight;
+    const topPx      = sectionTop + (topPct / 100) * sectionH;
 
-    mv.style.cssText = `
+    // posStr is left:/right: value relative to viewport edge
+    el.style.cssText = `
       position: absolute;
       width: ${size}px;
       height: ${size}px;
-      ${side}: ${xPx}px;
-      top: ${topPct}%;
-      pointer-events: none;
+      ${side}: ${posStr};
+      top: ${topPx}px;
+      transform: translateY(-50%);
       z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
-      --ry0: ${nativeTilt - ryAmp}deg;
-      --ry1: ${nativeTilt + ryAmp}deg;
-      --rz0: ${nativeTilt - rzAmp}deg;
-      --rz1: ${nativeTilt + rzAmp}deg;
+      --rz0: ${tilt0}deg;
+      --rz1: ${tilt1}deg;
+      pointer-events: none;
       opacity: 1;
       animation: stampSway ${dur}s ease-in-out infinite ${delay}s;
     `;
 
-    section.appendChild(mv);
+    document.body.appendChild(el);
   }
 
-  // 3 columns per side (px from that edge):
-  // col0=8px  — right at edge, under solid fade (silhouette effect)
-  // col1=100px — mid fade, partially visible
-  // col2=200px — near content edge, fully visible
-  const COLS = [8, 100, 200];
+  // 4 columns per side. ALL z:-1 (always behind content).
+  // Cols 0,1: near viewport edges (under/mid fade zone)
+  // Cols 2,3: closer to content boundary (visible in the gap between fade end and content)
+  const COL_DEFS = [
+    { posStr: '6px',               zIdx: 0 },
+    { posStr: '160px',             zIdx: 0 },
+    { posStr: 'calc(50% - 320px)', zIdx: 0 },
+    { posStr: 'calc(50% - 265px)', zIdx: 0 },
+  ];
 
-  function makeSlots(count) {
-    const slots = [];
-    for (let i = 0; i < count; i++) {
-      const topBase = count === 1 ? 50 : 15 + (i / (count - 1)) * 70;
-      const col  = COLS[i % COLS.length];
-      const zIdx = col >= 240 ? -1 : 0;
-      const jL   = rnd(-5, 5);
-      const jR   = rnd(-5, 5);
-      slots.push({ side: 'left',  xPx: col, topPct: topBase + jL, zIdx });
-      slots.push({ side: 'right', xPx: col, topPct: topBase + jR, zIdx });
+  // Collision check — vertical only, within same column+side
+  function noCollision(placed, topPct, size, sectionH) {
+    const aPx = (topPct / 100) * sectionH;
+    for (const p of placed) {
+      const bPx = (p.topPct / 100) * sectionH;
+      if (Math.abs(aPx - bPx) < (size + p.size) / 2 + 16) return false;
     }
-    return slots;
+    return true;
   }
 
   const targets = [
-    { sel: '#routes', count: 6 },
-    { sel: '#faq',    count: 6 },
-    { sel: '#cars',   count: 5 },
-    { sel: '#calc',   count: 5 },
-    { sel: '.footer', count: 4 },
+    { sel: '#routes', count: 8 },
+    { sel: '#faq',    count: 8 },
+    { sel: '#cars',   count: 6 },
+    { sel: '#calc',   count: 6 },
   ];
 
   targets.forEach(({ sel, count }) => {
     const section = document.querySelector(sel);
     if (!section) return;
-    makeSlots(count).forEach(({ side, xPx, topPct, zIdx }) => {
-      addStamp(section, side, xPx, topPct, zIdx);
-    });
+
+    const sectionH = section.offsetHeight || 600;
+    const placed = {};
+
+    for (let i = 0; i < count; i++) {
+      const col     = COL_DEFS[i % COL_DEFS.length];
+      const topBase = count === 1 ? 50 : 15 + (i / (count - 1)) * 70;
+
+      for (const side of ['left', 'right']) {
+        const key = col.posStr + side;
+        if (!placed[key]) placed[key] = [];
+
+        for (let attempt = 0; attempt < 15; attempt++) {
+          const topPct = topBase + rnd(-9, 9);
+          const size   = rndInt(150, 220);
+          if (noCollision(placed[key], topPct, size, sectionH)) {
+            placed[key].push({ topPct, size });
+            addStamp(section, side, col.posStr, topPct, col.zIdx);
+            break;
+          }
+        }
+      }
+    }
   });
+
+  document.documentElement.style.overflowX = 'hidden';
+  document.body.style.overflowX = 'hidden';
 })();
