@@ -41,15 +41,21 @@
 .route-hero__cta { display: flex; flex-direction: column; gap: 10px; }
 .route-hero__cta .btn { width: 100%; justify-content: center; padding: 15px; font-size: 15px; }
 
-/* ===== GOOGLE MAP ===== */
-.route-map { padding: 32px 0; background: var(--bg-section); }
-.route-map iframe {
+/* ===== GOOGLE MAP / LEAFLET ===== */
+.route-map { padding: 0 0 32px; background: var(--bg-dark); }
+.route-map__leaflet {
   width: 100%;
-  height: 280px;
-  border: none;
+  height: 300px;
   border-radius: var(--radius);
-  display: block;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
 }
+/* Dark Leaflet tiles override */
+.route-map__leaflet .leaflet-container { background: #1a1a1a; }
+.route-map__leaflet .leaflet-control-zoom a { background: #1e1e1e; color: var(--gold); border-color: var(--border-subtle); }
+.route-map__leaflet .leaflet-control-attribution { background: rgba(0,0,0,0.6); color: #666; font-size: 10px; }
+.route-map__leaflet .leaflet-popup-content-wrapper { background: #1e1e1e; color: var(--text); border: 1px solid var(--border-gold); }
+.route-map__leaflet .leaflet-popup-tip { background: #1e1e1e; }
 
 /* ===== ROUTE INFO ===== */
 .route-info { padding: 32px 0; background: var(--bg-section-alt); }

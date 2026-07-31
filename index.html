@@ -50,6 +50,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<!-- model-viewer for 3D GLB -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -65,18 +67,31 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
-  <div class="hero__video-wrap">
-    <video
-      class="hero__video"
-      src="hero.mp4"
-      autoplay muted playsinline loop id="heroVideo"
-    ></video>
-    <div class="hero__overlay">
-      <h1 class="hero__title">LC TRANSFER</h1>
-      <p class="hero__subtitle">Міжнародні пасажирські перевезення по Україні та Європі</p>
-    </div>
+  <div class="hero__3d-wrap">
+    <model-viewer
+      id="heroModel"
+      src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/LC.glb"
+      alt="LC Transfer 3D Logo"
+      camera-controls
+      touch-action="pan-y"
+      disable-zoom
+      camera-orbit="0deg 90deg 105%"
+      field-of-view="30deg"
+      orientation="0deg -90deg 0deg"
+      style="background: transparent; transform: scaleX(-1);"
+      environment-image="neutral"
+      exposure="1.2"
+      shadow-intensity="0"
+      interaction-prompt="none"
+      style="background: transparent;"
+      class="hero__model"
+    ></model-viewer>
+    <canvas class="hero__particles-canvas" id="heroParticles" aria-hidden="true"></canvas>
   </div>
 </section>
+
+<!-- ===== FLOATING 3D STAMPS ===== -->
+<div class="stamps-scene" id="stampsScene" aria-hidden="true"></div>
 
 <!-- ===== ROUTES ===== -->
 <section class="section routes" id="routes">
@@ -347,6 +362,15 @@
         <img src="https://www.svgrepo.com/show/458756/insta.svg" alt="Instagram" width="28" height="28">
       </a>
     </div>
+    <div class="footer__contact-form">
+      <div class="footer__contact-row">
+        <input type="tel" class="footer__contact-input" id="contactPhone" placeholder="+380XX XXX XX XX" inputmode="numeric" maxlength="16" value="+380">
+        <input type="text" class="footer__contact-input" id="contactName" placeholder="Ваше ім'я">
+      </div>
+      <textarea class="footer__contact-textarea" id="contactMsg" placeholder="Або напишіть нам і ми з Вами зв'яжемось..."></textarea>
+      <button type="button" class="footer__contact-btn" id="contactSendBtn">Відправити</button>
+    </div>
+
     <nav class="footer__nav" aria-label="Навігація">
       <div class="footer__col">
         <h4 class="footer__col-title">Маршрути</h4>

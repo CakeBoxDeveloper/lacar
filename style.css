@@ -115,57 +115,39 @@ button,input { font:inherit; color:inherit; }
 .flag--de { background:linear-gradient(180deg,#000 33.3%,#dd0000 33.3% 66.6%,#ffce00 66.6%); }
 
 /* ===== HERO ===== */
-.hero { background: var(--bg-dark); padding: 24px 0 32px; }
+.hero { background: var(--bg-dark); padding: 24px 0; }
 
-.hero__video-wrap {
+.hero__3d-wrap {
   position: relative;
   width: min(480px, 100% - 32px);
   margin-inline: auto;
+  aspect-ratio: 1 / 1;
   border-radius: 16px;
   overflow: hidden;
-  aspect-ratio: 16/9;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-  display: block;
+  background: transparent;
 }
 
-.hero__video {
+.hero__model {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  --progress-bar-height: 0px;
+  --progress-bar-color: transparent;
 }
 
-/* Затемнение снизу для читаемости текста */
-.hero__overlay {
+.hero__particles-canvas {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 16px;
-  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-  text-align: left;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.hero__title {
-  font-size: clamp(18px, 5vw, 28px);
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 4px;
-  line-height: 1;
-}
-
-.hero__subtitle {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.3;
-}
-
-/* Убираем старые стили hero которые больше не нужны */
-.hero__bg, .hero__bokeh, .hero__inner,
-.hero__content, .hero__countries, .hero__cta-group { display: none; }
+/* Overlay — убран */
+.hero__overlay { display: none; }
+.hero__title, .hero__subtitle, .hero__desc,
+.hero__countries, .hero__cta-group,
+.hero__video-wrap, .hero__video,
+.hero__bg, .hero__bokeh, .hero__inner, .hero__content { display: none; }
 
 /* ===== SERVICES ===== */
 .services { background:var(--bg-section); }
@@ -257,9 +239,24 @@ button,input { font:inherit; color:inherit; }
 
 /* ===== WAVE DIVIDERS — removed ===== */
 
-/* ===== ROUTES more link ===== */
-.routes__more { display:block; text-align:center; margin-top:16px; font-size:14px; font-weight:600; color:var(--gold); text-decoration:none; padding:12px 16px; background: transparent; border:1px solid var(--border-gold); border-radius:var(--radius-sm); transition:background var(--transition); position: relative; z-index: 1; }
-.routes__more:hover { background:rgba(232,197,108,0.08); }
+/* ===== ROUTES more link — інверсна кнопка ===== */
+.routes__more {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0d0d0d;
+  text-decoration: none;
+  padding: 14px 16px;
+  background: var(--gold);
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: filter var(--transition);
+  position: relative;
+  z-index: 1;
+}
+.routes__more:hover { filter: brightness(1.1); }
 
 /* ===== FLOATING NAV — liquid glass + border shimmer ===== */
 .float-nav {
@@ -578,3 +575,284 @@ body, .header, .hero, .services, .routes, .faq,
   transition: background var(--transition), transform var(--transition);
 }
 .cars-dot.is-active { background: var(--gold); transform: scale(1.3); }
+
+/* ===== FOOTER OVERRIDES ===== */
+/* routes__more — inversia */
+.routes__more { background: var(--gold) !important; color: #0d0d0d !important; border: none !important; font-weight: 700 !important; }
+.routes__more:hover { filter: brightness(1.1); background: var(--gold) !important; }
+
+/* Glass messenger buttons */
+.footer__msg-btn {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: background var(--transition), transform var(--transition), border-color var(--transition) !important;
+}
+.footer__msg-btn img { filter: invert(1) !important; }
+.footer__msg-btn:hover {
+  background: rgba(232,197,108,0.15) !important;
+  border-color: var(--border-gold) !important;
+  transform: translateY(-3px);
+  filter: none !important;
+}
+
+/* Contact form */
+.footer__contact-form { margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
+.footer__contact-form > p { font-size: 13px; color: var(--text-muted); margin-bottom: 2px; text-align: left; }
+.footer__contact-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  color: var(--text); font: inherit; font-size: 14px;
+  outline: none; transition: border-color var(--transition);
+}
+.footer__contact-input::placeholder { color: var(--text-dim); font-size: 13px; }
+.footer__contact-input:focus { border-color: var(--border-gold); }
+.footer__contact-btn {
+  width: 100%; padding: 14px;
+  background: var(--gold); color: #141414;
+  font-size: 15px; font-weight: 700;
+  border: none; border-radius: var(--radius-sm);
+  cursor: pointer; font-family: var(--font);
+  transition: filter var(--transition);
+}
+.footer__contact-btn:hover { filter: brightness(1.1); }
+
+/* ===== SHIMMER BORDER (glass.html pattern) ===== */
+/* Применяем к footer msg-btn и float-nav кнопкам */
+
+/* Шиммер по контуру — как в Glassmassage */
+.footer__msg-btn,
+.float-nav__btn,
+.float-nav {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Убираем hover трансформации */
+.footer__msg-btn:hover { transform: none !important; background: rgba(255,255,255,0.07) !important; }
+.float-nav__btn--outline:hover { background: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.85) !important; }
+.float-nav__btn--gold:hover { filter: none !important; }
+
+/* Шиммер-полоса по контуру */
+.footer__msg-btn::before,
+.float-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    45deg,
+    rgba(255,255,255,0.02) 0%,
+    rgba(255,255,255,0.02) 35%,
+    rgba(255,255,255,0.55) 50%,
+    rgba(255,255,255,0.02) 65%,
+    rgba(255,255,255,0.02) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 150% 0;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;
+  animation: shimmerBorder 14s cubic-bezier(0.25,1,0.5,1) infinite;
+}
+
+/* Разные задержки для каждой кнопки */
+.footer__msg-btn:nth-child(1)::before { animation-delay: -1s; }
+.footer__msg-btn:nth-child(2)::before { animation-delay: -4s; }
+.footer__msg-btn:nth-child(3)::before { animation-delay: -7s; }
+.footer__msg-btn:nth-child(4)::before { animation-delay: -10s; }
+.footer__msg-btn:nth-child(5)::before { animation-delay: -13s; }
+
+@keyframes shimmerBorder {
+  0%   { background-position: 150% 0; }
+  100% { background-position: -150% 0; }
+}
+
+/* float-nav шиммер уже был через conic-gradient — заменяем на этот */
+.float-nav::before {
+  animation: shimmerBorder 8s cubic-bezier(0.25,1,0.5,1) infinite !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.0) 30%,
+    rgba(255,255,255,0.7) 50%,
+    rgba(255,255,255,0.0) 70%,
+    rgba(255,255,255,0.0) 100%
+  ) !important;
+  background-size: 300% 100% !important;
+  background-position: 150% 0 !important;
+  padding: 1.5px !important;
+}
+
+/* ===== FINAL FIXES ===== */
+
+/* Float-nav — restore fixed */
+.float-nav {
+  position: fixed !important;
+  overflow: visible !important;
+}
+
+/* Footer messenger buttons — square with 8px radius */
+.footer__msg-btn {
+  border-radius: 8px !important;
+  width: 52px !important;
+  height: 52px !important;
+  aspect-ratio: auto !important;
+  max-width: none !important;
+  flex: none !important;
+}
+.footer__messengers {
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+/* Shimmer — correct implementation (no conic-gradient, just linear sliding) */
+/* Remove old broken shimmer from float-nav::before */
+.float-nav::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 50px !important;
+  padding: 1.5px !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(255,255,255,0) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  background-position: 200% 0 !important;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+  -webkit-mask-composite: xor !important;
+  mask-composite: exclude !important;
+  animation: shimmerSlide 3s linear infinite !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
+}
+
+@keyframes shimmerSlide {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Footer msg btn shimmer */
+.footer__msg-btn::before {
+  border-radius: 8px !important;
+  animation-duration: 10s !important;
+}
+.footer__msg-btn:nth-child(1)::before { animation-delay: 0s; }
+.footer__msg-btn:nth-child(2)::before { animation-delay: -2s; }
+.footer__msg-btn:nth-child(3)::before { animation-delay: -4s; }
+.footer__msg-btn:nth-child(4)::before { animation-delay: -6s; }
+.footer__msg-btn:nth-child(5)::before { animation-delay: -8s; }
+
+/* Hero 3D model — smaller, no overflow, rotated */
+.hero__3d-wrap {
+  aspect-ratio: 4 / 3 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.hero__model {
+  --model-viewer-background: transparent;
+}
+
+/* Hero 3D wrap — no clip */
+.hero__3d-wrap { overflow: visible !important; }
+.hero { overflow: visible !important; }
+
+/* Particles canvas — full viewport, BEHIND model */
+.hero__particles-canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* ===== FOOTER BUTTONS WHITE + FULL WIDTH ROW ===== */
+.footer__messengers {
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 0 !important;
+}
+.footer__msg-btn {
+  background: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  border-radius: 10px !important;
+  width: 52px !important;
+  height: 52px !important;
+  flex: none !important;
+  max-width: none !important;
+}
+.footer__msg-btn img {
+  filter: brightness(0) invert(1) !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+/* ===== FOOTER CONTACT FORM — phone + name in one row, textarea taller ===== */
+.footer__contact-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.footer__contact-row { display: flex; gap: 10px; }
+.footer__contact-row .footer__contact-input { flex: 1; }
+.footer__contact-textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 13px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  transition: border-color var(--transition);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  line-height: 1.5;
+}
+.footer__contact-textarea::placeholder { color: var(--text-dim); font-size: 13px; }
+.footer__contact-textarea:focus { border-color: var(--border-gold); }
+
+/* ===== FLOATING 3D STAMPS ===== */
+.stamps-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+.stamp-viewer {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  --progress-bar-height: 0px;
+  --progress-bar-color: transparent;
+  background: transparent;
+  opacity: 0.85;
+}
+.stamp-left  { left: -30px; }
+.stamp-right { right: -30px; }
+
+/* Footer spacing fix */
+.footer__messengers { margin-bottom: 14px !important; }
+.footer__contact-form { margin-top: 0 !important; }
+
+/* Phone input — fixed prefix style */
+.footer__contact-input[id="contactPhone"] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
+
+/* model-viewer above particles */
+.hero__model { position: relative; z-index: 2; }

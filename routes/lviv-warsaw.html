@@ -25,15 +25,6 @@
 </head>
 <body>
 
-<!-- 3D floating cars -->
-<div class="route-3d-scene" aria-hidden="true">
-  <div class="route-3d-car route-3d-car--left">
-    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPLviv.webp" alt="">
-  </div>
-  <div class="route-3d-car route-3d-car--right">
-    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPLviv.webp" alt="" style="transform: scaleX(-1)">
-  </div>
-</div>
 <div class="noise" aria-hidden="true"></div>
 
 <!-- Floating nav -->
@@ -43,6 +34,16 @@
 </div>
 
 <main>
+
+<!-- 3D floating cars -->
+<div class="route-3d-scene" aria-hidden="true">
+  <div class="route-3d-car route-3d-car--left">
+    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPLviv.webp" alt="">
+  </div>
+  <div class="route-3d-car route-3d-car--right">
+    <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPLviv.webp" alt="" style="transform: scaleX(-1)">
+  </div>
+</div>
 
 <section class="route-hero section">
   <div class="container">
@@ -72,6 +73,29 @@
     <div id="routeMap" class="route-map__leaflet"></div>
   </div>
 </section>
+<script>
+(function(){
+  if(typeof L==='undefined') return;
+  var map = L.map('routeMap',{zoomControl:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:18
+  }).addTo(map);
+  var from=[49.8397,24.0297],to=[52.2297,21.0122];
+  // Fetch route from OSRM
+  fetch('https://router.project-osrm.org/route/v1/driving/24.0297,49.8397;21.0122,52.2297?overview=full&geometries=geojson')
+    .then(r=>r.json()).then(data=>{
+      if(!data.routes||!data.routes[0]) return;
+      var coords=data.routes[0].geometry.coordinates.map(function(c){return[c[1],c[0]];});
+      L.polyline(coords,{color:'#e8c56c',weight:4,opacity:0.9}).addTo(map);
+      var bounds=L.latLngBounds(coords);
+      map.fitBounds(bounds,{padding:[20,20]});
+      L.circleMarker(from,{radius:8,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('Львів').openPopup();
+      L.circleMarker(to,{radius:8,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('Варшава');
+    }).catch(function(){
+      map.setView([(from[0]+to[0])/2,(from[1]+to[1])/2],5);
+    });
+})();
+</script>
 <script>
 (function(){
   if(typeof L==='undefined') return;

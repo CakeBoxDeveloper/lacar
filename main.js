@@ -266,3 +266,203 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     if (Math.abs(dx) > 40) goTo(Math.max(0, Math.min(cards.length - 1, current + (dx < 0 ? 1 : -1))));
   }, { passive: true });
 })();
+
+/* ===== 3D MODEL — swing animation + particles ===== */
+(function() {
+  const mv = document.getElementById('heroModel');
+  const canvas = document.getElementById('heroParticles');
+  if (!mv || !canvas) return;
+
+  // --- Swing animation (idle) ---
+  let swingT = 0;
+  let isDragging = false;
+  let lastOrbit = { theta: 0, phi: 75, radius: 2.5 };
+
+  function swingTick() {
+    if (!isDragging) {
+      swingT += 0.01;
+      const theta = Math.sin(swingT) * 6;
+      const phi = 90 + Math.sin(swingT * 0.4) * 3;
+      mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
+
+      // Idle particles from model center
+      if (Math.random() < 0.4) {
+        const rect = mv.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width * 0.3;
+        const cy = rect.top + rect.height / 2 + (Math.random() - 0.5) * rect.height * 0.25;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 1;
+        const big = Math.random() < 0.15;
+        particles.push({
+          x: cx, y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: Math.random() * 0.8 + 0.4,
+          r: big ? Math.random() * 4 + 3 : Math.random() * 1.5 + 0.5,
+          color: Math.random() > 0.35 ? '#e8c56c' : (Math.random() > 0.5 ? '#ffffff' : '#f5d67b')
+        });
+      }
+    }
+    requestAnimationFrame(swingTick);
+  }
+
+  mv.addEventListener('load', () => {
+    swingTick();
+  });
+
+  // Track drag state
+  mv.addEventListener('mousedown', () => { isDragging = true; });
+  mv.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+  window.addEventListener('touchend', () => { isDragging = false; });
+
+  // --- Particles on touch/click ---
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas, { passive: true });
+
+  function spawnParticles(x, y) {
+    for (let i = 0; i < 18; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 4 + 1.5;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        r: Math.random() * 3 + 1.5,
+        color: Math.random() > 0.5 ? '#e8c56c' : '#f5d67b'
+      });
+    }
+  }
+
+  mv.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    spawnParticles(e.clientX - rect.left, e.clientY - rect.top);
+  });
+  mv.addEventListener('touchstart', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    spawnParticles(t.clientX - rect.left, t.clientY - rect.top);
+  }, { passive: true });
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.life > 0);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.04; // lighter gravity — fly further
+      p.vx *= 0.97;
+      p.life -= 0.025;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = p.color;
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+})();
+
+/* ===== PHONE INPUT VALIDATION ===== */
+(function() {
+  const phone = document.getElementById('contactPhone');
+  if (!phone) return;
+
+  const PREFIX = '+380';
+  // Ensure value always starts with +380
+  phone.addEventListener('input', () => {
+    let val = phone.value;
+    // Strip non-digits after prefix
+    if (!val.startsWith('+380')) {
+      val = PREFIX + val.replace(/\D/g,'').replace(/^380?/,'');
+    }
+    // Only digits after +380, max 9 more digits (UA format: +380XXXXXXXXX)
+    const digits = val.slice(4).replace(/\D/g,'').slice(0, 9);
+    phone.value = PREFIX + digits;
+  });
+
+  phone.addEventListener('keydown', (e) => {
+    // Prevent deleting the prefix
+    const sel = phone.selectionStart;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && sel <= 4) {
+      e.preventDefault();
+    }
+  });
+
+  phone.addEventListener('focus', () => {
+    if (!phone.value.startsWith(PREFIX)) phone.value = PREFIX;
+    // Move cursor to end
+    setTimeout(() => { phone.setSelectionRange(phone.value.length, phone.value.length); }, 0);
+  });
+})();
+
+/* ===== 3D FLOATING STAMPS ===== */
+(function() {
+  const scene = document.getElementById('stampsScene');
+  if (!scene) return;
+
+  const GLB = 'https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/Lviv.glb';
+
+  // Stamp configs: fixed positions on screen, face camera, sway only
+  const stamps = [
+    { left: '-20px', top: '12%',  size: 180, delay: 0,   dur: 6   },
+    { right:'-25px', top: '40%',  size: 140, delay: 1.2, dur: 7.5 },
+    { left: '-15px', top: '65%',  size: 110, delay: 2.4, dur: 5.8 },
+    { right:'-30px', top: '72%',  size: 160, delay: 0.6, dur: 8   },
+  ];
+
+  stamps.forEach((s, i) => {
+    const mv = document.createElement('model-viewer');
+    mv.setAttribute('src', GLB);
+    mv.setAttribute('alt', '');
+    mv.setAttribute('camera-orbit', '0deg 0deg 110%');
+    mv.setAttribute('disable-zoom', '');
+    mv.setAttribute('interaction-prompt', 'none');
+    mv.setAttribute('environment-image', 'neutral');
+    mv.setAttribute('exposure', '1.1');
+    mv.setAttribute('shadow-intensity', '0');
+    // No auto-rotate — face camera, only CSS sway
+
+    mv.style.cssText = `
+      position: fixed;
+      width: ${s.size}px;
+      height: ${s.size}px;
+      ${s.left  ? 'left:'  + s.left  + ';' : ''}
+      ${s.right ? 'right:' + s.right + ';' : ''}
+      top: ${s.top};
+      pointer-events: none;
+      z-index: 4;
+      --progress-bar-height: 0px;
+      animation: stampSway${i % 2} ${s.dur}s ease-in-out infinite ${s.delay}s;
+      opacity: 0.75;
+    `;
+    scene.appendChild(mv);
+  });
+
+  // Inject sway keyframes
+  const st = document.createElement('style');
+  st.textContent = `
+    @keyframes stampSway0 {
+      0%,100% { transform: translateY(0px) rotate(-1.5deg); }
+      50%      { transform: translateY(-18px) rotate(1.5deg); }
+    }
+    @keyframes stampSway1 {
+      0%,100% { transform: translateY(0px) rotate(2deg); }
+      50%      { transform: translateY(-22px) rotate(-2deg); }
+    }
+  `;
+  document.head.appendChild(st);
+})();
