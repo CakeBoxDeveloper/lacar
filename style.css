@@ -895,3 +895,32 @@ body, .header, .hero, .services, .routes, .faq,
 /* Footer 6 buttons — smaller to fit */
 .footer__msg-btn { width: 44px !important; height: 44px !important; }
 .footer__msg-btn img { width: 22px !important; height: 22px !important; }
+
+/* ===== STAMP FADE OVERLAYS ===== */
+/* Pseudo-elements on each stamp-host section.
+   They scroll with the section, z-index:2 covers stamps but not page content */
+.stamp-host {
+  position: relative;
+}
+.stamp-host::before,
+.stamp-host::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(50% - 248px); /* from edge to just before content boundary */
+  pointer-events: none;
+  z-index: 2;
+}
+.stamp-host::before {
+  left: 0;
+  background: linear-gradient(to right, #0d0d0d 40%, transparent 100%);
+}
+.stamp-host::after {
+  right: 0;
+  background: linear-gradient(to left, #0d0d0d 40%, transparent 100%);
+}
+
+/* Light theme */
+:root.light .stamp-host::before { background: linear-gradient(to right, #f5f5f0 40%, transparent 100%); }
+:root.light .stamp-host::after  { background: linear-gradient(to left,  #f5f5f0 40%, transparent 100%); }

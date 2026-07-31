@@ -454,74 +454,110 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
 /* ===== 3D FLOATING STAMPS ===== */
 (function() {
-  const scene = document.getElementById('stampsScene');
-  if (!scene) return;
-
   const BASE = 'https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/';
-
   const CARDS = [
-    'Card_Berlin.glb', 'Card_Bujarest.glb', 'Card_Gdansk.glb',
-    'Card_Krakow.glb', 'Card_Kyiv.glb', 'Card_Lviv.glb',
-    'Card_Odessa.glb', 'Card_Sofia.glb', 'Card_Warsaw.glb'
+    'Card_Berlin.glb','Card_Bujarest.glb','Card_Gdansk.glb',
+    'Card_Krakow.glb','Card_Kyiv.glb','Card_Lviv.glb',
+    'Card_Odessa.glb','Card_Sofia.glb','Card_Warsaw.glb'
   ];
 
-  // Random positions fully within viewport, avoiding center
-  function randomPos() {
-    const side = Math.random() < 0.5 ? 'left' : 'right';
-    const x = 8 + Math.random() * 12; // 8-20px from edge
-    const top = 8 + Math.random() * 80; // 8-88% from top
-    return { side, x, top };
-  }
+  const st = document.createElement('style');
+  st.textContent = `
+    .stamp-host { position: relative; }
+    @keyframes stampSway {
+      0%   { transform: translateY(-50%) rotateY(var(--ry0)) rotateZ(var(--rz0)); }
+      50%  { transform: translateY(-50%) rotateY(var(--ry1)) rotateZ(var(--rz1)); }
+      100% { transform: translateY(-50%) rotateY(var(--ry0)) rotateZ(var(--rz0)); }
+    }
+  `;
+  document.head.appendChild(st);
 
-  const sizes = [100, 120, 110, 130, 105];
-  const count = 6;
+  let cardIdx = 0;
+  const shuffled = [...CARDS].sort(() => Math.random() - 0.5);
+  const nextCard = () => shuffled[cardIdx++ % shuffled.length];
 
-  for (let i = 0; i < count; i++) {
-    const glb = BASE + CARDS[Math.floor(Math.random() * CARDS.length)];
-    const pos = randomPos();
-    const size = sizes[i % sizes.length];
-    const dur = 5 + Math.random() * 4;
-    const delay = Math.random() * 3;
+  const rnd    = (a, b) => a + Math.random() * (b - a);
+  const rndInt = (a, b) => Math.round(rnd(a, b));
+
+  function addStamp(section, side, xPx, topPct, zIdx) {
+    const size = rndInt(169, 254);
+    const glb  = BASE + nextCard();
+
+    // Native tilt: left -10..-15, right +10..+15
+    const nativeTilt = side === 'left' ? rndInt(-15, -10) : rndInt(10, 15);
+    const ryAmp = rndInt(6, 10);
+    const rzAmp = rndInt(2, 4);
+    const dur   = rnd(4, 9);
+    const delay = rnd(0, 5);
+
+    section.classList.add('stamp-host');
 
     const mv = document.createElement('model-viewer');
     mv.setAttribute('src', glb);
     mv.setAttribute('alt', '');
-    // Face camera: theta=0, phi=90 shows front face. rotate 90° clockwise = theta=90
-    mv.setAttribute('camera-orbit', '90deg 90deg 120%');
-    mv.setAttribute('field-of-view', '40deg');
-    mv.setAttribute('orientation', '0deg 0deg -90deg'); // rotate card 90° clockwise
+    mv.setAttribute('camera-orbit', '0deg 0deg 120%');
+    mv.setAttribute('field-of-view', '8deg');
+    mv.setAttribute('orientation', '0deg 0deg -90deg');
     mv.setAttribute('disable-zoom', '');
     mv.setAttribute('interaction-prompt', 'none');
     mv.setAttribute('environment-image', 'neutral');
-    mv.setAttribute('exposure', '1.2');
+    mv.setAttribute('exposure', '1.3');
     mv.setAttribute('shadow-intensity', '0');
 
     mv.style.cssText = `
-      position: fixed;
+      position: absolute;
       width: ${size}px;
       height: ${size}px;
-      ${pos.side}: ${pos.x}px;
-      top: ${pos.top}%;
+      ${side}: ${xPx}px;
+      top: ${topPct}%;
       pointer-events: none;
-      z-index: 0;
+      z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
-      opacity: 0.7;
-      animation: stampSway${i % 2 === 0 ? 'L' : 'R'} ${dur}s ease-in-out infinite ${delay}s;
+      --ry0: ${nativeTilt - ryAmp}deg;
+      --ry1: ${nativeTilt + ryAmp}deg;
+      --rz0: ${nativeTilt - rzAmp}deg;
+      --rz1: ${nativeTilt + rzAmp}deg;
+      opacity: 1;
+      animation: stampSway ${dur}s ease-in-out infinite ${delay}s;
     `;
-    scene.appendChild(mv);
+
+    section.appendChild(mv);
   }
 
-  const st = document.createElement('style');
-  st.textContent = `
-    @keyframes stampSwayL {
-      0%,100% { transform: translateY(0) rotate(-1deg); }
-      50%      { transform: translateY(-15px) rotate(1deg); }
+  // 3 columns per side (px from that edge):
+  // col0=8px  — right at edge, under solid fade (silhouette effect)
+  // col1=100px — mid fade, partially visible
+  // col2=200px — near content edge, fully visible
+  const COLS = [8, 100, 200];
+
+  function makeSlots(count) {
+    const slots = [];
+    for (let i = 0; i < count; i++) {
+      const topBase = count === 1 ? 50 : 15 + (i / (count - 1)) * 70;
+      const col  = COLS[i % COLS.length];
+      const zIdx = col >= 240 ? -1 : 0;
+      const jL   = rnd(-5, 5);
+      const jR   = rnd(-5, 5);
+      slots.push({ side: 'left',  xPx: col, topPct: topBase + jL, zIdx });
+      slots.push({ side: 'right', xPx: col, topPct: topBase + jR, zIdx });
     }
-    @keyframes stampSwayR {
-      0%,100% { transform: translateY(0) rotate(1.5deg); }
-      50%      { transform: translateY(-18px) rotate(-1.5deg); }
-    }
-  `;
-  document.head.appendChild(st);
+    return slots;
+  }
+
+  const targets = [
+    { sel: '#routes', count: 6 },
+    { sel: '#faq',    count: 6 },
+    { sel: '#cars',   count: 5 },
+    { sel: '#calc',   count: 5 },
+    { sel: '.footer', count: 4 },
+  ];
+
+  targets.forEach(({ sel, count }) => {
+    const section = document.querySelector(sel);
+    if (!section) return;
+    makeSlots(count).forEach(({ side, xPx, topPct, zIdx }) => {
+      addStamp(section, side, xPx, topPct, zIdx);
+    });
+  });
 })();
