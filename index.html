@@ -57,7 +57,21 @@
 
 <!-- Preloader -->
 <div class="preloader" id="preloader" aria-hidden="true">
-  <div class="preloader__logo">LC<span>TRANSFER</span></div>
+  <model-viewer
+    src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/LC.glb"
+    alt="LC Transfer"
+    camera-orbit="0deg 90deg 105%"
+    field-of-view="30deg"
+    orientation="0deg -90deg 0deg"
+    environment-image="neutral"
+    exposure="1.2"
+    shadow-intensity="0"
+    interaction-prompt="none"
+    auto-rotate
+    auto-rotate-delay="0"
+    rotation-per-second="30deg"
+    style="background:transparent;transform:scaleX(-1) rotate(180deg);width:160px;height:160px;--progress-bar-height:0px;--progress-bar-color:transparent;"
+  ></model-viewer>
 </div>
 
 <!-- Fade overlays — full page height, above stamps, below content -->
@@ -95,6 +109,57 @@
 
 <!-- ===== FLOATING 3D STAMPS ===== -->
 <div class="stamps-scene" id="stampsScene" aria-hidden="true"></div>
+
+<!-- ===== ПЕРВАГИ ===== -->
+<section class="section perks" id="perks">
+  <div class="container">
+    <h2 class="section__title section__title--center perks__heading">LC Transfer — Міжнародні перевезення</h2>
+    <ul class="perks__list">
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/347880/verified.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Офіційне оформлення</strong>
+          <span>Всі документи та страховки в порядку</span>
+        </div>
+      </li>
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/511175/timer.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Подача від 15 хвилин</strong>
+          <span>Підтвердження замовлення — миттєво</span>
+        </div>
+      </li>
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/533174/weight.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Великий багажник</strong>
+          <span>Місце для валіз, велосипедів і котів</span>
+        </div>
+      </li>
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/442554/pay.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Гнучка оплата</strong>
+          <span>Готівка, картка, переказ — будь-яка валюта</span>
+        </div>
+      </li>
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/532550/map-location-pin.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Знаємо всі кордони</strong>
+          <span>Допоможемо з документами на кожному КПП</span>
+        </div>
+      </li>
+      <li class="perks__item">
+        <span class="perks__icon"><img src="https://www.svgrepo.com/show/487167/car-wheel.svg" alt="" width="22" height="22"></span>
+        <div class="perks__text">
+          <strong>Авто бізнес-класу</strong>
+          <span>Nissan X-Trail, KIA K5, Mercedes Vito, BYD Seal</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
 
 <!-- ===== ROUTES ===== -->
 <section class="section routes" id="routes">
@@ -157,7 +222,7 @@
         <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
       </a>
     </div>
-    <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="routes__more">Потрібен інший маршрут? Напишіть нам →</a>
+    <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="routes__more">Потрібен інший маршрут? Напишіть нам</a>
   </div>
 </section>
 
@@ -200,7 +265,7 @@
     <div class="cars-carousel" id="carsCarousel">
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPnissan.webp" alt="Nissan X-Trail 2025" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPnissan.webp" alt="Nissan X-Trail 2025" loading="lazy">
         </div>
         <div class="car-card__info">
           <h3 class="car-card__name">Nissan X-Trail</h3>
@@ -214,7 +279,7 @@
       </div>
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WLBPkia.webp" alt="KIA K5" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPkia.webp" alt="KIA K5" loading="lazy">
         </div>
         <div class="car-card__info">
           <h3 class="car-card__name">KIA K5</h3>
@@ -228,7 +293,7 @@
       </div>
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WFBPmers.webp" alt="Mercedes Vito" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPmers.webp" alt="Mercedes Vito" loading="lazy">
         </div>
         <div class="car-card__info">
           <h3 class="car-card__name">Mercedes Vito</h3>
@@ -242,7 +307,7 @@
       </div>
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/upload/main/WEBPbyd.webp" alt="BYD Seal L" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPbyd.webp" alt="BYD Seal L" loading="lazy">
         </div>
         <div class="car-card__info">
           <h3 class="car-card__name">BYD Seal L</h3>
@@ -338,7 +403,7 @@
           </div>
           <button type="button" class="ticket__order-btn" id="ticketOrderBtn" hidden>Замовити поїздку</button>
           <div class="ticket__order-phone" id="ticketOrderPhone">
-            <input type="tel" id="ticketPhone" class="ticket__input ticket__phone-input" placeholder="Введіть номер телефону, щоб замовити поїздку" inputmode="numeric" maxlength="16" value="+380">
+            <input type="tel" id="ticketPhone" class="ticket__input ticket__phone-input" placeholder="Введіть телефон для бронювання" inputmode="numeric" maxlength="16" value="">
           </div>
         </div>
       </div>
@@ -349,7 +414,7 @@
 <!-- ===== FOOTER ===== -->
 <footer class="footer" id="contacts">
   <div class="container">
-    <h2 class="footer__heading section__title--center">Як з нами <span class="gold">зв'язатися</span></h2>
+    <h2 class="footer__heading">Як з нами зв'язатися</h2>
     <div class="footer__messengers">
       <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__msg-btn" aria-label="Telegram">
         <img src="https://www.svgrepo.com/show/521874/telegram.svg" alt="Telegram" width="28" height="28">

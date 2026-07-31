@@ -147,6 +147,13 @@ function calcUpdate() {
     if (dt < new Date(now.getFullYear(), now.getMonth(), now.getDate())) return false;
     return true;
   })();
+
+  // Highlight date field red if fully typed but invalid
+  if (dateEl) {
+    const fullyTyped = date.length === 10;
+    dateEl.style.borderBottomColor = fullyTyped && !dateValid ? '#e05252' : '';
+    dateEl.style.color = fullyTyped && !dateValid ? '#e05252' : '';
+  }
   const allFilled = fromCity && toCity && dateValid && pax >= 1;
 
   if (!allFilled) {
@@ -559,23 +566,30 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     return true;
   }
 
+  // Skip stamps on mobile (viewport < 769px)
+  if (window.innerWidth < 769) return;
+
   const targets = [
-    { sel: '.hero',   count: 3 },
-    { sel: '#routes', count: 8 },
-    { sel: '#faq',    count: 8 },
-    { sel: '#cars',   count: 6 },
-    { sel: '#calc',   count: 6 },
+    { sel: '.hero',   count: 3,  colsOnly: [0, 1] },
+    { sel: '#perks',  count: 4,  colsOnly: [0, 1] },
+    { sel: '#routes', count: 8,  colsOnly: [0, 1] },
+    { sel: '#faq',    count: 8,  colsOnly: [0, 1] },
+    { sel: '#cars',   count: 6,  colsOnly: [0, 1] },
+    { sel: '#calc',   count: 6,  colsOnly: [0, 1] },
   ];
 
-  targets.forEach(({ sel, count }) => {
+  targets.forEach(({ sel, count, colsOnly }) => {
     const section = document.querySelector(sel);
     if (!section) return;
 
     const sectionH = section.offsetHeight || 600;
     const placed = {};
+    const availCols = colsOnly
+      ? COL_DEFS.filter((_, i) => colsOnly.includes(i))
+      : COL_DEFS;
 
     for (let i = 0; i < count; i++) {
-      const col     = COL_DEFS[i % COL_DEFS.length];
+      const col     = availCols[i % availCols.length];
       const topBase = count === 1 ? 50 : 15 + (i / (count - 1)) * 70;
 
       for (const side of ['left', 'right']) {
@@ -584,7 +598,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
         for (let attempt = 0; attempt < 15; attempt++) {
           const topPct = topBase + rnd(-9, 9);
-          const size   = rndInt(150, 220);
+          const size   = rndInt(200, 280);
           if (noCollision(placed[key], topPct, size, sectionH)) {
             placed[key].push({ topPct, size });
             addStamp(section, side, col.posStr, topPct, col.zIdx);
