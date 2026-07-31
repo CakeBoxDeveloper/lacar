@@ -428,7 +428,8 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     const mv = document.createElement('model-viewer');
     mv.setAttribute('src', GLB);
     mv.setAttribute('alt', '');
-    mv.setAttribute('camera-orbit', '0deg 0deg 110%');
+    mv.setAttribute('camera-orbit', '90deg 0deg 110%');
+    mv.setAttribute('orientation', '90deg 0deg 0deg');
     mv.setAttribute('disable-zoom', '');
     mv.setAttribute('interaction-prompt', 'none');
     mv.setAttribute('environment-image', 'neutral');
