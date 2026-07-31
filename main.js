@@ -137,7 +137,16 @@ function calcUpdate() {
   const pax      = parseInt(passEl?.value);
 
   // Показываем только когда все 4 поля заполнены корректно
-  const dateValid = /^\d{2}\.\d{2}\.\d{4}$/.test(date);
+  const now = new Date();
+  const dateValid = (() => {
+    if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) return false;
+    const [d, m, y] = date.split('.').map(Number);
+    if (m < 1 || m > 12 || d < 1 || d > 31) return false;
+    const dt = new Date(y, m - 1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) return false;
+    if (dt < new Date(now.getFullYear(), now.getMonth(), now.getDate())) return false;
+    return true;
+  })();
   const allFilled = fromCity && toCity && dateValid && pax >= 1;
 
   if (!allFilled) {
@@ -175,10 +184,48 @@ function calcUpdate() {
   el?.addEventListener('input', calcUpdate);
 });
 
-/* ===== ORDER BUTTON — dummy ===== */
-document.getElementById('ticketOrderBtn')?.addEventListener('click', () => {
-  // TODO: implement order flow
-});
+/* ===== ORDER BUTTON — phone-to-button flow ===== */
+(function() {
+  const phoneInput = document.getElementById('ticketPhone');
+  const orderBtn   = document.getElementById('ticketOrderBtn');
+  const phoneWrap  = document.getElementById('ticketOrderPhone');
+  if (!phoneInput || !orderBtn) return;
+
+  const PREFIX = '+380';
+
+  // Phone mask
+  phoneInput.addEventListener('input', () => {
+    let val = phoneInput.value;
+    if (!val.startsWith(PREFIX)) val = PREFIX + val.replace(/\D/g,'');
+    const digits = val.slice(4).replace(/\D/g,'').slice(0, 9);
+    phoneInput.value = PREFIX + digits;
+
+    // Show button when number complete (9 digits after +380)
+    if (digits.length === 9) {
+      phoneWrap.style.display = 'none';
+      orderBtn.hidden = false;
+      orderBtn.textContent = 'Замовити поїздку за номером ' + phoneInput.value;
+    } else {
+      phoneWrap.style.display = '';
+      orderBtn.hidden = true;
+    }
+  });
+
+  phoneInput.addEventListener('keydown', (e) => {
+    if ((e.key === 'Backspace' || e.key === 'Delete') && phoneInput.selectionStart <= 4) {
+      e.preventDefault();
+    }
+  });
+
+  phoneInput.addEventListener('focus', () => {
+    if (!phoneInput.value.startsWith(PREFIX)) phoneInput.value = PREFIX;
+    setTimeout(() => phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length), 0);
+  });
+
+  orderBtn.addEventListener('click', () => {
+    // TODO: implement order flow
+  });
+})();
 
 /* ===== LIGHT THEME TOGGLE ===== */
 function toggleTheme() {
@@ -273,107 +320,103 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const canvas = document.getElementById('heroParticles');
   if (!mv || !canvas) return;
 
-  // --- Swing animation (idle) ---
   let swingT = 0;
   let isDragging = false;
-  let lastOrbit = { theta: 0, phi: 75, radius: 2.5 };
+  const ctx = canvas.getContext('2d');
+  let particles = [];
 
+  // Resize to viewport
+  function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas, { passive: true });
+
+  // Swing
   function swingTick() {
     if (!isDragging) {
       swingT += 0.01;
       const theta = Math.sin(swingT) * 6;
-      const phi = 90 + Math.sin(swingT * 0.4) * 3;
+      const phi   = 90 + Math.sin(swingT * 0.4) * 3;
       mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
 
-      // Idle particles from model center
-      if (Math.random() < 0.4) {
+      // Idle particles — spawn from logo area (150% of logo rect)
+      if (Math.random() < 0.35) {
         const rect = mv.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width * 0.3;
-        const cy = rect.top + rect.height / 2 + (Math.random() - 0.5) * rect.height * 0.25;
+        const spread = 0.75; // 150% / 2 — half-width
+        const cx = rect.left + rect.width  * 0.5 + (Math.random() - 0.5) * rect.width  * spread;
+        const cy = rect.top  + rect.height * 0.5 + (Math.random() - 0.5) * rect.height * spread;
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 4 + 1;
-        const big = Math.random() < 0.15;
+        const speed = Math.random() * 1.2 + 0.3; // slow
+        const minR = 0.4;
         particles.push({
           x: cx, y: cy,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          life: Math.random() * 0.8 + 0.4,
-          r: big ? Math.random() * 4 + 3 : Math.random() * 1.5 + 0.5,
-          color: Math.random() > 0.35 ? '#e8c56c' : (Math.random() > 0.5 ? '#ffffff' : '#f5d67b')
+          life: Math.random() * 1.2 + 0.6,
+          r: minR + Math.random() * minR * 2, // min to min*3
+          color: '#ffffff'
         });
       }
     }
     requestAnimationFrame(swingTick);
   }
 
-  mv.addEventListener('load', () => {
-    swingTick();
-  });
+  mv.addEventListener('load', swingTick);
 
-  // Track drag state
-  mv.addEventListener('mousedown', () => { isDragging = true; });
+  mv.addEventListener('mousedown',  () => { isDragging = true; });
   mv.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
-  window.addEventListener('mouseup', () => { isDragging = false; });
+  window.addEventListener('mouseup',  () => { isDragging = false; });
   window.addEventListener('touchend', () => { isDragging = false; });
 
-  // --- Particles on touch/click ---
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas, { passive: true });
-
-  function spawnParticles(x, y) {
-    for (let i = 0; i < 18; i++) {
+  // Click/tap burst
+  function spawnBurst(x, y) {
+    for (let i = 0; i < 20; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 4 + 1.5;
+      const speed = Math.random() * 3.5 + 1;
       particles.push({
         x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         life: 1,
-        r: Math.random() * 3 + 1.5,
-        color: Math.random() > 0.5 ? '#e8c56c' : '#f5d67b'
+        r: 0.4 + Math.random() * 0.8,
+        color: '#ffffff'
       });
     }
   }
 
   mv.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    spawnParticles(e.clientX - rect.left, e.clientY - rect.top);
+    spawnBurst(e.clientX, e.clientY);
   });
   mv.addEventListener('touchstart', (e) => {
-    const rect = canvas.getBoundingClientRect();
     const t = e.touches[0];
-    spawnParticles(t.clientX - rect.left, t.clientY - rect.top);
+    spawnBurst(t.clientX, t.clientY);
   }, { passive: true });
 
-  function drawParticles() {
+  // Draw loop
+  function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles = particles.filter(p => p.life > 0);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.04; // lighter gravity — fly further
-      p.vx *= 0.97;
-      p.life -= 0.025;
+    for (const p of particles) {
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vy += 0.02; // very gentle gravity
+      p.vx *= 0.99;
+      p.life -= 0.012; // slow fade
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.globalAlpha = Math.max(0, p.life * 0.7);
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(255,255,255,0.6)';
       ctx.fill();
       ctx.restore();
-    });
-    requestAnimationFrame(drawParticles);
+    }
+    requestAnimationFrame(draw);
   }
-  drawParticles();
+  draw();
 })();
 
 /* ===== PHONE INPUT VALIDATION ===== */
@@ -414,55 +457,70 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const scene = document.getElementById('stampsScene');
   if (!scene) return;
 
-  const GLB = 'https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/Lviv.glb';
+  const BASE = 'https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/';
 
-  // Stamp configs: fixed positions on screen, face camera, sway only
-  const stamps = [
-    { left: '-20px', top: '12%',  size: 180, delay: 0,   dur: 6   },
-    { right:'-25px', top: '40%',  size: 140, delay: 1.2, dur: 7.5 },
-    { left: '-15px', top: '65%',  size: 110, delay: 2.4, dur: 5.8 },
-    { right:'-30px', top: '72%',  size: 160, delay: 0.6, dur: 8   },
+  const CARDS = [
+    'Card_Berlin.glb', 'Card_Bujarest.glb', 'Card_Gdansk.glb',
+    'Card_Krakow.glb', 'Card_Kyiv.glb', 'Card_Lviv.glb',
+    'Card_Odessa.glb', 'Card_Sofia.glb', 'Card_Warsaw.glb'
   ];
 
-  stamps.forEach((s, i) => {
+  // Random positions fully within viewport, avoiding center
+  function randomPos() {
+    const side = Math.random() < 0.5 ? 'left' : 'right';
+    const x = 8 + Math.random() * 12; // 8-20px from edge
+    const top = 8 + Math.random() * 80; // 8-88% from top
+    return { side, x, top };
+  }
+
+  const sizes = [100, 120, 110, 130, 105];
+  const count = 6;
+
+  for (let i = 0; i < count; i++) {
+    const glb = BASE + CARDS[Math.floor(Math.random() * CARDS.length)];
+    const pos = randomPos();
+    const size = sizes[i % sizes.length];
+    const dur = 5 + Math.random() * 4;
+    const delay = Math.random() * 3;
+
     const mv = document.createElement('model-viewer');
-    mv.setAttribute('src', GLB);
+    mv.setAttribute('src', glb);
     mv.setAttribute('alt', '');
-    mv.setAttribute('camera-orbit', '90deg 0deg 110%');
-    mv.setAttribute('orientation', '90deg 0deg 0deg');
+    // Face camera: theta=0, phi=90 shows front face. rotate 90° clockwise = theta=90
+    mv.setAttribute('camera-orbit', '90deg 90deg 120%');
+    mv.setAttribute('field-of-view', '40deg');
+    mv.setAttribute('orientation', '0deg 0deg -90deg'); // rotate card 90° clockwise
     mv.setAttribute('disable-zoom', '');
     mv.setAttribute('interaction-prompt', 'none');
     mv.setAttribute('environment-image', 'neutral');
-    mv.setAttribute('exposure', '1.1');
+    mv.setAttribute('exposure', '1.2');
     mv.setAttribute('shadow-intensity', '0');
-    // No auto-rotate — face camera, only CSS sway
 
     mv.style.cssText = `
       position: fixed;
-      width: ${s.size}px;
-      height: ${s.size}px;
-      ${s.left  ? 'left:'  + s.left  + ';' : ''}
-      ${s.right ? 'right:' + s.right + ';' : ''}
-      top: ${s.top};
+      width: ${size}px;
+      height: ${size}px;
+      ${pos.side}: ${pos.x}px;
+      top: ${pos.top}%;
       pointer-events: none;
-      z-index: 4;
+      z-index: 0;
       --progress-bar-height: 0px;
-      animation: stampSway${i % 2} ${s.dur}s ease-in-out infinite ${s.delay}s;
-      opacity: 0.75;
+      --progress-bar-color: transparent;
+      opacity: 0.7;
+      animation: stampSway${i % 2 === 0 ? 'L' : 'R'} ${dur}s ease-in-out infinite ${delay}s;
     `;
     scene.appendChild(mv);
-  });
+  }
 
-  // Inject sway keyframes
   const st = document.createElement('style');
   st.textContent = `
-    @keyframes stampSway0 {
-      0%,100% { transform: translateY(0px) rotate(-1.5deg); }
-      50%      { transform: translateY(-18px) rotate(1.5deg); }
+    @keyframes stampSwayL {
+      0%,100% { transform: translateY(0) rotate(-1deg); }
+      50%      { transform: translateY(-15px) rotate(1deg); }
     }
-    @keyframes stampSway1 {
-      0%,100% { transform: translateY(0px) rotate(2deg); }
-      50%      { transform: translateY(-22px) rotate(-2deg); }
+    @keyframes stampSwayR {
+      0%,100% { transform: translateY(0) rotate(1.5deg); }
+      50%      { transform: translateY(-18px) rotate(-1.5deg); }
     }
   `;
   document.head.appendChild(st);

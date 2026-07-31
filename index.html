@@ -73,17 +73,16 @@
       src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/LC.glb"
       alt="LC Transfer 3D Logo"
       camera-controls
-      touch-action="pan-y"
+      touch-action="none"
       disable-zoom
       camera-orbit="0deg 90deg 105%"
       field-of-view="30deg"
       orientation="0deg -90deg 0deg"
-      style="background: transparent; transform: scaleX(-1) rotate(180deg);"
       environment-image="neutral"
       exposure="1.2"
       shadow-intensity="0"
       interaction-prompt="none"
-      style="background: transparent;"
+      style="background:transparent;transform:scaleX(-1) rotate(180deg);position:relative;z-index:2;"
       class="hero__model"
     ></model-viewer>
     <canvas class="hero__particles-canvas" id="heroParticles" aria-hidden="true"></canvas>
@@ -288,7 +287,6 @@
               </optgroup>
             </select>
           </div>
-          <div class="ticket__arrow" aria-hidden="true">→</div>
           <div class="ticket__field">
             <label class="ticket__label" for="calcTo">Куди</label>
             <select id="calcTo" class="ticket__select" aria-label="Місто прибуття">
@@ -334,7 +332,10 @@
           <div class="ticket__result-row ticket__result-row--price">
             <span class="ticket__result-price-label">Ціна</span><strong id="resPrice">—</strong>
           </div>
-          <button type="button" class="ticket__order-btn" id="ticketOrderBtn">Замовити поїздку</button>
+          <button type="button" class="ticket__order-btn" id="ticketOrderBtn" hidden>Замовити поїздку</button>
+          <div class="ticket__order-phone" id="ticketOrderPhone">
+            <input type="tel" id="ticketPhone" class="ticket__input ticket__phone-input" placeholder="Введіть номер телефону, щоб замовити поїздку" inputmode="numeric" maxlength="16" value="+380">
+          </div>
         </div>
       </div>
     </div>
@@ -360,6 +361,9 @@
       </a>
       <a href="https://instagram.com/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__msg-btn" aria-label="Instagram">
         <img src="https://www.svgrepo.com/show/458756/insta.svg" alt="Instagram" width="28" height="28">
+      </a>
+      <a href="https://facebook.com/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__msg-btn" aria-label="Facebook">
+        <img src="https://www.svgrepo.com/show/521654/facebook.svg" alt="Facebook" width="28" height="28">
       </a>
     </div>
     <div class="footer__contact-form">

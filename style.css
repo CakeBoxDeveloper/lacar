@@ -856,3 +856,42 @@ body, .header, .hero, .services, .routes, .faq,
 
 /* model-viewer above particles */
 .hero__model { position: relative; z-index: 2; }
+
+/* ===== SPACING FIXES ===== */
+.faq { padding-top: 28px !important; padding-bottom: 28px !important; }
+.cars-section { padding-top: 28px !important; }
+
+/* Ticket — no arrow gap */
+.ticket__arrow { display: none !important; }
+.ticket__row { gap: 8px !important; }
+.ticket__field:last-child { margin-left: 0 !important; }
+
+/* Order phone field */
+.ticket__phone-input {
+  width: 100%;
+  font-size: 13px !important;
+  color: var(--text-muted) !important;
+}
+
+/* ===== TICKET ORDER PHONE ===== */
+.ticket__order-phone { width: 100%; margin-top: 8px; }
+.ticket__phone-input {
+  font-size: 13px !important;
+  color: var(--text) !important;
+  width: 100% !important;
+  padding: 8px 0 !important;
+  border-bottom: 1.5px solid rgba(255,255,255,0.15) !important;
+}
+.ticket__phone-input::placeholder {
+  color: var(--text-dim) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  -webkit-text-fill-color: var(--text-dim) !important;
+}
+
+/* Ticket rows — equal width columns, no gap for arrow */
+.ticket__row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 16px !important; align-items: end !important; }
+
+/* Footer 6 buttons — smaller to fit */
+.footer__msg-btn { width: 44px !important; height: 44px !important; }
+.footer__msg-btn img { width: 22px !important; height: 22px !important; }
