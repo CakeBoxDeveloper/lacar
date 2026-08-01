@@ -7,8 +7,11 @@
 //   TG_CHAT_ID = your group chat id (negative number, e.g. -1001234567890)
 
 async function sendToTelegram(text) {
+  // Завжди відправляємо на Vercel API — працює з будь-якого домену
+  const apiUrl = 'https://lacar.vercel.app/api/send';
+
   try {
-    const res = await fetch('/api/send', {
+    const res = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
