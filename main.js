@@ -601,11 +601,6 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const st = document.createElement('style');
   st.textContent = `
     body { position: relative; }
-    @keyframes stampSwayZ {
-      0%   { transform: translateY(-50%) rotateZ(var(--rz0)); }
-      50%  { transform: translateY(-50%) rotateZ(var(--rz1)); }
-      100% { transform: translateY(-50%) rotateZ(var(--rz0)); }
-    }
   `;
   document.head.appendChild(st);
 
@@ -618,11 +613,8 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
   function addStamp(section, side, posStr, topPct, zIdx) {
     const size  = rndInt(200, 280);
-    const tilt0 = rndInt(-20, 20); // Z tilt (static lean)
-    const tilt1 = rndInt(-20, 20); // Z tilt end
-    const dur   = rnd(8, 14);
-    const delay = rnd(0, 5);
-    const animName = side === 'left' ? 'stampSwayZ' : 'stampSwayZ';
+    const tilt0 = rndInt(-20, 20);
+    const tilt1 = rndInt(-20, 20);
 
     const el = document.createElement('model-viewer');
     el.setAttribute('src', BASE + CARDS[cardIdx % CARDS.length]);
@@ -651,28 +643,41 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
-      --rz0: ${tilt0}deg;
-      --rz1: ${tilt1}deg;
       pointer-events: none;
       opacity: 1;
-      animation: ${animName} ${dur}s ease-in-out infinite ${delay}s;
-      animation-fill-mode: both;
     `;
 
     document.body.appendChild(el);
 
-    // JS animation of camera-orbit theta for true Y-axis rotation visible as edge
-    // theta swings ±8deg around center, creating subtle 3D edge effect
-    const thetaAmp = 8;
-    const thetaOffset = side === 'left' ? -4 : 4; // slight lean toward center
+    // JS dual-axis animation:
+    // t1 — медленное качание по Z (CSS rotateZ)
+    // t2 — качание по X через cameraOrbit phi (±20-25deg, другая скорость/фаза)
+    const thetaOffset = side === 'left' ? -4 : 4;
+
+    let t1 = Math.random() * Math.PI * 2;
     let t2 = Math.random() * Math.PI * 2;
-    const spd = (0.006 + Math.random() * 0.004);
+    const spd1 = 0.006 + Math.random() * 0.004;
+    const spd2 = 0.010 + Math.random() * 0.006;
+
+    const amp1    = (tilt1 - tilt0) / 2;
+    const mid1    = (tilt0 + tilt1) / 2;
+    const phiAmp  = 20 + Math.random() * 5; // 20-25 deg по X (phi)
+    const phiBase = 0; // центр — смотрим прямо на марку
 
     el.addEventListener('load', () => {
       (function tick() {
-        t2 += spd;
-        const theta = thetaOffset + Math.sin(t2) * thetaAmp;
-        el.cameraOrbit = `${theta}deg 0deg 120%`;
+        t1 += spd1;
+        t2 += spd2;
+
+        // Z — основное медленное качание (наклон)
+        const rz  = mid1 + Math.sin(t1) * amp1;
+
+        // X — дополнительное через phi камеры, 20-25 градусов
+        const phi = phiBase + Math.sin(t2) * phiAmp;
+
+        el.style.transform = `translateY(-50%) rotateZ(${rz.toFixed(2)}deg)`;
+        el.cameraOrbit = `${thetaOffset.toFixed(2)}deg ${phi.toFixed(2)}deg 120%`;
+
         requestAnimationFrame(tick);
       })();
     });
