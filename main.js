@@ -612,9 +612,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const rndInt = (a, b) => Math.round(rnd(a, b));
 
   function addStamp(section, side, posStr, topPct, zIdx) {
-    const size  = rndInt(200, 280);
-    const tilt0 = rndInt(-20, 20);
-    const tilt1 = rndInt(-20, 20);
+    const size = rndInt(200, 280);
 
     const el = document.createElement('model-viewer');
     el.setAttribute('src', BASE + CARDS[cardIdx % CARDS.length]);
@@ -639,7 +637,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       height: ${size}px;
       ${side}: ${posStr};
       top: ${topPx}px;
-      transform: translateY(-50%) rotateZ(${tilt0}deg);
+      transform: translateY(-50%);
       z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
@@ -649,35 +647,31 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
     document.body.appendChild(el);
 
-    // JS dual-axis animation:
-    // t1 — медленное качание по Z (CSS rotateZ)
-    // t2 — качание по X через cameraOrbit phi (±20-25deg, другая скорость/фаза)
-    const thetaOffset = side === 'left' ? -4 : 4;
-
-    let t1 = Math.random() * Math.PI * 2;
-    let t2 = Math.random() * Math.PI * 2;
-    const spd1 = 0.006 + Math.random() * 0.004;
-    const spd2 = 0.010 + Math.random() * 0.006;
-
-    const amp1    = (tilt1 - tilt0) / 2;
-    const mid1    = (tilt0 + tilt1) / 2;
-    const phiAmp  = 20 + Math.random() * 5; // 20-25 deg по X (phi)
-    const phiBase = 0; // центр — смотрим прямо на марку
+    let tY   = Math.random() * Math.PI * 2;
+    let tZ   = Math.random() * Math.PI * 2;
+    let tX   = Math.random() * Math.PI * 2;
+    let tF   = Math.random() * Math.PI * 2; // float фаза
+    const spdY = 0.007 + Math.random() * 0.005;
+    const spdZ = 0.005 + Math.random() * 0.004;
+    const spdX = 0.006 + Math.random() * 0.004;
+    const spdF = 0.004 + Math.random() * 0.003; // float медленнее всего
+    const ampY = 4 + Math.random() * 4;  // ±4-8deg
+    const ampZ = 4 + Math.random() * 4;  // ±4-8deg
+    const ampX = 4 + Math.random() * 4;  // ±4-8deg
+    const ampF = 10 + Math.random() * 10; // 10-20px вверх-вниз
 
     el.addEventListener('load', () => {
       (function tick() {
-        t1 += spd1;
-        t2 += spd2;
-
-        // Z — основное медленное качание (наклон)
-        const rz  = mid1 + Math.sin(t1) * amp1;
-
-        // X — дополнительное через phi камеры, 20-25 градусов
-        const phi = phiBase + Math.sin(t2) * phiAmp;
-
-        el.style.transform = `translateY(-50%) rotateZ(${rz.toFixed(2)}deg)`;
-        el.cameraOrbit = `${thetaOffset.toFixed(2)}deg ${phi.toFixed(2)}deg 120%`;
-
+        tY += spdY;
+        tZ += spdZ;
+        tX += spdX;
+        tF += spdF;
+        const theta  = Math.sin(tY) * ampY;
+        const phi    = Math.sin(tX) * ampX;
+        const rz     = Math.sin(tZ) * ampZ;
+        const floatY = Math.sin(tF) * ampF;
+        el.style.transform = `translateY(calc(-50% + ${floatY.toFixed(2)}px)) rotateZ(${rz.toFixed(2)}deg)`;
+        el.cameraOrbit = `${theta.toFixed(2)}deg ${phi.toFixed(2)}deg 120%`;
         requestAnimationFrame(tick);
       })();
     });

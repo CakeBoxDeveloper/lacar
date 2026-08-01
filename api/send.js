@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
@@ -10,7 +10,12 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: 'Bot not configured' });
   }
 
-  const { text } = req.body;
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+
+  const { text } = body || {};
   if (!text) {
     return res.status(400).json({ ok: false, error: 'No text provided' });
   }
@@ -26,4 +31,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message });
   }
-}
+};
