@@ -48,7 +48,24 @@ button,input { font:inherit; color:inherit; }
 .container { width: min(480px, 100% - 32px); margin-inline: auto; position: relative; z-index: 3; }
 .gold { color:var(--gold); }
 .section { padding: 16px 0 32px; position: relative; }
-.section__title { font-size: 22px; font-weight:800; margin-bottom:32px; letter-spacing:0.01em; background: transparent !important; color: var(--gold) !important; display: block; width: 100%; text-align: center; padding: 13px 0; border-radius: 0; border: none; box-sizing: border-box; white-space: nowrap; overflow: hidden; position: relative;
+/* Section titles — make them bigger and bolder */
+.section__title { 
+  font-size: 26px; /* was 22px */
+  font-weight: 900; /* was 800 */
+  margin-bottom: 36px; /* was 32px */
+  letter-spacing: 0.02em; /* was 0.01em */
+  background: transparent !important; 
+  color: var(--gold) !important; 
+  display: block; 
+  width: 100%; 
+  text-align: center; 
+  padding: 15px 0; /* was 13px */
+  border-radius: 0; 
+  border: none; 
+  box-sizing: border-box; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  position: relative;
   background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 30%, #fff8e1 50%, var(--gold-light) 70%, var(--gold-dark) 100%) !important;
   background-size: 250% 100% !important;
   -webkit-background-clip: text !important;
@@ -137,9 +154,14 @@ button,input { font:inherit; color:inherit; }
   margin-inline: auto;
   aspect-ratio: 1 / 1;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
+  border: none;
 }
+
+/* Убираем все псевдоэлементы с блока */
+.hero__3d-wrap::after,
+.hero__3d-wrap::before { display: none; }
 
 .hero__model {
   width: 100%;
@@ -233,9 +255,10 @@ button,input { font:inherit; color:inherit; }
   letter-spacing: 0.01em;
 }
 .footer__messengers { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 40px; }
-.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 74px; border-radius: 50%; background: var(--gold); text-decoration: none; transition: filter var(--transition), transform var(--transition); aspect-ratio: 1; max-width: 74px; }
-.footer__msg-btn img { filter: brightness(0); width: 32px; height: 32px; }
-.footer__msg-btn:hover { filter: brightness(1.15); transform: translateY(-3px); }
+/* ===== Footer messenger buttons — LARGER ===== */
+.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 130px; border-radius: 18px; background: rgba(255,255,255,0.08); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); text-decoration: none; transition: filter var(--transition), transform var(--transition), background var(--transition); aspect-ratio: 1; max-width: 130px; }
+.footer__msg-btn img { filter: none; width: 58px; height: 58px; }
+.footer__msg-btn:hover { filter: brightness(1.25); transform: translateY(-4px); background: rgba(255,255,255,0.14); }
 .footer__nav { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; padding: 32px 0; border-top: 1px solid var(--border-subtle); }
 .footer__col-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
 .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
@@ -260,28 +283,7 @@ button,input { font:inherit; color:inherit; }
 /* ===== SECTION TITLE CENTER ===== */
 .section__title--center { text-align: center; }
 
-/* Universal section title — solid mid-grey pill, dark inverted text */
-.section__title {
-  display: block;
-  width: 100%;
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 32px;
-  letter-spacing: 0.01em;
-  text-align: center;
-  white-space: nowrap;
-  color: #0d0d0d;
-  padding: 13px 20px;
-  border-radius: 10px;
-  background: #5a5a5a;
-  border: none;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-}
-.section__title .gold { color: #0d0d0d; }
-.section__title::before,
-.section__title::after { display: none !important; }
+
 
 .perks__heading {
   display: block !important;
@@ -313,11 +315,11 @@ button,input { font:inherit; color:inherit; }
   display: block;
   text-align: center;
   margin-top: 16px;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
   color: #141414;
   text-decoration: none;
-  padding: 14px 16px;
+  padding: 11px 16px;
   background: var(--gold);
   border: none;
   border-radius: 10px;
@@ -411,14 +413,14 @@ button,input { font:inherit; color:inherit; }
 /* ===== CALCULATOR / TICKET ===== */
 .calc-section { background: var(--bg-section-alt); }
 
-/* Кнопка заказа после расчёта */
+/* Кнопка заказа после расчёта — увеличена на 15% */
 .ticket__order-btn {
   width: 100%;
   margin-top: 8px;
-  padding: 12px;
+  padding: 14px;
   background: var(--gold);
   color: #141414;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   border: none;
   border-radius: var(--radius-sm);
@@ -430,10 +432,10 @@ button,input { font:inherit; color:inherit; }
 .ticket__reset-btn {
   width: 100%;
   margin-top: 6px;
-  padding: 7px;
+  padding: 8px;
   background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
+  color: var(--gold);
+  font-size: 14px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -441,7 +443,7 @@ button,input { font:inherit; color:inherit; }
   transition: color var(--transition);
   font-family: var(--font);
 }
-.ticket__reset-btn:hover { color: var(--text); }
+.ticket__reset-btn:hover { color: var(--gold-light); }
 
 /* Вырезы билета — через radial-gradient маску */
 .ticket {
@@ -710,9 +712,9 @@ body, .header, .hero, .services, .routes, .faq,
 .footer__contact-input::placeholder { color: var(--text-dim); font-size: 13px; }
 .footer__contact-input:focus { border-color: var(--border-gold); }
 .footer__contact-btn {
-  width: 100%; padding: 14px;
+  width: 100%; padding: 11px;
   background: var(--gold); color: #141414;
-  font-size: 15px; font-weight: 700;
+  font-size: 14px; font-weight: 700;
   border: none; border-radius: var(--radius-sm);
   cursor: pointer; font-family: var(--font);
   transition: filter var(--transition);

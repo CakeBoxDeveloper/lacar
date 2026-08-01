@@ -411,37 +411,52 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
 
-  // Swing — more pronounced
+  // Swing + gold exposure pulse (блеск золотого металла)
+  let goldT = 0;
   function swingTick() {
     if (!isDragging) {
       swingT += 0.012;
-      const theta = Math.sin(swingT) * 18;          // was 6 → now 18deg
-      const phi   = 90 + Math.sin(swingT * 0.5) * 8; // was 3 → now 8deg
+      goldT  += 0.022;
+      const theta = Math.sin(swingT) * 18;
+      const phi   = 90 + Math.sin(swingT * 0.5) * 8;
       mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
 
-      // Idle particles — less frequent
-      if (Math.random() < 0.12) {  // was 0.35
+      // Пульс exposure — живой блеск золота
+      mv.exposure = 2.8 + Math.sin(goldT) * 1.0;
+
+      // Золотые частицы
+      if (Math.random() < 0.10) {
         const rect = mv.getBoundingClientRect();
-        const spread = 0.75;
-        const cx = rect.left + rect.width  * 0.5 + (Math.random() - 0.5) * rect.width  * spread;
-        const cy = rect.top  + rect.height * 0.5 + (Math.random() - 0.5) * rect.height * spread;
+        const cx = rect.left + rect.width  * 0.5 + (Math.random() - 0.5) * rect.width  * 0.6;
+        const cy = rect.top  + rect.height * 0.5 + (Math.random() - 0.5) * rect.height * 0.6;
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 1.2 + 0.3;
-        const minR = 0.4;
+        const speed = Math.random() * 1.0 + 0.2;
         particles.push({
           x: cx, y: cy,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          life: Math.random() * 1.2 + 0.6,
-          r: minR + Math.random() * minR * 2,
-          color: '#ffffff'
+          life: Math.random() * 1.0 + 0.5,
+          r: 0.4 + Math.random() * 0.8,
+          color: Math.random() > 0.5 ? '#e8c56c' : '#f5d67b'
         });
       }
     }
     requestAnimationFrame(swingTick);
   }
 
-  mv.addEventListener('load', swingTick);
+  // После загрузки — красим материал в золото через model-viewer material API
+  mv.addEventListener('load', () => {
+    const model = mv.model;
+    if (model) {
+      model.materials.forEach(mat => {
+        // Устанавливаем золотой metallic/roughness PBR материал
+        mat.pbrMetallicRoughness.setBaseColorFactor([1.0, 0.78, 0.22, 1.0]); // золотой RGB
+        mat.pbrMetallicRoughness.setMetallicFactor(1.0);   // полный металл
+        mat.pbrMetallicRoughness.setRoughnessFactor(0.15); // почти зеркальный
+      });
+    }
+    swingTick();
+  });
 
   mv.addEventListener('mousedown',  () => { isDragging = true; });
   mv.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
