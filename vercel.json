@@ -1,1 +1,7 @@
-{}
+{
+  "functions": {
+    "api/send.js": {
+      "runtime": "@vercel/node@5"
+    }
+  }
+}

@@ -700,6 +700,9 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   // Skip stamps on mobile (viewport < 769px)
   if (window.innerWidth < 769) return;
 
+  // Skip stamps on route pages — they have their own stamp system
+  if (document.body.classList.contains('route-page')) return;
+
   const targets = [
     { sel: '.hero',   count: 3,  colsOnly: [0, 1] },
     { sel: '#perks',  count: 4,  colsOnly: [0, 1] },

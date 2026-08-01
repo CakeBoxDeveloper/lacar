@@ -435,7 +435,7 @@ button,input { font:inherit; color:inherit; }
   padding: 8px;
   background: transparent;
   color: var(--gold);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   border: none;
   cursor: pointer;
