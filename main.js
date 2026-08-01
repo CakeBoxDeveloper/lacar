@@ -532,7 +532,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       height: ${size}px;
       ${side}: ${posStr};
       top: ${topPx}px;
-      transform: translateY(-50%);
+      transform: translateY(-50%) rotateZ(var(--rz0));
       z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
@@ -541,6 +541,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       pointer-events: none;
       opacity: 1;
       animation: stampSway ${dur}s ease-in-out infinite ${delay}s;
+      animation-fill-mode: both;
     `;
 
     document.body.appendChild(el);

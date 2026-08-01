@@ -47,7 +47,7 @@ button,input { font:inherit; color:inherit; }
 
 .container { width: min(480px, 100% - 32px); margin-inline: auto; position: relative; z-index: 3; }
 .gold { color:var(--gold); }
-.section { padding: 56px 0; position: relative; }
+.section { padding: 32px 0; position: relative; }
 .section__title { font-size: 24px; font-weight:800; margin-bottom:32px; letter-spacing:0.01em; }
 
 /* ===== PRELOADER ===== */
@@ -219,8 +219,8 @@ button,input { font:inherit; color:inherit; }
   letter-spacing: 0.01em;
 }
 .footer__messengers { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 40px; }
-.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 56px; border-radius: 50%; background: var(--gold); text-decoration: none; transition: filter var(--transition), transform var(--transition); aspect-ratio: 1; max-width: 64px; }
-.footer__msg-btn img { filter: brightness(0); width: 26px; height: 26px; }
+.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 64px; border-radius: 50%; background: var(--gold); text-decoration: none; transition: filter var(--transition), transform var(--transition); aspect-ratio: 1; max-width: 74px; }
+.footer__msg-btn img { filter: brightness(0); width: 30px; height: 30px; }
 .footer__msg-btn:hover { filter: brightness(1.15); transform: translateY(-3px); }
 .footer__nav { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; padding: 32px 0; border-top: 1px solid var(--border-subtle); }
 .footer__col-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
@@ -258,7 +258,7 @@ button,input { font:inherit; color:inherit; }
   white-space: nowrap;
   color: #fff;
   padding: 13px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(255,255,255,0.07);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -299,7 +299,7 @@ button,input { font:inherit; color:inherit; }
   display: block !important;
   width: 100% !important;
   white-space: nowrap !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   background: rgba(255,255,255,0.07) !important;
   border: 1px solid rgba(255,255,255,0.13) !important;
   padding: 13px 20px !important;
@@ -330,14 +330,14 @@ button,input { font:inherit; color:inherit; }
   display: block;
   text-align: center;
   margin-top: 16px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   color: #141414;
   text-decoration: none;
   padding: 14px 16px;
   background: var(--gold);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   transition: filter var(--transition);
   position: relative;
   z-index: 1;
@@ -1043,7 +1043,7 @@ body, .header, .hero, .services, .routes, .faq,
 }
 
 /* ===== PERKS ===== */
-.perks { background: var(--bg-section); padding: 40px 0; }
+.perks { background: var(--bg-section); }
 .perks__heading {
   display: inline-block;
   color: #fff !important;
@@ -1088,14 +1088,14 @@ body, .header, .hero, .services, .routes, .faq,
 .perks__list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
   list-style: none;
 }
 .perks__item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 13px 16px;
+  gap: 12px;
+  padding: 10px 14px;
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: var(--radius-sm);
@@ -1209,4 +1209,33 @@ body, .header, .hero, .services, .routes, .faq,
   mask-composite: exclude;
   animation: glassShimmer 3.5s linear infinite;
   pointer-events: none;
+}
+
+/* ===== MOBILE FIXES ===== */
+@media (max-width: 600px) {
+  /* Section titles — wrap on mobile, don't overflow */
+  .section__title,
+  .perks__heading {
+    white-space: normal !important;
+    font-size: 18px !important;
+    padding: 11px 14px !important;
+    hyphens: auto;
+  }
+
+  /* routes__more button — full width, text doesn't overflow */
+  .routes__more {
+    font-size: 14px;
+    padding: 12px 12px;
+    white-space: normal;
+  }
+
+  /* Cars carousel — fix jerky swipe by removing pointer-events on stamps */
+  .cars-section { touch-action: pan-x; }
+  .cars-carousel {
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+  .car-card { touch-action: pan-x; }
 }
