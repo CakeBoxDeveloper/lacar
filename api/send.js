@@ -1,4 +1,12 @@
 module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
@@ -6,8 +14,12 @@ module.exports = async function handler(req, res) {
   const token  = process.env.TG_TOKEN;
   const chatId = process.env.TG_CHAT_ID;
 
-  if (!token || !chatId) {
-    return res.status(500).json({ ok: false, error: 'Bot not configured' });
+  // Перевірка змінних — якщо не задані, повертаємо зрозумілу помилку
+  if (!token) {
+    return res.status(500).json({ ok: false, error: 'TG_TOKEN not set in environment variables' });
+  }
+  if (!chatId) {
+    return res.status(500).json({ ok: false, error: 'TG_CHAT_ID not set in environment variables' });
   }
 
   let body = req.body;
@@ -27,7 +39,11 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
     });
     const data = await tgRes.json();
-    return res.status(200).json(data);
+    // Якщо Telegram повернув помилку — логуємо деталі
+    if (!data.ok) {
+      return res.status(200).json({ ok: false, error: data.description, tg: data });
+    }
+    return res.status(200).json({ ok: true });
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message });
   }

@@ -14,8 +14,12 @@ async function sendToTelegram(text) {
       body: JSON.stringify({ text })
     });
     const data = await res.json();
+    if (!data.ok) {
+      console.error('Telegram error:', data.error || data);
+    }
     return data.ok;
-  } catch {
+  } catch (e) {
+    console.error('Fetch error:', e);
     return false;
   }
 }
@@ -287,10 +291,10 @@ function calcUpdate() {
     orderBtn.textContent = 'Надсилаємо...';
     const ok = await sendToTelegram(msg);
     if (ok) {
-      showToast('✅ Замовлення надіслано! Ми зв\'яжемося з Вами.');
-      orderBtn.textContent = '✓ Надіслано';
+      showToast('Замовлення надіслано! Ми зв\'яжемося з Вами.');
+      orderBtn.textContent = 'Надіслано';
     } else {
-      showToast('❌ Помилка. Спробуйте ще раз або напишіть нам напряму.');
+      showToast('Помилка. Спробуйте ще раз або напишіть напряму.');
       orderBtn.textContent = 'Замовити поїздку за номером ' + phone;
       orderBtn.disabled = false;
     }
@@ -577,13 +581,13 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     const ok = await sendToTelegram(text);
 
     if (ok) {
-      showToast('✅ Повідомлення надіслано!');
-      sendBtn.textContent = '✓ Надіслано';
+      showToast('Повідомлення надіслано!');
+      sendBtn.textContent = 'Надіслано';
       document.getElementById('contactPhone').value = '+380';
       document.getElementById('contactName').value  = '';
       document.getElementById('contactMsg').value   = '';
     } else {
-      showToast('❌ Помилка відправки. Напишіть нам напряму.');
+      showToast('Помилка відправки. Напишіть нам напряму.');
       sendBtn.textContent = 'Відправити';
       sendBtn.disabled = false;
     }
