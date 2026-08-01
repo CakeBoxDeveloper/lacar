@@ -1,5 +1,25 @@
 'use strict';
 
+/* ===== TELEGRAM BOT CONFIG ===== */
+// Token and Chat ID are stored in Vercel Environment Variables (never in client code)
+// Vercel Dashboard → Project → Settings → Environment Variables:
+//   TG_TOKEN   = your bot token from @BotFather
+//   TG_CHAT_ID = your group chat id (negative number, e.g. -1001234567890)
+
+async function sendToTelegram(text) {
+  try {
+    const res = await fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    return data.ok;
+  } catch {
+    return false;
+  }
+}
+
 /* ===== VIDEO HERO — loop with reverse where supported ===== */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
@@ -195,6 +215,7 @@ function calcUpdate() {
 (function() {
   const phoneInput = document.getElementById('ticketPhone');
   const orderBtn   = document.getElementById('ticketOrderBtn');
+  const resetBtn   = document.getElementById('ticketResetBtn');
   const phoneWrap  = document.getElementById('ticketOrderPhone');
   if (!phoneInput || !orderBtn) return;
 
@@ -211,10 +232,12 @@ function calcUpdate() {
     if (digits.length === 9) {
       phoneWrap.style.display = 'none';
       orderBtn.hidden = false;
+      if (resetBtn) resetBtn.hidden = false;
       orderBtn.textContent = 'Замовити поїздку за номером ' + phoneInput.value;
     } else {
       phoneWrap.style.display = '';
       orderBtn.hidden = true;
+      if (resetBtn) resetBtn.hidden = true;
     }
   });
 
@@ -229,9 +252,57 @@ function calcUpdate() {
     setTimeout(() => phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length), 0);
   });
 
-  orderBtn.addEventListener('click', () => {
-    // TODO: implement order flow
+  phoneInput.addEventListener('blur', () => {
+    if (phoneInput.value === PREFIX || phoneInput.value === '') {
+      phoneInput.value = '';
+      phoneInput.placeholder = 'Введіть телефон для бронювання';
+    }
   });
+
+  orderBtn.addEventListener('click', async () => {
+    const from  = document.getElementById('calcFrom')?.value  || '—';
+    const to    = document.getElementById('calcTo')?.value    || '—';
+    const date  = document.getElementById('calcDate')?.value  || '—';
+    const pax   = document.getElementById('calcPassengers')?.value || '—';
+    const price = document.getElementById('resPrice')?.textContent || '—';
+    const phone = phoneInput.value;
+
+    const msg = `🚗 <b>Нове замовлення поїздки</b>\n\n`
+      + `📍 Маршрут: <b>${from} → ${to}</b>\n`
+      + `📅 Дата: <b>${date}</b>\n`
+      + `👥 Пасажири: <b>${pax}</b>\n`
+      + `💶 Ціна: <b>${price}</b>\n`
+      + `📞 Телефон: <b>${phone}</b>`;
+
+    orderBtn.disabled = true;
+    orderBtn.textContent = 'Надсилаємо...';
+    const ok = await sendToTelegram(msg);
+    if (ok) {
+      showToast('✅ Замовлення надіслано! Ми зв\'яжемося з Вами.');
+      orderBtn.textContent = '✓ Надіслано';
+    } else {
+      showToast('❌ Помилка. Спробуйте ще раз або напишіть нам напряму.');
+      orderBtn.textContent = 'Замовити поїздку за номером ' + phone;
+      orderBtn.disabled = false;
+    }
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      // Reset all calc fields
+      ['calcFrom','calcTo','calcDate','calcPassengers'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.value = ''; el.classList.remove('has-value'); }
+      });
+      const result = document.getElementById('ticketResult');
+      if (result) { result.classList.remove('is-visible'); result.hidden = true; }
+      phoneInput.value = '';
+      phoneInput.placeholder = 'Введіть телефон для бронювання';
+      phoneWrap.style.display = '';
+      orderBtn.hidden = true;
+      resetBtn.hidden = true;
+    });
+  }
 })();
 
 /* ===== LIGHT THEME TOGGLE ===== */
@@ -454,8 +525,52 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
   phone.addEventListener('focus', () => {
     if (!phone.value.startsWith(PREFIX)) phone.value = PREFIX;
-    // Move cursor to end
     setTimeout(() => { phone.setSelectionRange(phone.value.length, phone.value.length); }, 0);
+  });
+
+  phone.addEventListener('blur', () => {
+    if (phone.value === PREFIX || phone.value === '') {
+      phone.value = '';
+      phone.placeholder = 'Введіть номер телефону';
+    }
+  });
+})();
+
+/* ===== CONTACT FORM — send to Telegram ===== */
+(function() {
+  const sendBtn = document.getElementById('contactSendBtn');
+  if (!sendBtn) return;
+
+  sendBtn.addEventListener('click', async () => {
+    const phone = document.getElementById('contactPhone')?.value || '';
+    const name  = document.getElementById('contactName')?.value  || '';
+    const msg   = document.getElementById('contactMsg')?.value   || '';
+
+    if (!phone || phone === '+380') {
+      showToast('Введіть номер телефону');
+      return;
+    }
+
+    const text = `📬 <b>Нове повідомлення з сайту</b>\n\n`
+      + `👤 Ім'я: <b>${name || 'Не вказано'}</b>\n`
+      + `📞 Телефон: <b>${phone}</b>\n`
+      + (msg ? `💬 Повідомлення: ${msg}` : '');
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Надсилаємо...';
+    const ok = await sendToTelegram(text);
+
+    if (ok) {
+      showToast('✅ Повідомлення надіслано!');
+      sendBtn.textContent = '✓ Надіслано';
+      document.getElementById('contactPhone').value = '+380';
+      document.getElementById('contactName').value  = '';
+      document.getElementById('contactMsg').value   = '';
+    } else {
+      showToast('❌ Помилка відправки. Напишіть нам напряму.');
+      sendBtn.textContent = 'Відправити';
+      sendBtn.disabled = false;
+    }
   });
 })();
 
@@ -471,20 +586,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const st = document.createElement('style');
   st.textContent = `
     body { position: relative; }
-    .stamp-dummy {
-      position: absolute;
-      background: rgba(255,255,255,0.08);
-      border: 2px solid rgba(255,255,255,0.25);
-      border-radius: 6px;
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.3);
-      font-size: 11px;
-      font-family: sans-serif;
-    }
-    @keyframes stampSway {
+    @keyframes stampSwayZ {
       0%   { transform: translateY(-50%) rotateZ(var(--rz0)); }
       50%  { transform: translateY(-50%) rotateZ(var(--rz1)); }
       100% { transform: translateY(-50%) rotateZ(var(--rz0)); }
@@ -501,12 +603,12 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 
   function addStamp(section, side, posStr, topPct, zIdx) {
     const size  = rndInt(200, 280);
-    const tilt0 = rndInt(-20, 20);
-    const tilt1 = rndInt(-20, 20);
+    const tilt0 = rndInt(-20, 20); // Z tilt (static lean)
+    const tilt1 = rndInt(-20, 20); // Z tilt end
     const dur   = rnd(8, 14);
     const delay = rnd(0, 5);
+    const animName = side === 'left' ? 'stampSwayZ' : 'stampSwayZ';
 
-    // Use document.body as parent, position relative to section using absolute offset
     const el = document.createElement('model-viewer');
     el.setAttribute('src', BASE + CARDS[cardIdx % CARDS.length]);
     el.setAttribute('alt', '');
@@ -520,19 +622,17 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     el.setAttribute('shadow-intensity', '0');
     cardIdx++;
 
-    // Position absolutely within body — calculate top from section's offset
     const sectionTop = section.getBoundingClientRect().top + window.scrollY;
     const sectionH   = section.offsetHeight;
     const topPx      = sectionTop + (topPct / 100) * sectionH;
 
-    // posStr is left:/right: value relative to viewport edge
     el.style.cssText = `
       position: absolute;
       width: ${size}px;
       height: ${size}px;
       ${side}: ${posStr};
       top: ${topPx}px;
-      transform: translateY(-50%) rotateZ(var(--rz0));
+      transform: translateY(-50%) rotateZ(${tilt0}deg);
       z-index: ${zIdx};
       --progress-bar-height: 0px;
       --progress-bar-color: transparent;
@@ -540,11 +640,27 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       --rz1: ${tilt1}deg;
       pointer-events: none;
       opacity: 1;
-      animation: stampSway ${dur}s ease-in-out infinite ${delay}s;
+      animation: ${animName} ${dur}s ease-in-out infinite ${delay}s;
       animation-fill-mode: both;
     `;
 
     document.body.appendChild(el);
+
+    // JS animation of camera-orbit theta for true Y-axis rotation visible as edge
+    // theta swings ±8deg around center, creating subtle 3D edge effect
+    const thetaAmp = 8;
+    const thetaOffset = side === 'left' ? -4 : 4; // slight lean toward center
+    let t2 = Math.random() * Math.PI * 2;
+    const spd = (0.006 + Math.random() * 0.004);
+
+    el.addEventListener('load', () => {
+      (function tick() {
+        t2 += spd;
+        const theta = thetaOffset + Math.sin(t2) * thetaAmp;
+        el.cameraOrbit = `${theta}deg 0deg 120%`;
+        requestAnimationFrame(tick);
+      })();
+    });
   }
 
   // 4 columns per side. ALL z:-1 (always behind content).

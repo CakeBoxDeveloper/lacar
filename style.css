@@ -47,8 +47,22 @@ button,input { font:inherit; color:inherit; }
 
 .container { width: min(480px, 100% - 32px); margin-inline: auto; position: relative; z-index: 3; }
 .gold { color:var(--gold); }
-.section { padding: 32px 0; position: relative; }
-.section__title { font-size: 24px; font-weight:800; margin-bottom:32px; letter-spacing:0.01em; }
+.section { padding: 16px 0 32px; position: relative; }
+.section__title { font-size: 22px; font-weight:800; margin-bottom:32px; letter-spacing:0.01em; background: transparent !important; color: var(--gold) !important; display: block; width: 100%; text-align: center; padding: 13px 0; border-radius: 0; border: none; box-sizing: border-box; white-space: nowrap; overflow: hidden; position: relative;
+  background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 30%, #fff8e1 50%, var(--gold-light) 70%, var(--gold-dark) 100%) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: titleGoldShimmer 3s linear infinite !important;
+}
+@keyframes titleGoldShimmer {
+  0%   { background-position: 150% 0; }
+  100% { background-position: -50% 0; }
+}
+.section__title .gold { -webkit-text-fill-color: transparent !important; }
+.section__title::before,
+.section__title::after { display: none !important; }
 
 /* ===== PRELOADER ===== */
 .preloader { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; background:var(--bg-dark); transition:opacity 0.6s ease, visibility 0.6s ease; }
@@ -219,8 +233,8 @@ button,input { font:inherit; color:inherit; }
   letter-spacing: 0.01em;
 }
 .footer__messengers { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 40px; }
-.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 64px; border-radius: 50%; background: var(--gold); text-decoration: none; transition: filter var(--transition), transform var(--transition); aspect-ratio: 1; max-width: 74px; }
-.footer__msg-btn img { filter: brightness(0); width: 30px; height: 30px; }
+.footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 74px; border-radius: 50%; background: var(--gold); text-decoration: none; transition: filter var(--transition), transform var(--transition); aspect-ratio: 1; max-width: 74px; }
+.footer__msg-btn img { filter: brightness(0); width: 32px; height: 32px; }
 .footer__msg-btn:hover { filter: brightness(1.15); transform: translateY(-3px); }
 .footer__nav { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; padding: 32px 0; border-top: 1px solid var(--border-subtle); }
 .footer__col-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
@@ -246,7 +260,7 @@ button,input { font:inherit; color:inherit; }
 /* ===== SECTION TITLE CENTER ===== */
 .section__title--center { text-align: center; }
 
-/* Universal section title — full-width glass block, one line, diagonal shimmer */
+/* Universal section title — solid mid-grey pill, dark inverted text */
 .section__title {
   display: block;
   width: 100%;
@@ -256,72 +270,41 @@ button,input { font:inherit; color:inherit; }
   letter-spacing: 0.01em;
   text-align: center;
   white-space: nowrap;
-  color: #fff;
+  color: #0d0d0d;
   padding: 13px 20px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.07);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.13);
+  background: #5a5a5a;
+  border: none;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
-/* Make .gold spans inside titles white too */
-.section__title .gold { color: #fff; }
+.section__title .gold { color: #0d0d0d; }
+.section__title::before,
+.section__title::after { display: none !important; }
 
-/* Diagonal shimmer sweep across the full block */
-.section__title::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(
-    105deg,
-    transparent 20%,
-    rgba(255,255,255,0.18) 50%,
-    transparent 80%
-  );
-  animation: titleShimmer 4s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes titleShimmer {
-  0%   { left: -100%; }
-  60%  { left: 150%; }
-  100% { left: 150%; }
-}
-/* No ::before ghost */
-.section__title::before { display: none !important; }
-
-/* Перки-heading скидаємо до того ж стилю */
 .perks__heading {
   display: block !important;
   width: 100% !important;
   white-space: nowrap !important;
-  border-radius: 10px !important;
-  background: rgba(255,255,255,0.07) !important;
-  border: 1px solid rgba(255,255,255,0.13) !important;
-  padding: 13px 20px !important;
+  border-radius: 0 !important;
+  background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 30%, #fff8e1 50%, var(--gold-light) 70%, var(--gold-dark) 100%) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  border: none !important;
+  padding: 13px 0 !important;
   overflow: hidden !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   font-size: 22px !important;
-  color: #fff !important;
   text-align: center !important;
   position: relative !important;
+  animation: titleGoldShimmer 3s linear infinite !important;
 }
-.perks__heading::before { display: none !important; }
-.perks__heading::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.18) 50%, transparent 80%);
-  animation: titleShimmer 4s ease-in-out infinite;
-  pointer-events: none;
-}
+.perks__heading::before,
+.perks__heading::after { display: none !important; }
 
 /* ===== WAVE DIVIDERS — removed ===== */
 
@@ -444,6 +427,22 @@ button,input { font:inherit; color:inherit; }
 }
 .ticket__order-btn:hover { filter: brightness(1.1); }
 
+.ticket__reset-btn {
+  width: 100%;
+  margin-top: 6px;
+  padding: 7px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: color var(--transition);
+  font-family: var(--font);
+}
+.ticket__reset-btn:hover { color: var(--text); }
+
 /* Вырезы билета — через radial-gradient маску */
 .ticket {
   display: flex;
@@ -451,6 +450,7 @@ button,input { font:inherit; color:inherit; }
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 16px 48px rgba(0,0,0,0.5);
   overflow: hidden;
   position: relative;
@@ -1177,39 +1177,27 @@ body, .header, .hero, .services, .routes, .faq,
   100% { background-position: -50% 0; }
 }
 
-/* Section headings with glass style */
+/* Section headings — force correct style everywhere */
 #routes .section__title,
 #faq .section__title,
 #cars .section__title,
-#calc .section__title {
-  display: inline-block;
-  padding: 10px 24px;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.04);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
+#calc .section__title,
+#perks .section__title {
+  background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 30%, #fff8e1 50%, var(--gold-light) 70%, var(--gold-dark) 100%) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  border-radius: 0 !important;
+  padding: 13px 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 #routes .section__title::before,
 #faq .section__title::before,
 #cars .section__title::before,
-#calc .section__title::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 4px;
-  padding: 1.5px;
-  background: linear-gradient(100deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.05) 30%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.05) 100%);
-  background-size: 300% 100%;
-  background-position: 150% 0;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: glassShimmer 3.5s linear infinite;
-  pointer-events: none;
-}
+#calc .section__title::before,
+#perks .section__title::before { display: none !important; }
 
 /* ===== MOBILE FIXES ===== */
 @media (max-width: 600px) {
