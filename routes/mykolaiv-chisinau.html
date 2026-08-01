@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Трансфер Київ — Вроцлав | LC Transfer</title>
-<meta name="description" content="Пасажирські перевезення Київ — Вроцлав. Комфортний трансфер без пересадок. Від 990€.">
+<title>Трансфер Миколаїв — Кишинів | LC Transfer</title>
+<meta name="description" content="Пасажирські перевезення Миколаїв — Кишинів. Комфортний трансфер без пересадок. Від 310€.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://lc-transfer.com/routes/kyiv-wroclaw.html">
+<link rel="canonical" href="https://lc-transfer.com/routes/mykolaiv-chisinau.html">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
 <div class="route-stamp-fade-left" aria-hidden="true"></div>
 <div class="route-stamp-fade-right" aria-hidden="true"></div>
 <div class="float-nav">
-  <a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Київ%20—%20Вроцлав" target="_blank" rel="noopener noreferrer" class="float-nav__btn float-nav__btn--gold">Забронювати</a>
+  <a href="https://t.me/lctransfer?text=Привіт!%20Хочу%20трансфер%20Миколаїв%20—%20Кишинів" target="_blank" rel="noopener noreferrer" class="float-nav__btn float-nav__btn--gold">Забронювати</a>
   <a href="#calc" class="float-nav__btn float-nav__btn--outline">Калькулятор</a>
 </div>
 <main>
@@ -38,12 +38,12 @@
     <nav class="breadcrumb" aria-label="Хлібні крихти"><ol>
       <li><a href="../index.html">Головна</a></li><li aria-hidden="true">›</li>
       <li><a href="../index.html#routes">Напрямки</a></li><li aria-hidden="true">›</li>
-      <li aria-current="page">Київ — Вроцлав</li>
+      <li aria-current="page">Миколаїв — Кишинів</li>
     </ol></nav>
     <div class="route-chip route-chip--hero">
-      <span class="route-chip__from"><span class="flag flag--ua"></span>Київ</span>
-      <span class="route-chip__mid">~16 год · від 990€</span>
-      <span class="route-chip__to">Вроцлав<span class="flag flag--pl"></span></span>
+      <span class="route-chip__from"><span class="flag flag--ua"></span>Миколаїв</span>
+      <span class="route-chip__mid">~5 год · від 310€</span>
+      <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
     
     <!-- лашка найближчої поїздки -->
     <div class="next-trip">
@@ -55,7 +55,7 @@
 <section class="section">
   <div class="container">
     <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin-bottom:20px;">
-      Вроцлав — казкове місто на Одрі, яке часто називають польською Венецією за численні острівці та мости. Його центр прикрашає один із найкрасивіших ринкових майданів Центральної Європи, а вулиці наповнені студентами, туристами та маленькими бронзовими гномиками — символами міста. Вроцлав щороку стає популярнішим серед українців.
+      Миколаїв — портове місто на півдні України, розташоване між Одесою та Херсоном. Маршрут до Кишинева один з найкоротших — лише кілька годин дороги через живописний південь країни. Зручний варіант для жителів Миколаєва та навколишніх районів.
     </p>
     <div id="routeMap" class="route-map__leaflet"></div>
   </div>
@@ -69,18 +69,19 @@
           <select id="calcFrom" class="ticket__select has-value">
             <option value="" disabled>Місто відправки</option>
             <optgroup label="Україна">
-              <option value="Київ" selected>Київ</option>
-              <option value="Львів">Львів</option><option value="Одеса">Одеса</option>
-              <option value="Харків">Харків</option><option value="Дніпро">Дніпро</option>
+              <option value="Київ">Київ</option><option value="Львів">Львів</option>
+              <option value="Одеса">Одеса</option><option value="Харків">Харків</option>
+              <option value="Дніпро">Дніпро</option>
+              <option value="Миколаїв" selected>Миколаїв</option>
             </optgroup>
           </select>
         </div>
         <div class="ticket__field"><label class="ticket__label" for="calcTo">Куди</label>
           <select id="calcTo" class="ticket__select has-value">
             <option value="" disabled>Місто прибуття</option>
-            <optgroup label="Польща"><option value="Варшава">Варшава</option><option value="Краків">Краків</option><option value="Вроцлав" selected>Вроцлав</option><option value="Гданськ">Гданськ</option></optgroup>
+            <optgroup label="Польща"><option value="Варшава">Варшава</option><option value="Краків">Краків</option><option value="Вроцлав">Вроцлав</option><option value="Гданськ">Гданськ</option></optgroup>
             <optgroup label="Румунія"><option value="Бухарест">Бухарест</option></optgroup>
-            <optgroup label="Молдова"><option value="Кишинів">Кишинів</option></optgroup>
+            <optgroup label="Молдова"><option value="Кишинів" selected>Кишинів</option></optgroup>
             <optgroup label="Болгарія"><option value="Софія">Софія</option></optgroup>
             <optgroup label="Німеччина"><option value="Берлін">Берлін</option></optgroup>
           </select>
@@ -111,9 +112,9 @@
   <div class="container">
     <h2 class="section__title section__title--center">Часті <span class="gold">запитання</span></h2>
     <div class="faq__list">
-      <details class="faq__item"><summary class="faq__q">Скільки часу?</summary><div class="faq__a"><p>14–18 годин залежно від кордону та трафіку.</p></div></details>
-      <details class="faq__item"><summary class="faq__q">Яким кордоном їдемо?</summary><div class="faq__a"><p>Через Краківець—Корчова або Шегині—Медика.</p></div></details>
-      <details class="faq__item"><summary class="faq__q">Де висаджуєте у Вроцлаві?</summary><div class="faq__a"><p>Безпосередньо за вашою адресою.</p></div></details>
+      <details class="faq__item"><summary class="faq__q">Скільки часу?</summary><div class="faq__a"><p>4–6 годин залежно від кордону.</p></div></details>
+      <details class="faq__item"><summary class="faq__q">Яким кордоном їдемо?</summary><div class="faq__a"><p>Через Паланку або Кучурган.</p></div></details>
+      <details class="faq__item"><summary class="faq__q">Де висаджуєте у Кишиневі?</summary><div class="faq__a"><p>Безпосередньо за вашою адресою.</p></div></details>
     </div>
   </div>
 </section>
@@ -137,13 +138,13 @@
       <textarea class="footer__contact-textarea" id="contactMsg" placeholder="Або напишіть нам і ми з Вами зв'яжемось..."></textarea>
       <button type="button" class="footer__contact-btn" id="contactSendBtn">Відправити</button>
     </div>
-    <nav class="footer__nav" aria-label="Навігація">
+    <nav class="footer__nav">
       <div class="footer__col"><h4 class="footer__col-title">Маршрути</h4><ul>
-        <li><a href="kyiv-warsaw.html">Київ — Варшава</a></li>
-        <li><a href="kyiv-bucharest.html">Київ — Бухарест</a></li>
         <li><a href="kyiv-chisinau.html">Київ — Кишинів</a></li>
-        <li><a href="lviv-warsaw.html">Львів — Варшава</a></li>
-        <li><a href="kyiv-berlin.html">Київ — Берлін</a></li>
+        <li><a href="odesa-chisinau.html">Одеса — Кишинів</a></li>
+        <li><a href="mykolaiv-chisinau.html">Миколаїв — Кишинів</a></li>
+        <li><a href="kharkiv-chisinau.html">Харків — Кишинів</a></li>
+        <li><a href="kyiv-warsaw.html">Київ — Варшава</a></li>
       </ul></div>
       <div class="footer__col"><h4 class="footer__col-title">Інформація</h4><ul>
         <li><a href="../index.html#faq">FAQ</a></li>
@@ -160,19 +161,19 @@
   if(typeof L==='undefined') return;
   var map=L.map('routeMap',{zoomControl:true,scrollWheelZoom:false});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:18}).addTo(map);
-  var from=[50.4501,30.5234],to=[51.1079,17.0385];
-  fetch('https://router.project-osrm.org/route/v1/driving/30.5234,50.4501;17.0385,51.1079?overview=full&geometries=geojson')
+  var from=[46.9659,31.9974],to=[47.0105,28.8638];
+  fetch('https://router.project-osrm.org/route/v1/driving/31.9974,46.9659;28.8638,47.0105?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(data){
       if(!data.routes||!data.routes[0]) throw new Error();
       var coords=data.routes[0].geometry.coordinates.map(function(c){return[c[1],c[0]];});
       L.polyline(coords,{color:'#e8c56c',weight:4,opacity:0.9}).addTo(map);
       map.fitBounds(L.latLngBounds(coords),{padding:[24,24]});
-      L.circleMarker(from,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Київ</b>').openPopup();
-      L.circleMarker(to,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Вроцлав</b>');
+      L.circleMarker(from,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Миколаїв</b>').openPopup();
+      L.circleMarker(to,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Кишинів</b>');
     }).catch(function(){
-      map.setView([50.8,24],5);
-      L.circleMarker(from,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Київ</b>').openPopup();
-      L.circleMarker(to,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Вроцлав</b>');
+      map.setView([47,30.4],7);
+      L.circleMarker(from,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Миколаїв</b>').openPopup();
+      L.circleMarker(to,{radius:9,fillColor:'#e8c56c',color:'#fff',weight:2,fillOpacity:1}).addTo(map).bindPopup('<b>Кишинів</b>');
     });
 })();
 </script>
@@ -180,7 +181,7 @@
 (function(){
   if(window.innerWidth<769) return;
   var BASE='https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/';
-  var L_CARD='Card_Kyiv.glb',R_CARD='Card_Vrozlav.glb';
+  var L_CARD='Card_Nikolaev.glb',R_CARD='Card_Kishinev.glb';
   function rnd(a,b){return a+Math.random()*(b-a);}
   function rndInt(a,b){return Math.round(rnd(a,b));}
   function spawn(side,card,topPx,posXpx){

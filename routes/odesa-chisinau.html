@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
@@ -44,6 +44,11 @@
       <span class="route-chip__from"><span class="flag flag--ua"></span>Одеса</span>
       <span class="route-chip__mid">~3 год · від 180€</span>
       <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
+    
+    <!-- лашка найближчої поїздки -->
+    <div class="next-trip">
+      <span class="next-trip__label">айближча поїздка</span>
+      <span class="next-trip__info"> — · — · —</span>
     </div>
   </div>
 </section>
@@ -176,7 +181,7 @@
 (function(){
   if(window.innerWidth<769) return;
   var BASE='https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/postcards/';
-  var L_CARD='Card_Odessa.glb',R_CARD='Card_Odessa.glb';
+  var L_CARD='Card_Odessa.glb',R_CARD='Card_Kishinev.glb';
   function rnd(a,b){return a+Math.random()*(b-a);}
   function rndInt(a,b){return Math.round(rnd(a,b));}
   function spawn(side,card,topPx,posXpx){
@@ -209,3 +214,4 @@
 <script src="../main.js"></script>
 </body>
 </html>
+

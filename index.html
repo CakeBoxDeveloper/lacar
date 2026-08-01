@@ -49,6 +49,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<!-- Pixel LCD font for section titles -->
+<style>
+@font-face {
+  font-family: 'PixelLCD';
+  src: url('https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/Pixel%20LCD-7.ttf') format('truetype');
+  font-display: swap;
+}
+</style>
+
 <link rel="stylesheet" href="style.css">
 <!-- model-viewer for 3D GLB -->
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
@@ -114,7 +123,36 @@
 <!-- ===== ПЕРВАГИ ===== -->
 <section class="section perks" id="perks">
   <div class="container">
-    <h2 class="section__title section__title--center perks__heading">Lacar Transfer — Міжнародні перевезення</h2>
+    <h2 class="section__title section__title--center perks__heading">Lacar Transfer</h2>
+
+    <!-- Ряд сервісів -->
+    <div class="services-row">
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/521265/world-1.svg" alt="" width="28" height="28"></span>
+        <span>Міжнародні перевезення</span>
+      </div>
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/431372/vip-2.svg" alt="" width="28" height="28"></span>
+        <span>Індивідуальні трансфери</span>
+      </div>
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/524799/people-nearby.svg" alt="" width="28" height="28"></span>
+        <span>Сімейні поїздки</span>
+      </div>
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/487013/airport.svg" alt="" width="28" height="28"></span>
+        <span>Трансфер в аеропорт</span>
+      </div>
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/533493/hotel.svg" alt="" width="28" height="28"></span>
+        <span>Трансфер в готелі</span>
+      </div>
+      <div class="services-row__item">
+        <span class="services-row__icon"><img src="https://www.svgrepo.com/show/134357/deal.svg" alt="" width="28" height="28"></span>
+        <span>Ділові поїздки</span>
+      </div>
+    </div>
+
     <ul class="perks__list">
       <li class="perks__item">
         <span class="perks__icon"><img src="https://www.svgrepo.com/show/347880/verified.svg" alt="" width="22" height="22"></span>
@@ -165,7 +203,7 @@
 <!-- ===== ROUTES ===== -->
 <section class="section routes" id="routes">
   <div class="container">
-    <h2 class="section__title section__title--center">Популярні <span class="gold">маршрути</span></h2>
+    <h2 class="section__title section__title--center">Популярні маршрути</h2>
     <div class="routes__grid">
       <a href="routes/kyiv-warsaw.html" class="route-chip">
         <span class="route-chip__from"><span class="flag flag--ua"></span>Київ</span>
@@ -222,6 +260,21 @@
         <span class="route-chip__mid">~3 год · від 180€</span>
         <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
       </a>
+      <a href="routes/kharkiv-chisinau.html" class="route-chip">
+        <span class="route-chip__from"><span class="flag flag--ua"></span>Харків</span>
+        <span class="route-chip__mid">~11 год · від 730€</span>
+        <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
+      </a>
+      <a href="routes/dnipro-chisinau.html" class="route-chip">
+        <span class="route-chip__from"><span class="flag flag--ua"></span>Дніпро</span>
+        <span class="route-chip__mid">~9 год · від 610€</span>
+        <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
+      </a>
+      <a href="routes/mykolaiv-chisinau.html" class="route-chip">
+        <span class="route-chip__from"><span class="flag flag--ua"></span>Миколаїв</span>
+        <span class="route-chip__mid">~5 год · від 310€</span>
+        <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
+      </a>
     </div>
     <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="routes__more">Потрібен інший маршрут? Напишіть нам</a>
   </div>
@@ -229,7 +282,7 @@
 
 <section class="section faq" id="faq">
   <div class="container">
-    <h2 class="section__title section__title--center">Часті <span class="gold">запитання</span></h2>
+    <h2 class="section__title section__title--center">Поширені запитання</h2>
     <div class="faq__list">
       <details class="faq__item">
         <summary class="faq__q">Як замовити трансфер?</summary>
@@ -262,11 +315,50 @@
 <!-- ===== CARS ===== -->
 <section class="section cars-section" id="cars">
   <div class="container">
-    <h2 class="section__title section__title--center">Наші <span class="gold">авто</span></h2>
+    <h2 class="section__title section__title--center">Наш автопарк</h2>
     <div class="cars-carousel" id="carsCarousel">
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPnissan.webp" alt="Nissan X-Trail 2025" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WEBPCar1.webp" alt="Denza N7" loading="lazy">
+        </div>
+        <h3 class="car-card__name">Denza N7</h3>
+        <div class="car-card__info">
+          <ul class="car-card__specs">
+            <li>до 4 пасажирів</li>
+            <li>електромобіль</li>
+            <li>преміум клас</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WFRBPCar2.webp" alt="Mercedes" loading="lazy">
+        </div>
+        <h3 class="car-card__name">Mercedes</h3>
+        <div class="car-card__info">
+          <ul class="car-card__specs">
+            <li>до 4 пасажирів</li>
+            <li>бізнес клас</li>
+            <li>комфорт преміум</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WLBPCar3.webp" alt="BYD Song L" loading="lazy">
+        </div>
+        <h3 class="car-card__name">BYD Song L</h3>
+        <div class="car-card__info">
+          <ul class="car-card__specs">
+            <li>до 5 пасажирів</li>
+            <li>електромобіль</li>
+            <li>великий багажник</li>
+          </ul>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="car-card__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WLBPCar4.webp" alt="Nissan" loading="lazy">
         </div>
         <h3 class="car-card__name">Nissan X-Trail</h3>
         <div class="car-card__info">
@@ -279,40 +371,14 @@
       </div>
       <div class="car-card">
         <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPkia.webp" alt="KIA K5" loading="lazy">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WEBPCar5.webp" alt="KIA" loading="lazy">
         </div>
         <h3 class="car-card__name">KIA K5</h3>
         <div class="car-card__info">
           <ul class="car-card__specs">
             <li>до 4 пасажирів</li>
             <li>шкіряний салон</li>
-            <li>комфорт преміум</li>
-          </ul>
-        </div>
-      </div>
-      <div class="car-card">
-        <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPmers.webp" alt="Mercedes Vito" loading="lazy">
-        </div>
-        <h3 class="car-card__name">Mercedes Vito</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 7 пасажирів</li>
-            <li>просторий салон</li>
-            <li>ідеально для груп</li>
-          </ul>
-        </div>
-      </div>
-      <div class="car-card">
-        <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/WEBPbyd.webp" alt="BYD Seal L" loading="lazy">
-        </div>
-        <h3 class="car-card__name">BYD Seal L</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 4 пасажирів</li>
-            <li>електромобіль</li>
-            <li>тихий та швидкий</li>
+            <li>бізнес клас</li>
           </ul>
         </div>
       </div>
@@ -323,6 +389,7 @@
       <button class="cars-dot" data-idx="1" aria-label="Авто 2"></button>
       <button class="cars-dot" data-idx="2" aria-label="Авто 3"></button>
       <button class="cars-dot" data-idx="3" aria-label="Авто 4"></button>
+      <button class="cars-dot" data-idx="4" aria-label="Авто 5"></button>
     </div>
   </div>
 </section>
@@ -336,7 +403,7 @@
 <!-- ===== CALCULATOR ===== -->
 <section class="section calc-section" id="calc">
   <div class="container">
-    <h2 class="section__title section__title--center">Розрахувати <span class="gold">поїздку</span></h2>
+    <h2 class="section__title section__title--center">Розрахувати поїздку</h2>
     <div class="ticket" id="calcForm">
       <div class="ticket__content">
         <div class="ticket__row">
@@ -350,6 +417,7 @@
                 <option value="Одеса">Одеса</option>
                 <option value="Харків">Харків</option>
                 <option value="Дніпро">Дніпро</option>
+                <option value="Миколаїв">Миколаїв</option>
               </optgroup>
             </select>
           </div>
@@ -412,7 +480,7 @@
 <!-- ===== FOOTER ===== -->
 <footer class="footer" id="contacts">
   <div class="container">
-    <h2 class="footer__heading">Як з нами зв'язатися</h2>
+    <h2 class="footer__heading section__title">Як з нами зв'язатися</h2>
     <div class="footer__messengers">
       <a href="https://t.me/lctransfer" target="_blank" rel="noopener noreferrer" class="footer__msg-btn" aria-label="Telegram">
         <img src="https://www.svgrepo.com/show/521874/telegram.svg" alt="Telegram" width="28" height="28">
