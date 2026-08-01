@@ -20,6 +20,15 @@ async function sendToTelegram(text) {
   }
 }
 
+/* ===== SECTION TITLE MARQUEE ===== */
+document.querySelectorAll('.section__title').forEach(el => {
+  const html = el.innerHTML;
+  const sep = ' ';
+  const repeated = Array(8).fill(html).join(sep) + sep;
+  // Wrapper забезпечує overflow:hidden + fade через ::before/::after
+  el.innerHTML = `<span class="section__title__wrap"><span class="section__title__track">${repeated}</span></span>`;
+});
+
 /* ===== VIDEO HERO — loop with reverse where supported ===== */
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
@@ -374,21 +383,13 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     dot.addEventListener('click', () => goTo(parseInt(dot.dataset.idx)));
   });
 
-  // Update dots on scroll
+  // Update dots on scroll (native snap handles swiping)
   carousel.addEventListener('scroll', () => {
     const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
     if (idx !== current) {
       current = idx;
       dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
     }
-  }, { passive: true });
-
-  // Touch swipe
-  let startX = 0;
-  carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  carousel.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) goTo(Math.max(0, Math.min(cards.length - 1, current + (dx < 0 ? 1 : -1))));
   }, { passive: true });
 })();
 
