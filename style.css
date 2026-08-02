@@ -635,6 +635,41 @@ input[type=number].ticket__input::-webkit-inner-spin-button { -webkit-appearance
 :root.light .footer { background: var(--bg-section); }
 :root.light .footer__bottom { border-top-color: rgba(0,0,0,0.1); color: #888; }
 
+/* Иконки перков — в светлой теме тёмные */
+:root.light .perks__icon img { filter: none; opacity: 0.7; }
+:root.light .perks__item { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+
+/* Иконки сервисов */
+:root.light .services-row__icon img { filter: none; opacity: 0.6; }
+:root.light .services-row__item { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); color: var(--text); }
+
+/* Карусель авто — стеклянные блоки на светлом фоне */
+:root.light .car-slide__top {
+  background: rgba(0,0,0,0.55);
+  border-color: rgba(0,0,0,0.15);
+  color: #fff;
+}
+:root.light .car-slide__bottom {
+  background: rgba(0,0,0,0.55);
+  border-color: rgba(0,0,0,0.15);
+  color: rgba(255,255,255,0.9);
+}
+
+/* Footer messenger buttons */
+:root.light .footer__msg-btn { background: rgba(0,0,0,0.06) !important; border-color: rgba(0,0,0,0.12) !important; }
+:root.light .footer__msg-btn img { filter: none !important; opacity: 0.75; }
+:root.light .footer__msg-btn:hover { background: rgba(180,130,40,0.1) !important; border-color: rgba(180,130,40,0.4) !important; }
+
+/* Contact form inputs */
+:root.light .footer__contact-input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a1a1a; }
+:root.light .footer__contact-textarea { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a1a1a; }
+
+/* FAQ items */
+:root.light .faq__item { border-color: rgba(0,0,0,0.08); }
+
+/* Routes more link */
+:root.light .routes__more { background: rgba(180,130,40,0.12); color: #8a6010; border-color: rgba(180,130,40,0.3); }
+
 :root.light ::-webkit-scrollbar-track { background: #eee; }
 :root.light ::-webkit-scrollbar-thumb { background: #ccc; }
 
@@ -1369,39 +1404,38 @@ body, .header, .hero, .services, .routes, .faq,
 /* ===== CARS CAROUSEL — MOBILE ===== */
 @media (max-width: 480px) {
   .cars-3d-carousel {
-    height: 320px;
+    height: 340px;
   }
 
   .car-slide {
-    width: 72vw;
-    max-width: 260px;
-    height: 210px;
+    width: 78vw;
+    max-width: 280px;
+    height: 230px;
   }
 
-  /* Центральная — меньший масштаб на мобильном */
   .car-slide[data-position="0"] {
-    transform: translateX(0) scale(1.15);
+    transform: translateX(0) scale(1.25);
   }
   .car-slide[data-position="1"] {
-    transform: translateX(58%) scale(0.78) rotate(6deg);
+    transform: translateX(60%) scale(0.78) rotate(6deg);
   }
   .car-slide[data-position="-1"] {
-    transform: translateX(-58%) scale(0.78) rotate(-6deg);
+    transform: translateX(-60%) scale(0.78) rotate(-6deg);
   }
 
   /* Верхний блок */
   .car-slide__top {
-    font-size: 12px;
+    font-size: clamp(10px, 3vw, 13px);
     padding: 5px 12px;
   }
 
-  /* Нижний блок — не вылезает за край */
+  /* Нижний блок — одна строка, адаптивный шрифт */
   .car-slide__bottom {
-    font-size: 10px;
+    font-size: clamp(9px, 2.8vw, 12px);
     padding: 5px 10px;
-    max-width: 90vw;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 85vw;
   }
 }

@@ -397,17 +397,16 @@ function calcUpdate() {
 function toggleTheme() {
   const isLight = document.documentElement.classList.toggle('light');
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
-  // Flash-feedback при тряске
   document.body.style.transition = 'background 0.4s ease';
 }
 
-// Restore saved theme
-if (localStorage.getItem('theme') === 'light') {
-  document.documentElement.classList.add('light');
-}
+// Light theme temporarily disabled
+// if (localStorage.getItem('theme') === 'light') {
+//   document.documentElement.classList.add('light');
+// }
 
-// Shake-to-toggle theme (DeviceMotionEvent)
-let lastShake = 0;
+// Shake-to-toggle disabled
+// let lastShake = 0;
 let lastX = 0, lastY = 0, lastZ = 0;
 
 function handleMotion(e) {
