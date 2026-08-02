@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Адмін — Рейси | LC Transfer</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Manrope',sans-serif; background:#0d0d0d; color:#fff; padding:24px 16px; }
+h1 { font-size:20px; font-weight:800; color:#e8c56c; margin-bottom:8px; }
+.note { font-size:12px; color:#666; margin-bottom:20px; line-height:1.5; }
+.note b { color:#999; }
+table { width:100%; border-collapse:collapse; margin-bottom:24px; }
+th { background:#1a1a1a; color:#e8c56c; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:10px 12px; text-align:left; border-bottom:1px solid #2a2a2a; }
+td { padding:8px 12px; border-bottom:1px solid #1a1a1a; font-size:13px; color:#ccc; vertical-align:middle; }
+tr:hover td { background:#111; }
+.route-name { font-weight:700; color:#fff; white-space:nowrap; }
+.inputs { display:flex; gap:8px; align-items:center; }
+.inp {
+  background:#111; border:1px solid #2a2a2a; border-radius:6px;
+  color:#fff; padding:7px 10px; font-size:14px; font-family:'Manrope',monospace;
+  outline:none; letter-spacing:0.05em;
+}
+.inp:focus { border-color:#e8c56c; }
+.inp-date { width:110px; }
+.inp-time { width:70px; }
+.inp::placeholder { color:#444; }
+.countdown { font-size:11px; color:#888; white-space:nowrap; min-width:120px; }
+.countdown.active { color:#3dbf5a; }
+.btn-save {
+  padding:12px 32px; background:#e8c56c; color:#141414;
+  font-size:14px; font-weight:700; border:none; border-radius:10px;
+  cursor:pointer; font-family:inherit;
+}
+.btn-save:hover { filter:brightness(1.1); }
+.btn-export {
+  padding:12px 24px; background:transparent; color:#e8c56c;
+  font-size:14px; font-weight:700; border:1px solid rgba(232,197,108,0.4);
+  border-radius:10px; cursor:pointer; font-family:inherit; margin-left:12px;
+}
+.btn-export:hover { background:rgba(232,197,108,0.1); }
+.actions { display:flex; align-items:center; margin-top:8px; }
+.saved-msg { color:#3dbf5a; font-size:13px; margin-left:16px; opacity:0; transition:opacity 0.3s; }
+.json-out {
+  background:#111; border:1px solid #2a2a2a; border-radius:8px;
+  padding:16px; font-size:12px; color:#888; font-family:monospace;
+  margin-top:20px; white-space:pre; overflow-x:auto; display:none;
+}
+</style>
+</head>
+<body>
+
+<h1>Управління рейсами</h1>
+<p class="note">Введіть дату і час найближчого відправлення. Після збереження скопіюйте JSON і вставте у файл <b>trips.json</b> в репозиторії GitHub — сайт автоматично підтягне нові дані.</p>
+
+<table id="tripsTable">
+  <thead>
+    <tr>
+      <th style="width:200px">Маршрут</th>
+      <th>Дата та час відправлення</th>
+      <th>Зворотний відлік</th>
+    </tr>
+  </thead>
+  <tbody id="tripsBody"></tbody>
+</table>
+
+<div class="actions">
+  <button class="btn-save" onclick="saveAll()">Зберегти і показати JSON</button>
+  <button class="btn-export" onclick="copyJSON()">Копіювати JSON</button>
+  <span class="saved-msg" id="savedMsg">✓ Скопійовано!</span>
+</div>
+
+<div class="json-out" id="jsonOut"></div>
+
+<script>
+const ROUTES = [
+  { key: 'kyiv-warsaw',      name: 'Київ — Варшава' },
+  { key: 'kyiv-berlin',      name: 'Київ — Берлін' },
+  { key: 'kyiv-bucharest',   name: 'Київ — Бухарест' },
+  { key: 'kyiv-chisinau',    name: 'Київ — Кишинів' },
+  { key: 'kyiv-gdansk',      name: 'Київ — Гданськ' },
+  { key: 'kyiv-krakow',      name: 'Київ — Краків' },
+  { key: 'kyiv-sofia',       name: 'Київ — Софія' },
+  { key: 'kyiv-wroclaw',     name: 'Київ — Вроцлав' },
+  { key: 'lviv-warsaw',      name: 'Львів — Варшава' },
+  { key: 'odesa-warsaw',     name: 'Одеса — Варшава' },
+  { key: 'odesa-chisinau',   name: 'Одеса — Кишинів' },
+  { key: 'kharkiv-chisinau', name: 'Харків — Кишинів' },
+  { key: 'dnipro-chisinau',  name: 'Дніпро — Кишинів' },
+  { key: 'mykolaiv-chisinau',name: 'Миколаїв — Кишинів' },
+];
+
+// Маска для дати дд.мм.рррр
+function dateMask(e) {
+  const inp = e.target;
+  let v = inp.value.replace(/\D/g,'').slice(0,8);
+  if (v.length >= 5) v = v.slice(0,2)+'.'+v.slice(2,4)+'.'+v.slice(4);
+  else if (v.length >= 3) v = v.slice(0,2)+'.'+v.slice(2);
+  inp.value = v;
+  updateCountdown(inp.closest('tr').dataset.key);
+}
+
+// Маска для часу гг:хх
+function timeMask(e) {
+  const inp = e.target;
+  let v = inp.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 3) v = v.slice(0,2)+':'+v.slice(2);
+  inp.value = v;
+  updateCountdown(inp.closest('tr').dataset.key);
+}
+
+function parseDateTime(dateStr, timeStr) {
+  if (!dateStr || dateStr.length < 10) return null;
+  const [d,m,y] = dateStr.split('.');
+  const [hh,mm] = (timeStr||'00:00').split(':');
+  const dt = new Date(+y, +m-1, +d, +hh||0, +mm||0);
+  return isNaN(dt) ? null : dt;
+}
+
+function getCountdown(dateStr, timeStr) {
+  const dt = parseDateTime(dateStr, timeStr);
+  if (!dt) return '—';
+  const diff = dt - new Date();
+  if (diff <= 0) return 'Вже відправились';
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  return `через ${h}г ${m}хв`;
+}
+
+function updateCountdown(key) {
+  const dateEl = document.getElementById('date_'+key);
+  const timeEl = document.getElementById('time_'+key);
+  const cdEl   = document.getElementById('cd_'+key);
+  if (!dateEl||!timeEl||!cdEl) return;
+  const cd = getCountdown(dateEl.value, timeEl.value);
+  cdEl.textContent = cd;
+  cdEl.className = 'countdown' + (cd !== '—' && cd !== 'Вже відправились' ? ' active' : '');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tripsBody');
+  tbody.innerHTML = '';
+  ROUTES.forEach(r => {
+    const savedDate = localStorage.getItem('admin_date_'+r.key)||'';
+    const savedTime = localStorage.getItem('admin_time_'+r.key)||'';
+    const tr = document.createElement('tr');
+    tr.dataset.key = r.key;
+    tr.innerHTML = `
+      <td class="route-name">${r.name}</td>
+      <td>
+        <div class="inputs">
+          <input class="inp inp-date" id="date_${r.key}" placeholder="дд.мм.рррр"
+            maxlength="10" inputmode="numeric" value="${savedDate}" oninput="dateMask(event)">
+          <input class="inp inp-time" id="time_${r.key}" placeholder="гг:хх"
+            maxlength="5" inputmode="numeric" value="${savedTime}" oninput="timeMask(event)">
+        </div>
+      </td>
+      <td><span class="countdown" id="cd_${r.key}">—</span></td>
+    `;
+    tbody.appendChild(tr);
+    updateCountdown(r.key);
+  });
+}
+
+function saveAll() {
+  const obj = {};
+  ROUTES.forEach(r => {
+    const d = document.getElementById('date_'+r.key).value;
+    const t = document.getElementById('time_'+r.key).value;
+    localStorage.setItem('admin_date_'+r.key, d);
+    localStorage.setItem('admin_time_'+r.key, t);
+    if (d && d.length===10) {
+      const [dd,mm,yyyy] = d.split('.');
+      const [hh,min] = (t||'00:00').split(':');
+      obj[r.key] = `${yyyy}-${mm}-${dd}T${(hh||'00').padStart(2,'0')}:${(min||'00').padStart(2,'0')}:00`;
+    }
+  });
+  const json = JSON.stringify(obj, null, 2);
+  const out = document.getElementById('jsonOut');
+  out.textContent = json;
+  out.style.display = 'block';
+  updateCountdowns();
+}
+
+function copyJSON() {
+  saveAll();
+  const text = document.getElementById('jsonOut').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById('savedMsg');
+    msg.style.opacity = '1';
+    setTimeout(() => msg.style.opacity = '0', 2000);
+  });
+}
+
+function updateCountdowns() {
+  ROUTES.forEach(r => updateCountdown(r.key));
+}
+
+renderTable();
+setInterval(updateCountdowns, 30000);
+</script>
+</body>
+</html>

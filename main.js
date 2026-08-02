@@ -29,6 +29,10 @@ async function sendToTelegram(text) {
 
 /* ===== SECTION TITLE SCOREBOARD ===== */
 (function() {
+  // Глобальний лічильник фрейму — всі заголовки синхронізовані
+  let globalFrame = 0;
+  setInterval(() => { globalFrame++; }, 150);
+
   document.querySelectorAll('.section__title').forEach(el => {
     const text = el.textContent.trim().toUpperCase();
     
@@ -41,10 +45,11 @@ async function sendToTelegram(text) {
     const total = chars.length;
     if (!total) return;
 
-    let frame = 0;
-    const SPEED = 150;
+    // Кожен заголовок має власний офсет щоб анімації не збігались
+    const offset = Math.floor(Math.random() * total);
 
     function tick() {
+      const frame = (globalFrame + offset) % total;
       chars.forEach((ch, i) => {
         const dist = (frame - i + total * 10) % total;
         if (dist === 0) {
@@ -59,14 +64,49 @@ async function sendToTelegram(text) {
           ch.className = 'char';
         }
       });
-      frame = (frame + 1) % total;
+      requestAnimationFrame(tick);
     }
-
-    setInterval(tick, SPEED);
+    requestAnimationFrame(tick);
   });
 })();
 
-/* ===== VIDEO HERO — loop with reverse where supported ===== */
+/* ===== NEXT TRIP COUNTDOWN ===== */
+(function() {
+  const infoEl = document.querySelector('.next-trip__info');
+  if (!infoEl) return;
+
+  const path = window.location.pathname;
+  const match = path.match(/routes\/([^.]+)\.html/);
+  if (!match) return;
+  const key = match[1];
+
+  function getCountdown(isoStr) {
+    if (!isoStr) return null;
+    const diff = new Date(isoStr) - new Date();
+    if (diff <= 0) return null;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    return `через ${h} год ${m} хв`;
+  }
+
+  // Визначаємо базовий URL для trips.json
+  const base = window.location.origin + window.location.pathname.replace(/routes\/.*/, '');
+
+  fetch(base + 'trips.json?_=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      const cd = getCountdown(data[key]);
+      if (cd) {
+        infoEl.textContent = cd;
+        // Оновлюємо кожні 30 сек
+        setInterval(() => {
+          const newCd = getCountdown(data[key]);
+          if (newCd) infoEl.textContent = newCd;
+        }, 30000);
+      }
+    })
+    .catch(() => {}); // якщо файл недоступний — нічого не показуємо
+})();
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
   let reversed = false;

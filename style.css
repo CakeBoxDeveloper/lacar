@@ -92,26 +92,27 @@ button,input { font:inherit; color:inherit; }
 /* Кожна буква */
 .section__title .char {
   display: inline-block;
-  color: #3d2e12;
+  color: #e8c56c;
   transition: color 0.12s ease, text-shadow 0.12s ease;
 }
 .section__title .char.lit {
-  color: #fff8e1;
+  color: #ffffff;
   text-shadow:
-    0 0 4px #f5d67b,
-    0 0 10px #e8c56c,
-    0 0 20px rgba(232,197,108,0.5);
+    0 0 6px #fff8e1,
+    0 0 14px #f5d67b,
+    0 0 28px #e8c56c,
+    0 0 40px rgba(232,197,108,0.6);
 }
 .section__title .char.dim1 {
-  color: #c9a24b;
-  text-shadow: 0 0 4px rgba(201,162,75,0.4);
+  color: #f5d67b;
+  text-shadow: 0 0 8px rgba(232,197,108,0.7);
 }
 .section__title .char.dim2 {
-  color: #6b4e18;
+  color: #c9a24b;
   text-shadow: none;
 }
 .section__title .char.dim3 {
-  color: #2e1e08;
+  color: #a07830;
   text-shadow: none;
 }
   text-shadow: none;
@@ -296,9 +297,15 @@ button,input { font:inherit; color:inherit; }
   font-weight: 400;
   margin-bottom: 28px;
   text-align: center;
-  color: inherit;
+  color: #3d2e12;
   letter-spacing: 0.01em;
 }
+/* Букви footer заголовку — такі самі як section__title */
+.footer__heading .char { color: #3d2e12 !important; }
+.footer__heading .char.lit { color: #fff8e1 !important; text-shadow: 0 0 4px #f5d67b, 0 0 10px #e8c56c, 0 0 20px rgba(232,197,108,0.5) !important; }
+.footer__heading .char.dim1 { color: #c9a24b !important; text-shadow: 0 0 4px rgba(201,162,75,0.4) !important; }
+.footer__heading .char.dim2 { color: #6b4e18 !important; text-shadow: none !important; }
+.footer__heading .char.dim3 { color: #2e1e08 !important; text-shadow: none !important; }
 .footer__messengers { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 40px; }
 /* ===== Footer messenger buttons — LARGER ===== */
 .footer__msg-btn { display: inline-flex; align-items: center; justify-content: center; flex: 1; height: 130px; border-radius: 18px; background: rgba(255,255,255,0.08); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); text-decoration: none; transition: filter var(--transition), transform var(--transition), background var(--transition); aspect-ratio: 1; max-width: 130px; }
@@ -367,24 +374,28 @@ button,input { font:inherit; color:inherit; }
   width: max-content;
 }
 
-/* Шиммер-контур — псевдоэлемент поверх */
+/* Шиммер-контур */
 .float-nav::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50px;
-  padding: 2px;
-  background: conic-gradient(
-    from var(--angle, 0deg),
-    transparent 0deg,
-    rgba(255,255,255,0.9) 60deg,
-    transparent 120deg
+  padding: 1.5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(255,255,255,0) 100%
   );
+  background-size: 200% 100%;
+  background-position: 200% 0;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: borderSpin 3s linear infinite;
+  animation: shimmerSlide 3s linear infinite;
+  pointer-events: none;
+  z-index: 3;
 }
 
 /* Статичный белый контур под шиммером */
@@ -393,16 +404,14 @@ button,input { font:inherit; color:inherit; }
   position: absolute;
   inset: 0;
   border-radius: 50px;
-  border: 2px solid rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.18);
   pointer-events: none;
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+@keyframes shimmerSlide {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
-@keyframes borderSpin { to { --angle: 360deg; } }
 
 .float-nav__btn {
   display: inline-flex;
@@ -776,12 +785,9 @@ body, .header, .hero, .services, .routes, .faq,
 .footer__contact-btn:hover { filter: brightness(1.1); }
 
 /* ===== SHIMMER BORDER (glass.html pattern) ===== */
-/* Применяем к footer msg-btn и float-nav кнопкам */
 
-/* Шиммер по контуру — как в Glassmassage */
-.footer__msg-btn,
-.float-nav__btn,
-.float-nav {
+/* Шиммер по контуру — footer msg-btn */
+.footer__msg-btn {
   position: relative;
   overflow: hidden;
 }
@@ -791,9 +797,8 @@ body, .header, .hero, .services, .routes, .faq,
 .float-nav__btn--outline:hover { background: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.85) !important; }
 .float-nav__btn--gold:hover { filter: none !important; }
 
-/* Шиммер-полоса по контуру */
-.footer__msg-btn::before,
-.float-nav::before {
+/* Шиммер-полоса по контуру footer кнопок */
+.footer__msg-btn::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -830,21 +835,7 @@ body, .header, .hero, .services, .routes, .faq,
   100% { background-position: -150% 0; }
 }
 
-/* float-nav шиммер уже был через conic-gradient — заменяем на этот */
-.float-nav::before {
-  animation: shimmerBorder 8s cubic-bezier(0.25,1,0.5,1) infinite !important;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0.0) 0%,
-    rgba(255,255,255,0.0) 30%,
-    rgba(255,255,255,0.7) 50%,
-    rgba(255,255,255,0.0) 70%,
-    rgba(255,255,255,0.0) 100%
-  ) !important;
-  background-size: 300% 100% !important;
-  background-position: 150% 0 !important;
-  padding: 1.5px !important;
-}
+/* float-nav шиммер — уже определён выше */
 
 /* ===== FINAL FIXES ===== */
 
@@ -868,35 +859,7 @@ body, .header, .hero, .services, .routes, .faq,
   gap: 10px !important;
 }
 
-/* Shimmer — correct implementation (no conic-gradient, just linear sliding) */
-/* Remove old broken shimmer from float-nav::before */
-.float-nav::before {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  border-radius: 50px !important;
-  padding: 1.5px !important;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.8) 50%,
-    rgba(255,255,255,0) 100%
-  ) !important;
-  background-size: 200% 100% !important;
-  background-position: 200% 0 !important;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
-  -webkit-mask-composite: xor !important;
-  mask-composite: exclude !important;
-  animation: shimmerSlide 3s linear infinite !important;
-  pointer-events: none !important;
-  z-index: 3 !important;
-}
-
-@keyframes shimmerSlide {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+/* Shimmer — float-nav уже определён в начале блока FLOATING NAV */
 
 /* Footer msg btn shimmer */
 .footer__msg-btn::before {
