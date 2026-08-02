@@ -446,18 +446,7 @@ if (typeof DeviceMotionEvent !== 'undefined') {
 /* ===== CARS 3D CAROUSEL ===== */
 (function() {
   const carousel = document.getElementById('cars3d');
-  const dots = document.querySelectorAll('.cars-dot');
-  const nameEl = document.getElementById('carsName');
-  const specsEl = document.getElementById('carsSpecs');
   if (!carousel) return;
-
-  const CARS = [
-    { name: 'Denza N7',       specs: ['до 4 пасажирів', 'електромобіль', 'преміум клас'] },
-    { name: 'Mercedes',       specs: ['до 4 пасажирів', 'бізнес клас', 'комфорт преміум'] },
-    { name: 'BYD Song L',     specs: ['до 5 пасажирів', 'електромобіль', 'великий багажник'] },
-    { name: 'Nissan X-Trail', specs: ['до 4 пасажирів', 'кондиціонер', 'великий багажник'] },
-    { name: 'KIA K5',         specs: ['до 4 пасажирів', 'шкіряний салон', 'бізнес клас'] },
-  ];
 
   const slides = Array.from(carousel.querySelectorAll('.car-slide'));
   const total = slides.length;
@@ -473,35 +462,12 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       else if (diff === -1) slide.dataset.position = '-1';
       else                  slide.dataset.position = 'hide';
     });
-    dots.forEach((d, i) => d.classList.toggle('is-active', i === active));
-    // Update info panel
-    if (nameEl) {
-      nameEl.style.opacity = '0';
-      setTimeout(() => {
-        nameEl.textContent = CARS[active].name;
-        specsEl.innerHTML = CARS[active].specs.map(s => `<li>${s}</li>`).join('');
-        nameEl.style.opacity = '1';
-      }, 180);
-    }
   }
 
-  // Click on side card → go to it
   slides.forEach((slide, i) => {
-    slide.addEventListener('click', () => {
-      active = i;
-      update();
-    });
+    slide.addEventListener('click', () => { active = i; update(); });
   });
 
-  // Dot clicks
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      active = parseInt(dot.dataset.idx);
-      update();
-    });
-  });
-
-  // Touch swipe
   let touchStartX = 0, touchStartTime = 0;
   carousel.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
@@ -509,24 +475,19 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   }, { passive: true });
   carousel.addEventListener('touchend', e => {
     const dx = touchStartX - e.changedTouches[0].clientX;
-    const dt = Date.now() - touchStartTime;
-    if (Math.abs(dx) > 40 && dt < 500) {
+    if (Math.abs(dx) > 40 && Date.now() - touchStartTime < 500) {
       active = (active + (dx > 0 ? 1 : -1) + total) % total;
       update();
     }
   });
 
-  // Mouse drag
   let mouseStartX = 0, isDragging = false;
   carousel.addEventListener('mousedown', e => { mouseStartX = e.clientX; isDragging = true; });
   carousel.addEventListener('mouseup', e => {
     if (!isDragging) return;
     isDragging = false;
     const dx = mouseStartX - e.clientX;
-    if (Math.abs(dx) > 40) {
-      active = (active + (dx > 0 ? 1 : -1) + total) % total;
-      update();
-    }
+    if (Math.abs(dx) > 40) { active = (active + (dx > 0 ? 1 : -1) + total) % total; update(); }
   });
   carousel.addEventListener('mouseleave', () => { isDragging = false; });
 
