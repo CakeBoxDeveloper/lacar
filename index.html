@@ -316,72 +316,41 @@
 <section class="section cars-section" id="cars">
   <div class="container">
     <h2 class="section__title section__title--center">Наш автопарк</h2>
-    <div class="cars-carousel" id="carsCarousel">
-      <div class="car-card">
-        <div class="car-card__photo">
+    <div class="cars-3d-carousel" id="cars3d">
+      <div class="car-slide" data-position="0">
+        <div class="car-slide__photo">
           <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WEBPCar1.webp" alt="Denza N7" loading="lazy">
         </div>
-        <h3 class="car-card__name">Denza N7</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 4 пасажирів</li>
-            <li>електромобіль</li>
-            <li>преміум клас</li>
-          </ul>
-        </div>
       </div>
-      <div class="car-card">
-        <div class="car-card__photo">
+      <div class="car-slide" data-position="1">
+        <div class="car-slide__photo">
           <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WFRBPCar2.webp" alt="Mercedes" loading="lazy">
         </div>
-        <h3 class="car-card__name">Mercedes</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 4 пасажирів</li>
-            <li>бізнес клас</li>
-            <li>комфорт преміум</li>
-          </ul>
-        </div>
       </div>
-      <div class="car-card">
-        <div class="car-card__photo">
+      <div class="car-slide" data-position="hide">
+        <div class="car-slide__photo">
           <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WLBPCar3.webp" alt="BYD Song L" loading="lazy">
         </div>
-        <h3 class="car-card__name">BYD Song L</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 5 пасажирів</li>
-            <li>електромобіль</li>
-            <li>великий багажник</li>
-          </ul>
+      </div>
+      <div class="car-slide" data-position="hide">
+        <div class="car-slide__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WLBPCar4.webp" alt="Nissan X-Trail" loading="lazy">
         </div>
       </div>
-      <div class="car-card">
-        <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WLBPCar4.webp" alt="Nissan" loading="lazy">
-        </div>
-        <h3 class="car-card__name">Nissan X-Trail</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 4 пасажирів</li>
-            <li>кондиціонер</li>
-            <li>великий багажник</li>
-          </ul>
+      <div class="car-slide" data-position="-1">
+        <div class="car-slide__photo">
+          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WEBPCar5.webp" alt="KIA K5" loading="lazy">
         </div>
       </div>
-      <div class="car-card">
-        <div class="car-card__photo">
-          <img src="https://raw.githubusercontent.com/CakeBoxDeveloper/lacar/main/cars/WEBPCar5.webp" alt="KIA" loading="lazy">
-        </div>
-        <h3 class="car-card__name">KIA K5</h3>
-        <div class="car-card__info">
-          <ul class="car-card__specs">
-            <li>до 4 пасажирів</li>
-            <li>шкіряний салон</li>
-            <li>бізнес клас</li>
-          </ul>
-        </div>
-      </div>
+    </div>
+    <!-- Info panel below -->
+    <div class="cars-info" id="carsInfo">
+      <h3 class="cars-info__name" id="carsName">Denza N7</h3>
+      <ul class="cars-info__specs" id="carsSpecs">
+        <li>до 4 пасажирів</li>
+        <li>електромобіль</li>
+        <li>преміум клас</li>
+      </ul>
     </div>
     <!-- Dots -->
     <div class="cars-dots" id="carsDots">

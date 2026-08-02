@@ -46,10 +46,83 @@
       <span class="route-chip__to">Кишинів<span class="flag flag--md"></span></span>
     </div>
     <!-- Плашка найближчої поїздки -->
-    <div class="next-trip">
-      <span class="next-trip__label">Найближче відправлення:</span>
-      <span class="next-trip__info">завантаження...</span>
+        <div class="next-trip">
+      <div class="next-trip__header">
+        <div class="next-trip__label">Рейтинг цієї поїздки</div>
+        <div class="next-trip__info" id="satisfactionScore"></div>
+      </div>
+      <div class="next-trip__bar-wrap">
+        <div class="next-trip__bar" id="satisfactionBar"></div>
+      </div>
+      <div class="next-trip__stars">
+        <span class="next-trip__stars-label">Ваша оцінка:</span>
+        <div class="next-trip__stars-btns" id="ratingStars">
+          <button class="next-trip__star" data-v="1">★</button>
+          <button class="next-trip__star" data-v="2">★</button>
+          <button class="next-trip__star" data-v="3">★</button>
+          <button class="next-trip__star" data-v="4">★</button>
+          <button class="next-trip__star" data-v="5">★</button>
+        </div>
+        <span class="next-trip__stars-note" id="ratingNote"></span>
+      </div>
     </div>
+    <script>
+    (function(){
+      var KEY = 'rt_kharkiv-chisinau';
+      var BASE = Math.floor(Math.random() * 9) + 90;
+      var NOTES = ['','Дуже погано','Погано','Нормально','Добре','Відмінно'];
+      var DELTA = [0, -3, -2, 0, +1, +2];
+
+      var saved = localStorage.getItem(KEY);
+      var userRating = saved ? parseInt(saved) : 0;
+
+      var bar   = document.getElementById('satisfactionBar');
+      var score = document.getElementById('satisfactionScore');
+      var starsEl = document.getElementById('ratingStars');
+      var noteEl  = document.getElementById('ratingNote');
+
+      function getPct(stars) {
+        var d = stars ? DELTA[stars] : 0;
+        return Math.min(99, Math.max(88, BASE + d));
+      }
+
+      function render(stars) {
+        var pct = getPct(stars);
+        score.textContent = pct + '%';
+        setTimeout(function(){ bar.style.width = pct + '%'; }, 120);
+        starsEl.querySelectorAll('.next-trip__star').forEach(function(btn) {
+          btn.classList.toggle('active', parseInt(btn.dataset.v) <= stars);
+        });
+        noteEl.textContent = stars ? NOTES[stars] : '';
+        noteEl.style.color = stars >= 4 ? '#e8c56c' : stars >= 3 ? '#aaa' : stars ? '#e05252' : '';
+      }
+
+      render(userRating);
+
+      starsEl.addEventListener('click', function(e) {
+        var btn = e.target.closest('.next-trip__star');
+        if (!btn) return;
+        var v = parseInt(btn.dataset.v);
+        if (userRating === v) { userRating = 0; localStorage.removeItem(KEY); }
+        else { userRating = v; localStorage.setItem(KEY, v); }
+        render(userRating);
+      });
+
+      starsEl.addEventListener('mouseover', function(e) {
+        var btn = e.target.closest('.next-trip__star');
+        if (!btn) return;
+        var v = parseInt(btn.dataset.v);
+        starsEl.querySelectorAll('.next-trip__star').forEach(function(b) {
+          b.style.opacity = parseInt(b.dataset.v) <= v ? '0.85' : '0.25';
+        });
+      });
+      starsEl.addEventListener('mouseleave', function() {
+        starsEl.querySelectorAll('.next-trip__star').forEach(function(b) {
+          b.style.opacity = '';
+        });
+      });
+    })();
+    </script>
   </div>
 </section>
 <section class="section">
