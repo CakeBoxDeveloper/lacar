@@ -848,3 +848,81 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   document.documentElement.style.overflowX = 'hidden';
   document.body.style.overflowX = 'hidden';
 })();
+
+/* ===== GEO HIGHLIGHT — підсвічування маршрутів за містом ===== */
+(function() {
+  // Маппінг: назва міста (en/uk варіанти) → які route-chip підсвічувати
+  // Ключ — підрядок який шукаємо в назві href чипа
+  const CITY_MAP = {
+    // Україна — відправні міста
+    'kyiv':       ['kyiv-warsaw','kyiv-berlin','kyiv-bucharest','kyiv-chisinau','kyiv-gdansk','kyiv-krakow','kyiv-sofia','kyiv-wroclaw'],
+    'kiev':       ['kyiv-warsaw','kyiv-berlin','kyiv-bucharest','kyiv-chisinau','kyiv-gdansk','kyiv-krakow','kyiv-sofia','kyiv-wroclaw'],
+    'київ':       ['kyiv-warsaw','kyiv-berlin','kyiv-bucharest','kyiv-chisinau','kyiv-gdansk','kyiv-krakow','kyiv-sofia','kyiv-wroclaw'],
+    'lviv':       ['lviv-warsaw'],
+    'львів':      ['lviv-warsaw'],
+    'odesa':      ['odesa-warsaw','odesa-chisinau'],
+    'odessa':     ['odesa-warsaw','odesa-chisinau'],
+    'одеса':      ['odesa-warsaw','odesa-chisinau'],
+    'kharkiv':    ['kharkiv-chisinau'],
+    'харків':     ['kharkiv-chisinau'],
+    'dnipro':     ['dnipro-chisinau'],
+    'дніпро':     ['dnipro-chisinau'],
+    'mykolaiv':   ['mykolaiv-chisinau'],
+    'миколаїв':   ['mykolaiv-chisinau'],
+    // Країни призначення — підсвічуємо маршрути туди
+    'poland':     ['kyiv-warsaw','kyiv-gdansk','kyiv-krakow','kyiv-wroclaw','lviv-warsaw','odesa-warsaw'],
+    'warsaw':     ['kyiv-warsaw','lviv-warsaw','odesa-warsaw'],
+    'варшава':    ['kyiv-warsaw','lviv-warsaw','odesa-warsaw'],
+    'krakow':     ['kyiv-krakow'],
+    'kraków':     ['kyiv-krakow'],
+    'краків':     ['kyiv-krakow'],
+    'wroclaw':    ['kyiv-wroclaw'],
+    'вроцлав':    ['kyiv-wroclaw'],
+    'gdansk':     ['kyiv-gdansk'],
+    'gdańsk':     ['kyiv-gdansk'],
+    'гданськ':    ['kyiv-gdansk'],
+    'berlin':     ['kyiv-berlin'],
+    'берлін':     ['kyiv-berlin'],
+    'bucharest':  ['kyiv-bucharest'],
+    'бухарест':   ['kyiv-bucharest'],
+    'chisinau':   ['kyiv-chisinau','odesa-chisinau','kharkiv-chisinau','dnipro-chisinau','mykolaiv-chisinau'],
+    'chișinău':   ['kyiv-chisinau','odesa-chisinau','kharkiv-chisinau','dnipro-chisinau','mykolaiv-chisinau'],
+    'кишинів':    ['kyiv-chisinau','odesa-chisinau','kharkiv-chisinau','dnipro-chisinau','mykolaiv-chisinau'],
+    'sofia':      ['kyiv-sofia'],
+    'софія':      ['kyiv-sofia'],
+  };
+
+  function highlightRoutes(city, country) {
+    const chips = document.querySelectorAll('.route-chip');
+    if (!chips.length) return;
+
+    const cityLow    = (city    || '').toLowerCase().trim();
+    const countryLow = (country || '').toLowerCase().trim();
+
+    let toHighlight = new Set();
+
+    [cityLow, countryLow].forEach(token => {
+      Object.keys(CITY_MAP).forEach(key => {
+        if (token.includes(key) || key.includes(token)) {
+          CITY_MAP[key].forEach(r => toHighlight.add(r));
+        }
+      });
+    });
+
+    if (!toHighlight.size) return;
+
+    chips.forEach(chip => {
+      const href = chip.getAttribute('href') || '';
+      const matched = [...toHighlight].some(r => href.includes(r));
+      if (matched) {
+        chip.classList.add('route-chip--geo');
+      }
+    });
+  }
+
+  // Запрос геолокації — тихо, без блокування
+  fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) })
+    .then(r => r.json())
+    .then(d => highlightRoutes(d.city, d.country_name))
+    .catch(() => {}); // якщо заблоковано — нічого не робимо
+})();
