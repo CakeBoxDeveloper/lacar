@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://lc-transfer.com/</loc><lastmod>2024-07-30</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-warsaw.html</loc><lastmod>2024-07-30</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-krakow.html</loc><lastmod>2024-07-30</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-bucharest.html</loc><lastmod>2024-07-30</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-chisinau.html</loc><lastmod>2024-07-30</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/odesa-warsaw.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-sofia.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/lviv-warsaw.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-wroclaw.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-gdansk.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/kyiv-berlin.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://lc-transfer.com/routes/odesa-chisinau.html</loc><lastmod>2024-07-30</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/</loc><lastmod>2025-08-02</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-warsaw.html</loc><lastmod>2025-08-02</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-krakow.html</loc><lastmod>2025-08-02</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-bucharest.html</loc><lastmod>2025-08-02</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-chisinau.html</loc><lastmod>2025-08-02</lastmod><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-berlin.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-gdansk.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-sofia.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kyiv-wroclaw.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/lviv-warsaw.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/odesa-warsaw.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/odesa-chisinau.html</loc><lastmod>2025-08-02</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/kharkiv-chisinau.html</loc><lastmod>2025-08-02</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/dnipro-chisinau.html</loc><lastmod>2025-08-02</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/routes/mykolaiv-chisinau.html</loc><lastmod>2025-08-02</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://lc-transfer.com/privacy.html</loc><lastmod>2025-08-02</lastmod><priority>0.3</priority><changefreq>yearly</changefreq></url>
 </urlset>

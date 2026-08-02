@@ -31,7 +31,7 @@ async function sendToTelegram(text) {
 (function() {
   // Глобальний лічильник фрейму — всі заголовки синхронізовані
   let globalFrame = 0;
-  setInterval(() => { globalFrame++; }, 150);
+  setInterval(() => { globalFrame++; }, 300);
 
   document.querySelectorAll('.section__title').forEach(el => {
     const text = el.textContent.trim().toUpperCase();
@@ -504,7 +504,6 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   const ctx = canvas.getContext('2d');
   let particles = [];
 
-  // Resize to viewport
   function resizeCanvas() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -512,7 +511,6 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas, { passive: true });
 
-  // Swing + gold exposure pulse (блеск золотого металла)
   let goldT = 0;
   function swingTick() {
     if (!isDragging) {
@@ -521,11 +519,8 @@ if (typeof DeviceMotionEvent !== 'undefined') {
       const theta = Math.sin(swingT) * 18;
       const phi   = 90 + Math.sin(swingT * 0.5) * 8;
       mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
-
-      // Пульс exposure — живой блеск золота
       mv.exposure = 2.8 + Math.sin(goldT) * 1.0;
 
-      // Золотые частицы
       if (Math.random() < 0.10) {
         const rect = mv.getBoundingClientRect();
         const cx = rect.left + rect.width  * 0.5 + (Math.random() - 0.5) * rect.width  * 0.6;
@@ -545,15 +540,13 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     requestAnimationFrame(swingTick);
   }
 
-  // После загрузки — красим материал в золото через model-viewer material API
   mv.addEventListener('load', () => {
     const model = mv.model;
     if (model) {
       model.materials.forEach(mat => {
-        // Устанавливаем золотой metallic/roughness PBR материал
-        mat.pbrMetallicRoughness.setBaseColorFactor([1.0, 0.78, 0.22, 1.0]); // золотой RGB
-        mat.pbrMetallicRoughness.setMetallicFactor(1.0);   // полный металл
-        mat.pbrMetallicRoughness.setRoughnessFactor(0.15); // почти зеркальный
+        mat.pbrMetallicRoughness.setBaseColorFactor([1.0, 0.78, 0.22, 1.0]);
+        mat.pbrMetallicRoughness.setMetallicFactor(1.0);
+        mat.pbrMetallicRoughness.setRoughnessFactor(0.15);
       });
     }
     swingTick();
@@ -564,7 +557,6 @@ if (typeof DeviceMotionEvent !== 'undefined') {
   window.addEventListener('mouseup',  () => { isDragging = false; });
   window.addEventListener('touchend', () => { isDragging = false; });
 
-  // Click/tap burst
   function spawnBurst(x, y) {
     for (let i = 0; i < 20; i++) {
       const angle = Math.random() * Math.PI * 2;
@@ -580,26 +572,22 @@ if (typeof DeviceMotionEvent !== 'undefined') {
     }
   }
 
-  mv.addEventListener('click', (e) => {
-    spawnBurst(e.clientX, e.clientY);
-  });
+  mv.addEventListener('click', (e) => { spawnBurst(e.clientX, e.clientY); });
   mv.addEventListener('touchstart', (e) => {
-    const t = e.touches[0];
-    spawnBurst(t.clientX, t.clientY);
+    spawnBurst(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
 
-  // Draw loop
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles = particles.filter(p => p.life > 0);
     for (const p of particles) {
       p.x  += p.vx;
       p.y  += p.vy;
-      p.vy += 0.02; // very gentle gravity
+      p.vy += 0.02;
       p.vx *= 0.99;
-      p.life -= 0.012; // slow fade
+      p.life -= 0.012;
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life * 0.25); // was 0.7 — much more subtle
+      ctx.globalAlpha = Math.max(0, p.life * 0.25);
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
